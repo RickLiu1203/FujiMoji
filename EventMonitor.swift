@@ -7,6 +7,9 @@ class EventMonitor {
     private var textView: NSTextView?
     static let shared = EventMonitor()
     var typedString = ""
+    
+    
+    @AppStorage("spaceToggle") private var spaceToggle: Bool = true // Add this line to use AppStorage
 
     private init() {
         loadEmojiMappings()
@@ -23,11 +26,25 @@ class EventMonitor {
                     }
                 } else {
                     EventMonitor.shared.typedString.append(characters.lowercased())
-                    if let (prefixIndex, emoji, repeatCount) = EventMonitor.shared.checkForEmoji() {
-                        EventMonitor.shared.deleteCharacters(count: EventMonitor.shared.typedString.count - prefixIndex)
-                        EventMonitor.shared.replaceWithEmoji(emoji: emoji, repeatCount: repeatCount, event: event)
-                        EventMonitor.shared.typedString = ""
-                        return nil
+
+                    // Check for emoji replacement immediately if spaceToggle is off
+                    if !EventMonitor.shared.spaceToggle {
+                        if let (prefixIndex, emoji, repeatCount) = EventMonitor.shared.checkForEmoji(replaceOnSpace: false) {
+                            EventMonitor.shared.deleteCharacters(count: EventMonitor.shared.typedString.count - prefixIndex)
+                            EventMonitor.shared.replaceWithEmoji(emoji: emoji, repeatCount: repeatCount, event: event)
+                            EventMonitor.shared.typedString = ""
+                            return nil
+                        }
+                    }
+
+                    // Check for emoji replacement if spaceToggle is on and a space is typed
+                    if EventMonitor.shared.spaceToggle && characters == " " {
+                        if let (prefixIndex, emoji, repeatCount) = EventMonitor.shared.checkForEmoji(replaceOnSpace: true) {
+                            EventMonitor.shared.deleteCharacters(count: EventMonitor.shared.typedString.count - prefixIndex)
+                            EventMonitor.shared.replaceWithEmoji(emoji: emoji, repeatCount: repeatCount, event: event)
+                            EventMonitor.shared.typedString = ""
+                            return nil
+                        }
                     }
                 }
             }
@@ -57,27 +74,41 @@ class EventMonitor {
         }
     }
 
-    func checkForEmoji() -> (Int, String, Int)? {
+    func checkForEmoji(replaceOnSpace: Bool) -> (Int, String, Int)? {
         for (key, value) in emojiMap {
             let patterns = [":\(key):", "/\(key)"]
             for pattern in patterns {
-                if typedString.hasSuffix(pattern) {
-                    let patternStartIndex = typedString.index(typedString.endIndex, offsetBy: -pattern.count)
-                    let prefixRange = typedString[..<patternStartIndex]
-                    if let match = prefixRange.range(of: #"(\d*)$"#, options: .regularExpression) {
-                        let prefix = String(prefixRange[match])
-                        let repeatCount = Int(prefix) ?? 1
-                        return (typedString.count - pattern.count - prefix.count, value, repeatCount)
-                    } else {
-                        return (typedString.count - pattern.count, value, 1)
+                if replaceOnSpace {
+                    if typedString.hasSuffix(pattern + " ") {
+                        let patternStartIndex = typedString.index(typedString.endIndex, offsetBy: -(pattern.count + 1))
+                        let prefixRange = typedString[..<patternStartIndex]
+                        if let match = prefixRange.range(of: #"(\d*)$"#, options: .regularExpression) {
+                            let prefix = String(prefixRange[match])
+                            let repeatCount = Int(prefix) ?? 1
+                            return (typedString.count - pattern.count - 1 - prefix.count, value, repeatCount)
+                        } else {
+                            return (typedString.count - pattern.count - 1, value, 1)
+                        }
                     }
-                } else if pattern.hasPrefix("/") && typedString.hasSuffix(key) {
-                    let patternStartIndex = typedString.index(typedString.endIndex, offsetBy: -key.count)
-                    let suffixRange = typedString[..<patternStartIndex]
-                    if suffixRange.hasSuffix("/") {
-                        let numberStartIndex = suffixRange.index(suffixRange.endIndex, offsetBy: -1)
-                        if let repeatCount = Int(suffixRange[numberStartIndex...]) {
-                            return (typedString.count - key.count - 2, value, repeatCount)
+                } else {
+                    if typedString.hasSuffix(pattern) {
+                        let patternStartIndex = typedString.index(typedString.endIndex, offsetBy: -pattern.count)
+                        let prefixRange = typedString[..<patternStartIndex]
+                        if let match = prefixRange.range(of: #"(\d*)$"#, options: .regularExpression) {
+                            let prefix = String(prefixRange[match])
+                            let repeatCount = Int(prefix) ?? 1
+                            return (typedString.count - pattern.count - prefix.count, value, repeatCount)
+                        } else {
+                            return (typedString.count - pattern.count, value, 1)
+                        }
+                    } else if pattern.hasPrefix("/") && typedString.hasSuffix(key) {
+                        let patternStartIndex = typedString.index(typedString.endIndex, offsetBy: -key.count)
+                        let suffixRange = typedString[..<patternStartIndex]
+                        if suffixRange.hasSuffix("/") {
+                            let numberStartIndex = suffixRange.index(suffixRange.endIndex, offsetBy: -1)
+                            if let repeatCount = Int(suffixRange[numberStartIndex...]) {
+                                return (typedString.count - key.count - 2, value, repeatCount)
+                            }
                         }
                     }
                 }
@@ -121,3 +152,4 @@ class EventMonitor {
         self.emojiMap = mappings
     }
 }
+

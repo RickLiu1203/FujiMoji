@@ -1,6 +1,6 @@
 import Foundation
 
-func loadEmojiMappings() -> [Emoji] {
+func EmojiMappingLoading() -> [Emoji] {
     guard let url = Bundle.main.url(forResource: "emojiMappings", withExtension: "json") else {
         fatalError("Failed to locate emojiMappings.json in bundle.")
     }

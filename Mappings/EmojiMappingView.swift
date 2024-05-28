@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct EmojiMappingView: View {
-    let emojis: [Emoji] = loadEmojiMappings()
+    let emojis: [Emoji] = EmojiMappingLoading()
     
     var body: some View {
         NavigationView {
