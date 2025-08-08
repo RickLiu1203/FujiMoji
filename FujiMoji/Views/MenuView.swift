@@ -7,21 +7,26 @@
 
 import SwiftUI
 
-class AppState: ObservableObject {
+class FujiMojiState: ObservableObject {
     @Published var isEnabled: Bool = true
+    @Published var isCool: Bool = true
 }
 
 struct MenuView: View {
-    @ObservedObject var appState: AppState
+    @ObservedObject var fujiMojiState: FujiMojiState
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text("FujiMoji 🍎")
-                .bold()
-            Text(appState.isEnabled ? "On" : "Off")
-                .foregroundColor(.secondary)
-                .font(.system(size: 12))
+        VStack(alignment: .leading) {
+            MenuFirstSectionView(fujiMojiState: fujiMojiState)
+
+            Divider()
+                .padding(.vertical, 4)
+
+            MenuLastSectionView(fujiMojiState: fujiMojiState)
+
         }
+        .padding(16)
+        .frame(width: 200)
     }
 }
 
