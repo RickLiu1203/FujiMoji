@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		B8CA2FC02E4452B800DC9C08 /* FujiMoji.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FujiMoji.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8CA2FD22E4452C900DC9C08 /* default.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = default.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -43,6 +44,14 @@
 				B8CA2FC02E4452B800DC9C08 /* FujiMoji.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B8CA2FD32E4452C900DC9C08 /* Defaults */ = {
+			isa = PBXGroup;
+			children = (
+				B8CA2FD22E4452C900DC9C08 /* default.json */,
+			);
+			path = Defaults;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -109,6 +118,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8CA2FD42E4452C900DC9C08 /* default.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,6 +3,7 @@ import Carbon
 
 class TextReplacement {
     static let shared = TextReplacement()
+    private let emojiStorage = EmojiStorage.shared
     
     private init() {}
     
@@ -11,20 +12,19 @@ class TextReplacement {
     ///   - capturedText: The text that was captured between delimiters
     ///   - delimiter: The delimiter character used
     func replaceWithEmoji(_ capturedText: String, delimiter: String) {
-        // For now, always replace with 🍎 (apple emoji)
-        let emojiToInsert = "🍎"
+        // Look up the emoji using our storage
+        let emoji = emojiStorage.findEmoji(forTag: capturedText) ?? "❓"
         
         // Calculate how many characters to delete:
-        // delimiter + capturedText + delimiter
         let totalCharactersToDelete = delimiter.count + capturedText.count + delimiter.count
         
         // Delete the typed text
         deleteCharacters(count: totalCharactersToDelete)
         
         // Insert the emoji
-        insertText(emojiToInsert)
+        insertText(emoji)
         
-        print("Replaced '\(delimiter)\(capturedText)\(delimiter)' with \(emojiToInsert)")
+        print("Replaced '\(delimiter)\(capturedText)\(delimiter)' with \(emoji)")
     }
     
     /// Deletes a specified number of characters by simulating backspace key presses
