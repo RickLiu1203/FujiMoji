@@ -13,7 +13,7 @@ class TextReplacement {
     ///   - delimiter: The delimiter character used
     func replaceWithEmoji(_ capturedText: String, delimiter: String) {
         // Look up the emoji using our storage
-        let emoji = emojiStorage.findEmoji(forTag: capturedText) ?? "❓"
+        let emoji = emojiStorage.findEmoji(forTag: capturedText.lowercased()) ?? "❓"
         
         // Calculate how many characters to delete:
         let totalCharactersToDelete = delimiter.count + capturedText.count + delimiter.count

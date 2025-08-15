@@ -79,45 +79,26 @@ class EmojiStorage {
     
     // MARK: - Public Interface
     
-    func addTag(_ tag: String, forEmoji emoji: String) {
-        if emojiMap.addTag(tag, forEmoji: emoji) {
-            searchTrie.insert(tag: tag, emoji: emoji)
-            saveUserMappings()
-        }
-    }
-    
-    func removeTag(_ tag: String, fromEmoji emoji: String) {
-        if emojiMap.removeTag(tag, fromEmoji: emoji) {
-            searchTrie.remove(tag: tag, emoji: emoji)
-            saveUserMappings()
-        }
-    }
-    
     func findEmoji(forTag tag: String) -> String? {
         return searchTrie.find(tag: tag)
     }
     
-    func getTagsForEmoji(_ emoji: String) -> Set<String>? {
-        return emojiMap.getTagsForEmoji(emoji)
+    func getDefaultTag(forEmoji emoji: String) -> String? {
+        return emojiMap.getDefaultTag(forEmoji: emoji)
+    }
+    
+    func getAliases(forEmoji emoji: String) -> [String] {
+        return emojiMap.getAliases(forEmoji: emoji)
+    }
+    
+    func setAliases(_ aliases: [String], forEmoji emoji: String) {
+        emojiMap.setAliases(aliases, forEmoji: emoji)
+        rebuildTrie()
+        saveUserMappings()
     }
     
     func getAllEmojisWithTags() -> [EmojiTags] {
         return emojiMap.getAllEmojisWithTags()
-    }
-    
-    // MARK: - Batch Operations
-    
-    func batchAddTags(_ updates: [(tag: String, emoji: String)]) {
-        var didUpdate = false
-        for (tag, emoji) in updates {
-            if emojiMap.addTag(tag, forEmoji: emoji) {
-                searchTrie.insert(tag: tag, emoji: emoji)
-                didUpdate = true
-            }
-        }
-        if didUpdate {
-            saveUserMappings()
-        }
     }
     
     // MARK: - Import/Export
@@ -132,13 +113,11 @@ class EmojiStorage {
         let mappings = try decoder.decode([EmojiTags].self, from: data)
         
         // Clear existing mappings
-        emojiMap.clear()
+        emojiMap.resetToTemplate()
         
         // Add imported mappings
         for mapping in mappings {
-            for tag in mapping.tags {
-                emojiMap.addTag(tag, forEmoji: mapping.emoji)
-            }
+            emojiMap.setAliases(mapping.aliases, forEmoji: mapping.emoji)
         }
         
         // Rebuild trie and save

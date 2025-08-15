@@ -11,12 +11,11 @@ struct MenuFirstSectionView: View {
     @ObservedObject var fujiMojiState: FujiMojiState
 
     var body: some View {   
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("FujiMoji 🍎")
                 .bold()
             Text(fujiMojiState.isEnabled ? "On" : "Off")
                 .foregroundColor(.secondary)
-                .font(.system(size: 12))
         }
     }
 }

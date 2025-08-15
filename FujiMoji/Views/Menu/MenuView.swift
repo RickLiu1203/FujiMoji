@@ -34,13 +34,18 @@ struct MenuView: View {
             MenuFirstSectionView(fujiMojiState: fujiMojiState)
 
             Divider()
-                .padding(.vertical, 4)
+                .padding(.vertical, 8)
+
+            MenuSecondSectionView()
+
+            Divider()
+                .padding(.vertical, 8)
 
             MenuLastSectionView(fujiMojiState: fujiMojiState)
 
         }
         .padding(16)
-        .frame(width: 200)
+        .frame(width: 150)
         .onChange(of: fujiMojiState.isEnabled) {_ in    
             fujiMojiState.updateKeyDetection()
         }

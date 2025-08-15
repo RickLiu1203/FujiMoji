@@ -2,11 +2,13 @@ import Foundation
 
 struct EmojiTags: Codable {
     var emoji: String
-    var tags: Set<String>
+    var defaultTag: String
+    var aliases: [String]
     
-    init(emoji: String, tags: Set<String>) {
+    init(emoji: String, defaultTag: String, aliases: [String] = []) {
         self.emoji = emoji
-        self.tags = tags
+        self.defaultTag = defaultTag.lowercased()
+        self.aliases = aliases.map { $0.lowercased() }
     }
 }
 
@@ -39,12 +41,24 @@ class EmojiMap {
     private func loadTemplate(from url: URL) {
         do {
             let data = try Data(contentsOf: url)
-            let defaultTagMap = try JSONDecoder().decode([String: [String]].self, from: data)
+            let decoder = JSONDecoder()
             
-            // Convert the simple tag arrays into EmojiTags objects
+            // Define a local struct to match the JSON structure
+            struct EmojiTagData: Codable {
+                let defaultTag: String
+                let aliases: [String]
+            }
+            
+            let defaultTagMap = try decoder.decode([String: EmojiTagData].self, from: data)
+            
+            // Convert the JSON structure into EmojiTags objects
             templateStorage = defaultTagMap.reduce(into: [:]) { result, pair in
-                let (emoji, tags) = pair
-                result[emoji] = EmojiTags(emoji: emoji, tags: Set(tags.map { $0.lowercased() }))
+                let (emoji, tagData) = pair
+                result[emoji] = EmojiTags(
+                    emoji: emoji,
+                    defaultTag: tagData.defaultTag,
+                    aliases: tagData.aliases
+                )
             }
             
             // Copy template to storage if no user data exists
@@ -88,38 +102,19 @@ class EmojiMap {
     
     // MARK: - Public Interface
     
-    func addTag(_ tag: String, forEmoji emoji: String) -> Bool {
-        let normalizedTag = tag.lowercased()
-        if var emojiTags = storage[emoji] {
-            let wasAdded = emojiTags.tags.insert(normalizedTag).inserted
-            if wasAdded {
-                storage[emoji] = emojiTags
-            }
-            return wasAdded
-        } else {
-            storage[emoji] = EmojiTags(emoji: emoji, tags: [normalizedTag])
-            return true
-        }
+    func getDefaultTag(forEmoji emoji: String) -> String? {
+        return storage[emoji]?.defaultTag
     }
     
-    func removeTag(_ tag: String, fromEmoji emoji: String) -> Bool {
-        let normalizedTag = tag.lowercased()
-        if var emojiTags = storage[emoji] {
-            let wasRemoved = emojiTags.tags.remove(normalizedTag) != nil
-            if wasRemoved {
-                if emojiTags.tags.isEmpty {
-                    storage.removeValue(forKey: emoji)
-                } else {
-                    storage[emoji] = emojiTags
-                }
-            }
-            return wasRemoved
-        }
-        return false
+    func getAliases(forEmoji emoji: String) -> [String] {
+        return storage[emoji]?.aliases ?? []
     }
     
-    func getTagsForEmoji(_ emoji: String) -> Set<String>? {
-        return storage[emoji]?.tags
+    func setAliases(_ aliases: [String], forEmoji emoji: String) {
+        if var emojiTags = storage[emoji] {
+            emojiTags.aliases = aliases.map { $0.lowercased() }
+            storage[emoji] = emojiTags
+        }
     }
     
     func getAllEmojisWithTags() -> [EmojiTags] {
@@ -129,8 +124,9 @@ class EmojiMap {
     func getAllMappings() -> [(tag: String, emoji: String)] {
         var mappings: [(tag: String, emoji: String)] = []
         for (emoji, emojiTags) in storage {
-            for tag in emojiTags.tags {
-                mappings.append((tag: tag, emoji: emoji))
+            mappings.append((tag: emojiTags.defaultTag, emoji: emoji))
+            for alias in emojiTags.aliases {
+                mappings.append((tag: alias, emoji: emoji))
             }
         }
         return mappings
@@ -142,30 +138,30 @@ class EmojiMap {
         storage = templateStorage
     }
     
-    func clear() {
-        storage.removeAll()
-    }
-    
     // MARK: - Default Mappings (Fallback)
     
     private func setupDefaultMappings() {
         print("Setting up hardcoded default mappings...")
         
-        let defaults: [(emoji: String, tags: Set<String>)] = [
-            ("😊", ["smile", "happy", "smiley"]),
-            ("😂", ["laugh", "joy", "crying laughing", "lol"]),
-            ("❤️", ["heart", "love", "red heart"]),
-            ("👍", ["thumbs up", "ok", "good", "like"]),
-            ("🎉", ["party", "celebration", "tada"]),
-            ("🤔", ["thinking", "hmm", "think"]),
-            ("😭", ["cry", "sad", "crying", "tears"]),
-            ("🔥", ["fire", "hot", "lit"]),
-            ("✨", ["sparkles", "shine", "stars"]),
-            ("🙏", ["please", "thank you", "pray", "thanks"])
+        let defaults: [(emoji: String, defaultTag: String, aliases: [String])] = [
+            ("😊", "smile", ["happy", "smiley"]),
+            ("😂", "laugh", ["joy", "crying laughing", "lol"]),
+            ("❤️", "heart", ["love", "red heart"]),
+            ("👍", "thumbs up", ["ok", "good", "like"]),
+            ("🎉", "party", ["celebration", "tada"]),
+            ("🤔", "thinking", ["hmm", "think"]),
+            ("😭", "cry", ["sad", "crying", "tears"]),
+            ("🔥", "fire", ["hot", "lit"]),
+            ("✨", "sparkles", ["shine", "stars"]),
+            ("🙏", "please", ["thank you", "pray", "thanks"])
         ]
         
         for mapping in defaults {
-            storage[mapping.emoji] = EmojiTags(emoji: mapping.emoji, tags: mapping.tags)
+            storage[mapping.emoji] = EmojiTags(
+                emoji: mapping.emoji,
+                defaultTag: mapping.defaultTag,
+                aliases: mapping.aliases
+            )
         }
         
         // Also save as template
