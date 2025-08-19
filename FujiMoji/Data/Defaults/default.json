@@ -19,10 +19,6 @@
         "defaultTag": "thumbs up",
         "aliases": ["ok", "good", "like"]
     },
-    "🎉": {
-        "defaultTag": "party",
-        "aliases": ["celebration", "tada"]
-    },
     "🤔": {
         "defaultTag": "thinking",
         "aliases": ["hmm", "think"]
@@ -35,12 +31,12 @@
         "defaultTag": "fire",
         "aliases": ["hot", "lit"]
     },
-    "": {
-        "defaultTag": "sparkles",
-        "aliases": ["shine", "stars"]
-    },
     "🙏": {
         "defaultTag": "pray",
         "aliases": ["thank you", "pray", "thanks"]
+    },
+    ":hyperblob::conga_parrot::meow_party:": {
+        "defaultTag": "party",
+        "aliases": []
     }
 }

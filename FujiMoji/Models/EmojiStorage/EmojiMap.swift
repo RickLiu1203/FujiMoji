@@ -85,12 +85,14 @@ class EmojiMap {
             let data = try Data(contentsOf: userDataURL)
             let mappings = try JSONDecoder().decode([EmojiTags].self, from: data)
             
-            // Convert array to dictionary
-            storage = mappings.reduce(into: [:]) { result, mapping in
-                result[mapping.emoji] = mapping
+            // Merge: start from template, then overlay user modifications
+            var merged = templateStorage
+            for mapping in mappings {
+                merged[mapping.emoji] = mapping
             }
+            storage = merged
             
-            print("Loaded \(storage.count) emoji mappings from user data")
+            print("Loaded \(mappings.count) emoji mappings from user data; merged total: \(storage.count)")
         } catch {
             print("Error loading user data: \(error)")
             // If error loading user data, use template data
