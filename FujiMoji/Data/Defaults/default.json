@@ -3,6 +3,10 @@
         "defaultTag": "smile",
         "aliases": ["happy", "smiley"]
     },
+    "💀": {
+        "defaultTag": "skull",
+        "aliases": ["dead", "skull"]
+    },
     "😂": {
         "defaultTag": "laugh",
         "aliases": ["joy", "crying laughing", "lol"]
@@ -31,12 +35,12 @@
         "defaultTag": "fire",
         "aliases": ["hot", "lit"]
     },
-    "✨": {
+    "": {
         "defaultTag": "sparkles",
         "aliases": ["shine", "stars"]
     },
     "🙏": {
-        "defaultTag": "please",
+        "defaultTag": "pray",
         "aliases": ["thank you", "pray", "thanks"]
     }
 }

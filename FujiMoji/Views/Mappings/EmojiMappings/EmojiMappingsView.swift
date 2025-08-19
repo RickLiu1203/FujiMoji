@@ -79,6 +79,7 @@ struct EmojiMappingsView: View {
     
     private func refreshMappings() {
         mappings = emojiStorage.getAllEmojisWithTags()
+            .sorted { $0.emoji < $1.emoji }  
     }
     
     private func updateAliases(for emoji: String) {

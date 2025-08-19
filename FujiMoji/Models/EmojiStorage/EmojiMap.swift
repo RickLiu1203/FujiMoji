@@ -144,16 +144,7 @@ class EmojiMap {
         print("Setting up hardcoded default mappings...")
         
         let defaults: [(emoji: String, defaultTag: String, aliases: [String])] = [
-            ("😊", "smile", ["happy", "smiley"]),
-            ("😂", "laugh", ["joy", "crying laughing", "lol"]),
-            ("❤️", "heart", ["love", "red heart"]),
-            ("👍", "thumbs up", ["ok", "good", "like"]),
-            ("🎉", "party", ["celebration", "tada"]),
-            ("🤔", "thinking", ["hmm", "think"]),
-            ("😭", "cry", ["sad", "crying", "tears"]),
-            ("🔥", "fire", ["hot", "lit"]),
-            ("✨", "sparkles", ["shine", "stars"]),
-            ("🙏", "please", ["thank you", "pray", "thanks"])
+
         ]
         
         for mapping in defaults {
