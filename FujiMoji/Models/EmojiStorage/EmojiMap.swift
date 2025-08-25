@@ -43,21 +43,30 @@ class EmojiMap {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
             
-            // Define a local struct to match the JSON structure
-            struct EmojiTagData: Codable {
+            // Define a local struct to match the new JSON structure
+            struct DefaultEmojiRecord: Codable {
+                let id: Int?
                 let defaultTag: String
+                let unicode: String?
                 let aliases: [String]
+                
+                enum CodingKeys: String, CodingKey {
+                    case id
+                    case defaultTag = "default_tag"
+                    case unicode
+                    case aliases
+                }
             }
             
-            let defaultTagMap = try decoder.decode([String: EmojiTagData].self, from: data)
+            let defaultEmojiMap = try decoder.decode([String: DefaultEmojiRecord].self, from: data)
             
             // Convert the JSON structure into EmojiTags objects
-            templateStorage = defaultTagMap.reduce(into: [:]) { result, pair in
-                let (emoji, tagData) = pair
+            templateStorage = defaultEmojiMap.reduce(into: [:]) { result, pair in
+                let (emoji, record) = pair
                 result[emoji] = EmojiTags(
                     emoji: emoji,
-                    defaultTag: tagData.defaultTag,
-                    aliases: tagData.aliases
+                    defaultTag: record.defaultTag,
+                    aliases: record.aliases
                 )
             }
             

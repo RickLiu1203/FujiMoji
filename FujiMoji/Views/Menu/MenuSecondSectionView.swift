@@ -35,34 +35,20 @@ struct MenuSecondSectionView: View {
     }
     
     private func openEmojiMappingsWindow() {
-        let controller = NSWindowController(
-            window: NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 500, height: 500), // Set initial size
-                styleMask: [.titled, .closable, .miniaturizable, .resizable, .nonactivatingPanel],
-                backing: .buffered,
-                defer: false
-            )
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 500, height: 500),
+            styleMask: [.titled, .fullSizeContentView, .closable, .miniaturizable],
+            backing: .buffered,
+            defer: false
         )
-        
-        controller.window?.title = "Emoji Mappings"
-        controller.window?.contentView = NSHostingView(
-            rootView: EmojiMappingsView()
-        )
-        controller.window?.level = NSWindow.Level.floating
-        
-        // Force window to size itself to fit content
-        controller.window?.setContentSize(NSSize(width: 500, height: 500))
-        
-        // Position window at exact center of main screen
-        if let window = controller.window, let screen = NSScreen.main {
-            let screenFrame = screen.visibleFrame
-            let newOrigin = NSPoint(
-                x: screenFrame.midX - window.frame.width/2,
-                y: screenFrame.midY - window.frame.height/2
-            )
-            window.setFrameOrigin(newOrigin)
-        }
-        
+        window.contentView = NSHostingView(rootView: MappingContentView())
+        window.level = .floating
+        window.isMovable = true
+        window.center()
+        window.titlebarAppearsTransparent = true
+        window.backgroundColor = .clear
+
+        let controller = NSWindowController(window: window)
         controller.showWindow(self)
     }
 }
