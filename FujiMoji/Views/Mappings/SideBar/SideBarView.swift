@@ -69,19 +69,22 @@ struct SideBarView: View {
                 ForEach(EmojiCategory.allCases) { category in
                     Label(category.title, systemImage: category.iconName)
                         .tag(MappingSidebarItem.emojiCategory(category))
+                        .font(.system(size: 13, weight: .medium))
+                        .padding(.vertical, 2)
                 }
             }
             Section("Custom") {
                 Label("Custom Text", systemImage: "slider.horizontal.3")
                     .tag(MappingSidebarItem.customMappings)
+                    .font(.system(size: 13, weight: .medium))
             }
             Section("Favourites") {
                 Label("My Favorites", systemImage: "star")
                     .tag(MappingSidebarItem.favorites)
+                    .font(.system(size: 13, weight: .medium))
             }
         }
         .listStyle(.sidebar)
-        .frame(width: 200)
-        .padding(.leading, 24)
+        .padding(.trailing, 24)
     }
 }

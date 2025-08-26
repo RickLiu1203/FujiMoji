@@ -7,11 +7,11 @@ struct EmojiCell: View {
     var body: some View {
         VStack(alignment: .center) {
             Text(emoji)
-                .font(.system(size: 32))
+                .font(.system(size: 36))
         }
-        .frame(width: 36, height: 36)
+        .frame(width: 48, height: 48)
         .background(
-            RoundedRectangle(cornerRadius: 8)
+            RoundedRectangle(cornerRadius: 4)
                 .fill(Color.white.opacity(isHovered ? 0.12 : 0))
         )
         .contentShape(Rectangle())
@@ -24,7 +24,7 @@ struct EmojiCell: View {
 
 struct EmojiGridView: View {
     let emojis: [String]
-    let columns = Array(repeating: GridItem(.fixed(36), spacing: 8), count: 6)
+    let columns = Array(repeating: GridItem(.fixed(40), spacing: 8), count: 7)
     
     var body: some View {
         HStack {
@@ -35,6 +35,6 @@ struct EmojiGridView: View {
             }
             Spacer()
         }
-        .frame(width: 300)
+        .frame(width: 350)
     }
 }
