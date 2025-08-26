@@ -95,6 +95,14 @@ struct EmojiEditorView: View {
         .onTapGesture {
             isAliasesFocused = false
         }
+        .onChange(of: isAliasesFocused) { focused in
+            guard !focused, let symbol = selected?.emoji else { return }
+            let aliases = aliasesInput
+                .split(separator: ",")
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+            onSaveAliases(symbol, aliases)
+        }
         .onAppear {
             aliasesInput = selected?.aliases.joined(separator: ", ") ?? ""
         }

@@ -18,12 +18,7 @@ struct EmojiDetail: Identifiable {
 }
 
 struct MappingContentView: View {
-    @State private var selection: MappingSidebarItem? = .emojiCategory(.smileysPeople)
-    @State private var allEmojis: [String] = []
-    @State private var selectedEmoji: String?
-    @State private var selectedDetail: EmojiDetail?
-    @State private var defaultMap: [String: DefaultEmojiRecord] = [:]
-    @State private var favoriteEmojis: Set<String> = []
+    @StateObject private var mappingViewModel = MappingsViewModel()
     private let columnsCount = 6
     private let categoryRowAnchors: [EmojiCategory: Int] = [
         .smileysPeople: 0,
@@ -41,111 +36,37 @@ struct MappingContentView: View {
     private let topPadding: CGFloat = 2
     var body: some View {
         HStack {
-            SideBarView(selection: $selection)
+            SideBarView(selection: $mappingViewModel.selection)
             ScrollView(.vertical, showsIndicators: true) {
-                EmojiGridView(emojis: currentEmojis, selectedEmoji: $selectedEmoji)
+                EmojiGridView(emojis: mappingViewModel.currentEmojis, selectedEmoji: $mappingViewModel.selectedEmoji)
                     .background(EnclosingScrollViewFinder { sv in
                         nsScrollView = sv
                     })
             }
             .padding(.top, topPadding)
             .padding(.bottom, 20)
-            .onChange(of: selection) { oldValue, newValue in
-                guard case let .emojiCategory(category) = newValue else { return }
-                guard let row = categoryRowAnchors[category] else { return }
-                scrollToRow(row)
-            }
             Divider()
             .padding(.bottom, 20)
             EmojiEditorView(
-                selected: selectedDetail,
-                isFavorite: selectedEmoji.map { favoriteEmojis.contains($0) } ?? false,
-                onSaveAliases: { emoji, aliases in
-                    EmojiStorage.shared.setAliases(aliases, forEmoji: emoji)
-                    updateSelectedDetail()
-                },
-                onToggleFavorite: { emoji, newValue in
-                    if newValue { favoriteEmojis.insert(emoji) } else { favoriteEmojis.remove(emoji) }
-                    saveFavorites()
-                }
+                selected: mappingViewModel.selectedDetail,
+                isFavorite: mappingViewModel.selectedEmoji.map { mappingViewModel.favoriteEmojis.contains($0) } ?? false,
+                onSaveAliases: { emoji, aliases in mappingViewModel.setAliases(aliases, for: emoji) },
+                onToggleFavorite: { emoji, newValue in mappingViewModel.toggleFavorite(emoji, isOn: newValue) }
             )
         }
         .frame(width: 920, height: 500)
         .background(.ultraThinMaterial)
-        .onAppear {
-            loadFromEmojiArray()
-            loadDefaultMap()
-            updateSelectedDetail()
-            loadFavorites()
+        .onChange(of: mappingViewModel.selection) { newValue in
+            if case let .emojiCategory(category) = newValue, let row = categoryRowAnchors[category] {
+                scrollToRow(row)
+            }
         }
-        .onChange(of: selectedEmoji) { _, _ in
-            updateSelectedDetail()
+        .onChange(of: mappingViewModel.selectedEmoji) { newEmoji in
+            if let symbol = newEmoji {
+                mappingViewModel.didSelectEmoji(symbol)
+            }
         }
 
-    }
-
-    private func loadFromEmojiArray() {
-        if let url = Bundle.main.url(forResource: "emoji_array", withExtension: "json"),
-           let data = try? Data(contentsOf: url),
-           let arr = try? JSONDecoder().decode([String].self, from: data) {
-            allEmojis = arr
-            if selectedEmoji == nil { selectedEmoji = allEmojis.first }
-        } else {
-            let all = EmojiStorage.shared.getAllEmojisWithTags()
-            allEmojis = all.map { $0.emoji }
-            if selectedEmoji == nil { selectedEmoji = allEmojis.first }
-        }
-    }
-
-    private struct DefaultEmojiRecord: Decodable {
-        let id: Int?
-        let defaultTag: String
-        let unicode: String?
-        let aliases: [String]
-        enum CodingKeys: String, CodingKey {
-            case id
-            case defaultTag = "default_tag"
-            case unicode
-            case aliases
-        }
-    }
-
-    private func loadDefaultMap() {
-        if let url = Bundle.main.url(forResource: "default", withExtension: "json"),
-           let data = try? Data(contentsOf: url),
-           let map = try? JSONDecoder().decode([String: DefaultEmojiRecord].self, from: data) {
-            defaultMap = map
-        }
-    }
-
-    private func updateSelectedDetail() {
-        guard let symbol = selectedEmoji else {
-            selectedDetail = nil
-            return
-        }
-        let record = defaultMap[symbol]
-        let tag = EmojiStorage.shared.getDefaultTag(forEmoji: symbol) ?? record?.defaultTag ?? ""
-        let aliases = EmojiStorage.shared.getAliases(forEmoji: symbol)
-        let unicode = record?.unicode
-        let idVal = record?.id
-        selectedDetail = EmojiDetail(id: idVal, emoji: symbol, defaultTag: tag, unicode: unicode, aliases: aliases)
-    }
-
-    private var currentEmojis: [String] {
-        if case .favorites? = selection {
-            return allEmojis.filter { favoriteEmojis.contains($0) }
-        }
-        return allEmojis
-    }
-
-    private func loadFavorites() {
-        if let saved = UserDefaults.standard.array(forKey: "favoriteEmojis") as? [String] {
-            favoriteEmojis = Set(saved)
-        }
-    }
-
-    private func saveFavorites() {
-        UserDefaults.standard.set(Array(favoriteEmojis), forKey: "favoriteEmojis")
     }
 }
 
