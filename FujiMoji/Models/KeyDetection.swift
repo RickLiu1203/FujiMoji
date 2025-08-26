@@ -67,6 +67,16 @@ class KeyDetection: ObservableObject {
                     } else {
                         KeyDetection.shared.handleCharacter(characters)
                     }
+                } else if keyCode == 48 { // Tab key
+                    if KeyDetection.shared.captureStarted {
+                        // Finish capture on Tab WITHOUT inserting trailing space,
+                        // and swallow the Tab so focus does not change
+                        KeyDetection.shared.finishCapture(endWithSpace: false)
+                        return nil
+                    } else {
+                        // Not capturing → let Tab behave normally
+                        return Unmanaged.passUnretained(event)
+                    }
                 } else {
                     KeyDetection.shared.handleCharacter(characters)
                 }
@@ -199,7 +209,7 @@ class KeyDetection: ObservableObject {
         }
     }
     
-    private func finishCapture(endWithSpace: Bool) {
+    func finishCapture(endWithSpace: Bool) {
         let capturedString = currentString
         
         if !capturedString.isEmpty {
@@ -214,7 +224,7 @@ class KeyDetection: ObservableObject {
                     endDelimiter: endWithSpace ? self.endDelimiter : "",
                     multiplier: self.multiplier,
                     digitsCountBeforeStart: self.digitsCountBeforeStart,
-                    endDelimiterPresentInDocument: false
+                    endDelimiterPresentInDocument: endWithSpace
                 )
             }
         }

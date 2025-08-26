@@ -18,21 +18,28 @@ class TextReplacement {
     ///   - endDelimiterPresentInDocument: If true, delete the end delimiter from the document; if false, do not (e.g., when the space was swallowed)
     func replaceWithEmoji(_ capturedText: String, startDelimiter: String, endDelimiter: String, multiplier: Int, digitsCountBeforeStart: Int, endDelimiterPresentInDocument: Bool) {
         // Look up the emoji using our storage
-        let emoji = emojiStorage.findEmoji(forTag: capturedText.lowercased()) ?? "❓"
-        
+        guard let emoji = emojiStorage.findEmoji(forTag: capturedText.lowercased()) else {
+            // No mapping: leave text as-is. If we swallowed the end delimiter (e.g., space), re-insert it
+            if endDelimiterPresentInDocument {
+                insertText(endDelimiter)
+            }
+            print("No emoji found for tag '\(capturedText)'; leaving text unchanged")
+            return
+        }
+
         // Calculate how many characters to delete (digits + start + content + optional end)
         let endCount = endDelimiterPresentInDocument ? endDelimiter.count : 0
         let totalCharactersToDelete = max(0, digitsCountBeforeStart) + startDelimiter.count + capturedText.count + endCount
-        
+
         // Delete the typed text. When capture ended on space, we swallowed that space key event, so deleting endDelimiter here still works.
         deleteCharacters(count: totalCharactersToDelete)
-        
+
         // Insert the emoji, repeated by the multiplier, plus the trailing end delimiter (single event)
         let repeatCount = max(1, multiplier)
         let replacement = String(repeating: emoji, count: repeatCount) + endDelimiter
         // Always use paste-based insertion for maximum compatibility across apps
         pasteInsert(replacement)
-        
+
         print("Replaced '\(String(repeating: "#", count: digitsCountBeforeStart))\(startDelimiter)\(capturedText)\(endDelimiter)' with \(repeatCount)x \(emoji)")
     }
     
