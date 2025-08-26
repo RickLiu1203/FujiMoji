@@ -14,6 +14,7 @@ struct FujiMojiApp: App {
     var body: some Scene {
         MenuBarExtra("🍎") {
             MenuView(fujiMojiState: fujiMojiState)
+            .background(.ultraThinMaterial)
         }
         .menuBarExtraStyle(.window)
     }

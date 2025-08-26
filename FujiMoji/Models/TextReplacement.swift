@@ -78,24 +78,6 @@ class TextReplacement {
         keyDownEvent?.post(tap: .cghidEventTap)
         keyUpEvent?.post(tap: .cghidEventTap)
     }
-
-    // MARK: - Pasteboard fallback for stubborn apps
-    private func shouldUsePasteFallback() -> Bool {
-        guard let app = NSWorkspace.shared.frontmostApplication?.bundleIdentifier else { return false }
-        // Common terminals/editors that may mishandle synthetic key events
-        let fallbackApps: Set<String> = [
-            "com.microsoft.VSCode",
-            "com.microsoft.VSCodeInsiders",
-            "com.googlecode.iterm2",
-            "com.apple.Terminal",
-            "com.jetbrains.toolbox", // JetBrains Toolbox launchers
-            "com.jetbrains.intellij",
-            "com.jetbrains.goland",
-            "com.jetbrains.pycharm",
-            "org.alacritty"
-        ]
-        return fallbackApps.contains(app)
-    }
     
     private func pasteInsert(_ text: String) {
         // Save current clipboard (string only to avoid NSPasteboardItem ownership issues)

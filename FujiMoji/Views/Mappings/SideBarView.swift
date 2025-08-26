@@ -35,7 +35,7 @@ enum EmojiCategory: String, CaseIterable, Identifiable, Hashable {
     var iconName: String {
         switch self {
         case .smileysPeople: return "face.smiling"
-        case .animalsNature: return "tortoise"
+        case .animalsNature: return "pawprint"
         case .foodDrink: return "fork.knife"
         case .activity: return "sportscourt"
         case .travelPlaces: return "tram.fill"
@@ -69,22 +69,24 @@ struct SideBarView: View {
                 ForEach(EmojiCategory.allCases) { category in
                     Label(category.title, systemImage: category.iconName)
                         .tag(MappingSidebarItem.emojiCategory(category))
-                        .font(.system(size: 13, weight: .medium))
+                        .font(.system(size: 14, weight: .medium))
                         .padding(.vertical, 2)
                 }
             }
             Section("Custom") {
                 Label("Custom Text", systemImage: "slider.horizontal.3")
                     .tag(MappingSidebarItem.customMappings)
-                    .font(.system(size: 13, weight: .medium))
+                    .font(.system(size: 14, weight: .medium))
             }
             Section("Favourites") {
                 Label("My Favorites", systemImage: "star")
                     .tag(MappingSidebarItem.favorites)
-                    .font(.system(size: 13, weight: .medium))
+                    .font(.system(size: 14, weight: .medium))
             }
         }
         .listStyle(.sidebar)
-        .padding(.trailing, 24)
+        .scrollContentBackground(.hidden)
+        .background(.ultraThinMaterial.opacity(0.7))
+        .padding(.trailing, 20)
     }
 }
