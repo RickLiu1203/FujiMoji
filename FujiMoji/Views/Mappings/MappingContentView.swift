@@ -45,6 +45,7 @@ struct MappingContentView: View {
             }
             .padding(.top, topPadding)
             .padding(.bottom, 20)
+            .padding(.trailing, mappingViewModel.currentEmojis.count < 56 ? 15 : 0)
             Divider()
             .padding(.bottom, 20)
             EmojiEditorView(

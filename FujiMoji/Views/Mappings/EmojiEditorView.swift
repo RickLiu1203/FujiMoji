@@ -64,11 +64,11 @@ struct EmojiEditorView: View {
                                 .frame(height: 110)
                                 .padding(8)
                                 .background(
-                                    RoundedRectangle(cornerRadius: 16)
+                                    RoundedRectangle(cornerRadius: 10)
                                         .fill(isAliasesFocused ? Color.black.opacity(0.15) : Color.white.opacity(0.06))
                                 )
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 16)
+                                    RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color.white.opacity(0.12), lineWidth: 1)
                                 )
                                 .focused($isAliasesFocused)

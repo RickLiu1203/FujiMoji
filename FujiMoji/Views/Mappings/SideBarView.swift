@@ -87,6 +87,5 @@ struct SideBarView: View {
         .listStyle(.sidebar)
         .scrollContentBackground(.hidden)
         .background(.ultraThinMaterial.opacity(0.7))
-        .padding(.trailing, 20)
     }
 }
