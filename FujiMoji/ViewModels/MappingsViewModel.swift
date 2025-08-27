@@ -93,3 +93,58 @@ final class MappingsViewModel: ObservableObject {
     }
 }
 
+final class CustomMappingsViewModel: ObservableObject {
+    @Published var items: [(tag: String, text: String)] = []
+    @Published var selectedTag: String? = nil
+
+    init() {
+        reload()
+    }
+
+    func reload() {
+        items = CustomStorage.shared.getAllSorted()
+        if selectedTag == nil { selectedTag = items.first?.tag }
+    }
+
+    func addNew() {
+        let base = "new_tag"
+        var candidate = base
+        var index = 1
+        while CustomStorage.shared.getText(forTag: candidate) != nil {
+            index += 1
+            candidate = "\(base)_\(index)"
+        }
+        CustomStorage.shared.set(text: "custom string", forTag: candidate)
+        // Prepend new item to the top without re-sorting
+        let newItem = (tag: candidate, text: "custom string")
+        // Remove any existing instance of the same tag just in case
+        items.removeAll { $0.tag.lowercased() == candidate.lowercased() }
+        items.insert(newItem, at: 0)
+        selectedTag = candidate
+    }
+
+    func update(tag: String, text: String) {
+        CustomStorage.shared.set(text: text, forTag: tag)
+        reload()
+        selectedTag = tag
+    }
+
+    func rename(oldTag: String, newTag: String, text: String) {
+        if oldTag.lowercased() != newTag.lowercased() {
+            CustomStorage.shared.remove(tag: oldTag)
+        }
+        CustomStorage.shared.set(text: text, forTag: newTag)
+        reload()
+        selectedTag = newTag
+    }
+
+    func delete(tag: String) {
+        CustomStorage.shared.remove(tag: tag)
+        items.removeAll { $0.tag.lowercased() == tag.lowercased() }
+        if selectedTag?.lowercased() == tag.lowercased() {
+            selectedTag = items.first?.tag
+        }
+        objectWillChange.send()
+    }
+}
+

@@ -79,7 +79,7 @@ struct SideBarView: View {
                     .font(.system(size: 14, weight: .medium))
             }
             Section("Favourites") {
-                Label("My Favorites", systemImage: "star")
+                Label("Favourite Emojis", systemImage: "star")
                     .tag(MappingSidebarItem.favorites)
                     .font(.system(size: 14, weight: .medium))
             }

@@ -84,13 +84,11 @@ struct EmojiEditorView: View {
                             return .handled
                         }
                     }
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 24)
                     .frame(width: 220)
                 }
         }
-        .frame(width: 240, height: 500, alignment: .top)
         .padding(.horizontal, 16)
-        .padding(.top, 16)
         .contentShape(Rectangle())
         .onTapGesture {
             isAliasesFocused = false

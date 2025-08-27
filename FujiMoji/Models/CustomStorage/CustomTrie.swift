@@ -1,29 +1,38 @@
-class TrieNode {
-    var children: [Character: TrieNode] = [:]
-    var emoji: String?
+//
+//  CustomTrie.swift
+//  FujiMoji
+//
+//  Created by Rick Liu on 2025-08-26.
+//
+
+import Foundation
+
+class CustomTrieNode {
+    var children: [Character: CustomTrieNode] = [:]
+    var text: String?
     var isEndOfCode = false
     var isDeleted = false
     var referenceCount = 0
     
     var depth: Int = 0
-    weak var parent: TrieNode?
+    weak var parent: CustomTrieNode?
 }
 
-class EmojiTrie {
-    private var root = TrieNode()
+final class CustomTrie {
+    private var root = CustomTrieNode()
     private var deletionCount = 0
     private let cleanupThreshold = 1000
     
     private var pathCache: [String: [Character]] = [:]
     
-    func insert(tag: String, emoji: String) {
+    func insert(tag: String, text: String) {
         var current = root
         let normalizedTag = tag.lowercased()
         var depth = 0
         
         for char in normalizedTag {
             if current.children[char] == nil {
-                let newNode = TrieNode()
+                let newNode = CustomTrieNode()
                 newNode.depth = depth + 1
                 newNode.parent = current
                 current.children[char] = newNode
@@ -33,17 +42,17 @@ class EmojiTrie {
         }
         
         current.isEndOfCode = true
-        current.emoji = emoji
+        current.text = text
         current.isDeleted = false
         current.referenceCount += 1
         
-        pathCache["\(normalizedTag):\(emoji)"] = Array(normalizedTag)
+        pathCache["\(normalizedTag):\(text)"] = Array(normalizedTag)
     }
     
-    func remove(tag: String, emoji: String) {
+    func remove(tag: String, text: String) {
         var current = root
         let normalizedTag = tag.lowercased()
-        let pathKey = "\(normalizedTag):\(emoji)"
+        let pathKey = "\(normalizedTag):\(text)"
         
         guard let path = pathCache[pathKey] else { return }
         
@@ -52,25 +61,23 @@ class EmojiTrie {
             current = next
         }
         
-        if current.isEndOfCode && current.emoji == emoji {
+        if current.isEndOfCode && current.text == text {
             current.referenceCount -= 1
             if current.referenceCount <= 0 {
                 current.isDeleted = true
                 deletionCount += 1
-                
                 cleanupPath(current)
-                
                 pathCache.removeValue(forKey: pathKey)
             }
         }
     }
     
-    private func cleanupPath(_ node: TrieNode) {
-        var current: TrieNode? = node
+    private func cleanupPath(_ node: CustomTrieNode) {
+        var current: CustomTrieNode? = node
         
-        while let node = current, 
-              node.children.isEmpty && 
-              node.isDeleted && 
+        while let node = current,
+              node.children.isEmpty &&
+              node.isDeleted &&
               node.parent != nil {
             let parent = node.parent!
             for (char, child) in parent.children {
@@ -95,40 +102,38 @@ class EmojiTrie {
         }
         
         if current.isEndOfCode && !current.isDeleted {
-            return current.emoji
+            return current.text
         }
         return nil
     }
     
-    func updateAliases(forEmoji emoji: String, added: Set<String>, removed: Set<String>) {
-        for alias in removed {
-            remove(tag: alias, emoji: emoji)
+    func updateMappings(added: [(tag: String, text: String)], removed: [(tag: String, text: String)]) {
+        for entry in removed {
+            remove(tag: entry.tag, text: entry.text)
         }
-        
-        for alias in added {
-            insert(tag: alias, emoji: emoji)
+        for entry in added {
+            insert(tag: entry.tag, text: entry.text)
         }
-        
         if deletionCount >= cleanupThreshold {
             performFullCleanup()
         }
     }
     
     private func performFullCleanup() {
-        let newRoot = TrieNode()
+        let newRoot = CustomTrieNode()
         
         for (key, path) in pathCache {
             let components = key.split(separator: ":")
             guard components.count == 2 else { continue }
             let tag = String(components[0])
-            let emoji = String(components[1])
+            let text = String(components[1])
             
             var current = newRoot
             var depth = 0
             
             for char in path {
                 if current.children[char] == nil {
-                    let newNode = TrieNode()
+                    let newNode = CustomTrieNode()
                     newNode.depth = depth + 1
                     newNode.parent = current
                     current.children[char] = newNode
@@ -138,7 +143,7 @@ class EmojiTrie {
             }
             
             current.isEndOfCode = true
-            current.emoji = emoji
+            current.text = text
             current.isDeleted = false
             current.referenceCount = 1
         }
@@ -147,13 +152,13 @@ class EmojiTrie {
         deletionCount = 0
     }
     
-    func rebuild(from mappings: [(tag: String, emoji: String)]) {
-        root = TrieNode()
+    func rebuild(from mappings: [(tag: String, text: String)]) {
+        root = CustomTrieNode()
         pathCache.removeAll()
         deletionCount = 0
-        
-        for mapping in mappings {
-            insert(tag: mapping.tag, emoji: mapping.emoji)
+        for entry in mappings {
+            insert(tag: entry.tag, text: entry.text)
         }
     }
 }
+

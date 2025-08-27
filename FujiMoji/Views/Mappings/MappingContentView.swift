@@ -34,28 +34,50 @@ struct MappingContentView: View {
     private let cellSize: CGFloat = 48
     private let rowSpacing: CGFloat = 8
     private let topPadding: CGFloat = 2
+
+    @StateObject private var customVM = CustomMappingsViewModel()
+
+    private let sidebarWidth: CGFloat = 200
+    private let editorWidth: CGFloat = 280
+    private let midSectionWidth: CGFloat = 420
+
     var body: some View {
-        HStack {
+        HStack(spacing: 0) {
             SideBarView(selection: $mappingViewModel.selection)
-            ScrollView(.vertical, showsIndicators: true) {
-                EmojiGridView(emojis: mappingViewModel.currentEmojis, selectedEmoji: $mappingViewModel.selectedEmoji)
-                    .background(EnclosingScrollViewFinder { sv in
-                        nsScrollView = sv
-                    })
+                .frame(width: sidebarWidth)
+            if case .customMappings? = mappingViewModel.selection {
+                CustomListView(vm: customVM, onSelect: { tag in
+                    customVM.selectedTag = tag
+                })
+                    .padding(.top, topPadding)
+                    .padding(.bottom, 20)
+                    .frame(width: midSectionWidth)
+                Divider()
+                    .padding(.bottom, 20)
+                CustomEditorView(vm: customVM)
+                    .frame(width: editorWidth)
+            } else {
+                ScrollView(.vertical, showsIndicators: true) {
+                    EmojiGridView(emojis: mappingViewModel.currentEmojis, selectedEmoji: $mappingViewModel.selectedEmoji)
+                        .background(EnclosingScrollViewFinder { sv in
+                            nsScrollView = sv
+                        })
+                }
+                .frame(width: midSectionWidth)
+                .padding(.top, topPadding)
+                .padding(.bottom, 24)
+                Divider()
+                    .padding(.bottom, 20)
+                EmojiEditorView(
+                    selected: mappingViewModel.selectedDetail,
+                    isFavorite: mappingViewModel.selectedEmoji.map { mappingViewModel.favoriteEmojis.contains($0) } ?? false,
+                    onSaveAliases: { emoji, aliases in mappingViewModel.setAliases(aliases, for: emoji) },
+                    onToggleFavorite: { emoji, newValue in mappingViewModel.toggleFavorite(emoji, isOn: newValue) }
+                )
+                .frame(width: editorWidth)
             }
-            .padding(.top, topPadding)
-            .padding(.bottom, 20)
-            .padding(.trailing, mappingViewModel.currentEmojis.count < 56 ? 15 : 0)
-            Divider()
-            .padding(.bottom, 20)
-            EmojiEditorView(
-                selected: mappingViewModel.selectedDetail,
-                isFavorite: mappingViewModel.selectedEmoji.map { mappingViewModel.favoriteEmojis.contains($0) } ?? false,
-                onSaveAliases: { emoji, aliases in mappingViewModel.setAliases(aliases, for: emoji) },
-                onToggleFavorite: { emoji, newValue in mappingViewModel.toggleFavorite(emoji, isOn: newValue) }
-            )
         }
-        .frame(width: 920, height: 500)
+        .frame(width: 900, height: 500)
         .background(.ultraThinMaterial)
         .onChange(of: mappingViewModel.selection) { newValue in
             if case let .emojiCategory(category) = newValue, let row = categoryRowAnchors[category] {

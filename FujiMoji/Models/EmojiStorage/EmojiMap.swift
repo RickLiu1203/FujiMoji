@@ -14,7 +14,7 @@ struct EmojiTags: Codable {
 
 class EmojiMap {
     private var storage: [String: EmojiTags] = [:]
-    private var templateStorage: [String: EmojiTags] = [:] // Keep template separate
+    private var templateStorage: [String: EmojiTags] = [:]
     private let templateURL: URL?
     private let userDataURL: URL
     
@@ -22,28 +22,22 @@ class EmojiMap {
         self.templateURL = templateURL
         self.userDataURL = userDataURL
         
-        // Load template first
         if let templateURL = templateURL {
             loadTemplate(from: templateURL)
         }
         
-        // Then overlay user modifications
         loadUserData()
         
-        // If both are empty, use hardcoded defaults
         if storage.isEmpty {
             setupDefaultMappings()
         }
     }
-    
-    // MARK: - Storage Operations
-    
+        
     private func loadTemplate(from url: URL) {
         do {
             let data = try Data(contentsOf: url)
             let decoder = JSONDecoder()
             
-            // Define a local struct to match the new JSON structure
             struct DefaultEmojiRecord: Codable {
                 let id: Int?
                 let defaultTag: String
@@ -60,7 +54,6 @@ class EmojiMap {
             
             let defaultEmojiMap = try decoder.decode([String: DefaultEmojiRecord].self, from: data)
             
-            // Convert the JSON structure into EmojiTags objects
             templateStorage = defaultEmojiMap.reduce(into: [:]) { result, pair in
                 let (emoji, record) = pair
                 result[emoji] = EmojiTags(
@@ -70,7 +63,6 @@ class EmojiMap {
                 )
             }
             
-            // Copy template to storage if no user data exists
             if storage.isEmpty {
                 storage = templateStorage
             }
@@ -94,7 +86,6 @@ class EmojiMap {
             let data = try Data(contentsOf: userDataURL)
             let mappings = try JSONDecoder().decode([EmojiTags].self, from: data)
             
-            // Merge: start from template, then overlay user modifications
             var merged = templateStorage
             for mapping in mappings {
                 merged[mapping.emoji] = mapping
@@ -104,14 +95,11 @@ class EmojiMap {
             print("Loaded \(mappings.count) emoji mappings from user data; merged total: \(storage.count)")
         } catch {
             print("Error loading user data: \(error)")
-            // If error loading user data, use template data
             if storage.isEmpty {
                 storage = templateStorage
             }
         }
     }
-    
-    // MARK: - Public Interface
     
     func getDefaultTag(forEmoji emoji: String) -> String? {
         return storage[emoji]?.defaultTag
@@ -143,13 +131,9 @@ class EmojiMap {
         return mappings
     }
     
-    // MARK: - Template Management
-    
     func resetToTemplate() {
         storage = templateStorage
     }
-    
-    // MARK: - Default Mappings (Fallback)
     
     private func setupDefaultMappings() {
         print("Setting up hardcoded default mappings...")
@@ -166,7 +150,6 @@ class EmojiMap {
             )
         }
         
-        // Also save as template
         templateStorage = storage
         
         print("Added \(defaults.count) default emoji mappings")

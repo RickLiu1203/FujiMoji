@@ -8,49 +8,38 @@ class TextReplacement {
     
     private init() {}
     
-    /// Replaces the captured text (including delimiters) with an emoji (optionally repeated)
-    /// - Parameters:
-    ///   - capturedText: The text that was captured after the opening delimiter
-    ///   - startDelimiter: The opening delimiter character(s) used (e.g., "/")
-    ///   - endDelimiter: The closing delimiter character(s) used (e.g., " ")
-    ///   - multiplier: How many times to repeat the resulting emoji (minimum 1)
-    ///   - digitsCountBeforeStart: Number of numeric characters immediately before the opening delimiter to also delete
-    ///   - endDelimiterPresentInDocument: If true, delete the end delimiter from the document; if false, do not (e.g., when the space was swallowed)
     func replaceWithEmoji(_ capturedText: String, startDelimiter: String, endDelimiter: String, multiplier: Int, digitsCountBeforeStart: Int, endDelimiterPresentInDocument: Bool) {
-        // Look up the emoji using our storage
-        guard let emoji = emojiStorage.findEmoji(forTag: capturedText.lowercased()) else {
-            // No mapping: leave text as-is. If we swallowed the end delimiter (e.g., space), re-insert it
+        let normalizedTag = capturedText.lowercased()
+        // Prefer custom mapping if present
+        let customText = CustomStorage.shared.getText(forTag: normalizedTag)
+        let emoji = customText ?? emojiStorage.findEmoji(forTag: normalizedTag)
+        
+        guard let replacementUnit = emoji else {
             if endDelimiterPresentInDocument {
                 insertText(endDelimiter)
             }
-            print("No emoji found for tag '\(capturedText)'; leaving text unchanged")
+            print("No mapping found for tag '\(capturedText)'; leaving text unchanged")
             return
         }
 
-        // Calculate how many characters to delete (digits + start + content + optional end)
         let endCount = endDelimiterPresentInDocument ? endDelimiter.count : 0
         let totalCharactersToDelete = max(0, digitsCountBeforeStart) + startDelimiter.count + capturedText.count + endCount
 
-        // Delete the typed text. When capture ended on space, we swallowed that space key event, so deleting endDelimiter here still works.
         deleteCharacters(count: totalCharactersToDelete)
 
-        // Insert the emoji, repeated by the multiplier, plus the trailing end delimiter (single event)
         let repeatCount = max(1, multiplier)
-        let replacement = String(repeating: emoji, count: repeatCount) + endDelimiter
-        // Always use paste-based insertion for maximum compatibility across apps
+        let replacement = String(repeating: replacementUnit, count: repeatCount) + endDelimiter
         pasteInsert(replacement)
 
-        print("Replaced '\(String(repeating: "#", count: digitsCountBeforeStart))\(startDelimiter)\(capturedText)\(endDelimiter)' with \(repeatCount)x \(emoji)")
+        print("Replaced '\(String(repeating: "#", count: digitsCountBeforeStart))\(startDelimiter)\(capturedText)\(endDelimiter)' with \(repeatCount)x \(replacementUnit)")
     }
     
-    /// Deletes a specified number of characters by simulating backspace key presses
     private func deleteCharacters(count: Int) {
         for _ in 0..<count {
             simulateBackspace()
         }
     }
     
-    /// Inserts text by simulating typing
     private func insertText(_ text: String) {
         let utf16CodeUnits = Array(text.utf16)
         let keyDownEvent = CGEvent(keyboardEventSource: nil, virtualKey: 0, keyDown: true)
@@ -60,9 +49,8 @@ class TextReplacement {
         keyUpEvent?.post(tap: .cghidEventTap)
     }
     
-    /// Simulates a backspace key press
     private func simulateBackspace() {
-        let keyCode: CGKeyCode = 51 // Backspace key code
+        let keyCode: CGKeyCode = 51
         
         let keyDownEvent = CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: true)
         let keyUpEvent = CGEvent(keyboardEventSource: nil, virtualKey: keyCode, keyDown: false)
@@ -71,15 +59,12 @@ class TextReplacement {
         keyUpEvent?.post(tap: .cghidEventTap)
     }
     
-    /// Simulates typing a character
     private func simulateTyping(_ character: String) {
-        // Convert the character to UTF-16 code units
         let utf16CodeUnits = Array(character.utf16)
         
         let keyDownEvent = CGEvent(keyboardEventSource: nil, virtualKey: 0, keyDown: true)
         let keyUpEvent = CGEvent(keyboardEventSource: nil, virtualKey: 0, keyDown: false)
         
-        // Only set Unicode on keyDown to avoid duplicate character issues in terminals
         keyDownEvent?.keyboardSetUnicodeString(stringLength: utf16CodeUnits.count, unicodeString: utf16CodeUnits)
         
         keyDownEvent?.post(tap: .cghidEventTap)
@@ -87,23 +72,19 @@ class TextReplacement {
     }
     
     private func pasteInsert(_ text: String) {
-        // Save current clipboard (string only to avoid NSPasteboardItem ownership issues)
         let savedString = pasteboard.string(forType: .string)
         
-        // Write our text
         pasteboard.clearContents()
         pasteboard.setString(text, forType: .string)
         
-        // Simulate Cmd down, 'v', Cmd up with slight delays for reliability across apps
-        let vKey: CGKeyCode = 9   // 'v'
-        let cmdKey: CGKeyCode = 55 // left command
+        let vKey: CGKeyCode = 9
+        let cmdKey: CGKeyCode = 55
         
         let cmdDown = CGEvent(keyboardEventSource: nil, virtualKey: cmdKey, keyDown: true)
         let vDown = CGEvent(keyboardEventSource: nil, virtualKey: vKey, keyDown: true)
         let vUp = CGEvent(keyboardEventSource: nil, virtualKey: vKey, keyDown: false)
         let cmdUp = CGEvent(keyboardEventSource: nil, virtualKey: cmdKey, keyDown: false)
         
-        // Post with small scheduling to ensure pasteboard is ready
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
             cmdDown?.flags = .maskCommand
             cmdDown?.post(tap: .cghidEventTap)
@@ -115,7 +96,6 @@ class TextReplacement {
             cmdUp?.post(tap: .cghidEventTap)
         }
         
-        // Best-effort restore previous clipboard string after a slightly longer delay to avoid race
         if let previous = savedString {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 self.pasteboard.clearContents()

@@ -35,16 +35,15 @@ struct EmojiCell: View {
 struct EmojiGridView: View {
     let emojis: [String]
     @Binding var selectedEmoji: String?
-    let columns = Array(repeating: GridItem(.fixed(40), spacing: 10), count: 7)
+    let columns = Array(repeating: GridItem(.fixed(40), spacing: 12), count: 7)
     
     var body: some View {
         VStack(alignment: .center) {
             if emojis.isEmpty {
-                Spacer()
                 Text("No Emojis Yet!")
                     .foregroundColor(.secondary)
                     .font(.system(size: 14, weight: .medium))
-                Spacer()
+                    .padding(.top, 200)
             } else {
                 LazyVGrid(columns: columns, spacing: 8) {
                     ForEach(emojis, id: \.self) { emoji in
@@ -57,7 +56,7 @@ struct EmojiGridView: View {
                 }
             }
         }
-        .frame(width: 380, height: emojis.isEmpty ? 450 : nil, alignment: .center)
+        .frame(width: .infinity, height: .infinity, alignment: .center)
         .padding(.leading, 16)
     }
 }

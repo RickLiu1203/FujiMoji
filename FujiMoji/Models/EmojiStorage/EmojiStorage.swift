@@ -7,32 +7,27 @@ class EmojiStorage {
     private let emojiMap: EmojiMap
     private let searchTrie = EmojiTrie()
     
-    // File paths
     private var documentsDirectory: URL {
         fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
     
     private var userMappingsURL: URL {
-        documentsDirectory.appendingPathComponent("user_mappings.json")
+        documentsDirectory.appendingPathComponent("user_emoji_mappings.json")
     }
     
     private init() {
-        // Compute URLs first
-        let userMappingsPath = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("user_mappings.json")
         let templateURL = Bundle.main.url(forResource: "default", withExtension: "json")
-        
-        // Ensure documents directory exists
+        // Compute the path locally to avoid accessing self before initialization
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let userURL = docs.appendingPathComponent("user_emoji_mappings.json")
         do {
-            try fileManager.createDirectory(at: userMappingsPath.deletingLastPathComponent(),
-                                         withIntermediateDirectories: true)
+            try FileManager.default.createDirectory(at: userURL.deletingLastPathComponent(),
+                                                    withIntermediateDirectories: true)
         } catch {
             print("Error ensuring documents directory exists: \(error)")
         }
-        
-        // Initialize with merged data from template and user modifications
         emojiMap = EmojiMap(templateURL: templateURL,
-                           userDataURL: userMappingsPath)
+                           userDataURL: userURL)
         rebuildTrie()
     }
     
@@ -40,9 +35,6 @@ class EmojiStorage {
         searchTrie.rebuild(from: emojiMap.getAllMappings())
     }
     
-    // MARK: - Data Management
-    
-    /// Save current state to user mappings file
     private func saveUserMappings() {
         do {
             let mappings = emojiMap.getAllEmojisWithTags()
@@ -50,11 +42,9 @@ class EmojiStorage {
             encoder.outputFormatting = .prettyPrinted
             let data = try encoder.encode(mappings)
             
-            // Ensure parent directory exists
             try fileManager.createDirectory(at: userMappingsURL.deletingLastPathComponent(),
                                          withIntermediateDirectories: true)
             
-            // Write the file
             try data.write(to: userMappingsURL)
             print("Successfully saved \(mappings.count) emoji mappings to user data")
         } catch {
@@ -62,7 +52,6 @@ class EmojiStorage {
         }
     }
     
-    /// Reset to default template
     func resetToDefaults() {
         do {
             if fileManager.fileExists(atPath: userMappingsURL.path) {
@@ -76,8 +65,6 @@ class EmojiStorage {
             print("Error resetting to defaults: \(error)")
         }
     }
-    
-    // MARK: - Public Interface
     
     func findEmoji(forTag tag: String) -> String? {
         return searchTrie.find(tag: tag)
@@ -101,8 +88,6 @@ class EmojiStorage {
         return emojiMap.getAllEmojisWithTags()
     }
     
-    // MARK: - Import/Export
-    
     func exportUserMappings() -> URL? {
         return userMappingsURL
     }
@@ -112,15 +97,12 @@ class EmojiStorage {
         let decoder = JSONDecoder()
         let mappings = try decoder.decode([EmojiTags].self, from: data)
         
-        // Clear existing mappings
         emojiMap.resetToTemplate()
         
-        // Add imported mappings
         for mapping in mappings {
             emojiMap.setAliases(mapping.aliases, forEmoji: mapping.emoji)
         }
         
-        // Rebuild trie and save
         rebuildTrie()
         saveUserMappings()
     }
