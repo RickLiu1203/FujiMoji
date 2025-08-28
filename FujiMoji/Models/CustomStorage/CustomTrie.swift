@@ -160,5 +160,33 @@ final class CustomTrie {
             insert(tag: entry.tag, text: entry.text)
         }
     }
+
+    // MARK: - Prefix search
+    func collectTags(withPrefix prefix: String, limit: Int = 50) -> [String] {
+        let normalized = prefix.lowercased()
+        var current = root
+        for char in normalized {
+            guard let next = current.children[char] else { return [] }
+            current = next
+        }
+        var results: [String] = []
+        var buffer = Array(normalized)
+        collect(from: current, buffer: &buffer, results: &results, limit: limit)
+        return results
+    }
+
+    private func collect(from node: CustomTrieNode, buffer: inout [Character], results: inout [String], limit: Int) {
+        if results.count >= limit { return }
+        if node.isEndOfCode && !node.isDeleted {
+            results.append(String(buffer))
+        }
+        if results.count >= limit { return }
+        for (ch, child) in node.children.sorted(by: { $0.key < $1.key }) {
+            buffer.append(ch)
+            collect(from: child, buffer: &buffer, results: &results, limit: limit)
+            buffer.removeLast()
+            if results.count >= limit { return }
+        }
+    }
 }
 

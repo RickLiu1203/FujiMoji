@@ -156,4 +156,60 @@ class EmojiTrie {
             insert(tag: mapping.tag, emoji: mapping.emoji)
         }
     }
+
+    // MARK: - Prefix search
+    func collectTags(withPrefix prefix: String, limit: Int = 50) -> [String] {
+        let normalized = prefix.lowercased()
+        var current = root
+        for char in normalized {
+            guard let next = current.children[char] else { return [] }
+            current = next
+        }
+        var results: [String] = []
+        var buffer = Array(normalized)
+        collect(from: current, buffer: &buffer, results: &results, limit: limit)
+        return results
+    }
+
+    private func collect(from node: TrieNode, buffer: inout [Character], results: inout [String], limit: Int) {
+        if results.count >= limit { return }
+        if node.isEndOfCode && !node.isDeleted {
+            results.append(String(buffer))
+        }
+        if results.count >= limit { return }
+        for (ch, child) in node.children.sorted(by: { $0.key < $1.key }) {
+            buffer.append(ch)
+            collect(from: child, buffer: &buffer, results: &results, limit: limit)
+            buffer.removeLast()
+            if results.count >= limit { return }
+        }
+    }
+
+    // Collect tag and emoji pairs for suggestions
+    func collectPairs(withPrefix prefix: String, limit: Int = 50) -> [(tag: String, emoji: String)] {
+        let normalized = prefix.lowercased()
+        var current = root
+        for char in normalized {
+            guard let next = current.children[char] else { return [] }
+            current = next
+        }
+        var results: [(String, String)] = []
+        var buffer = Array(normalized)
+        collectPairs(from: current, buffer: &buffer, results: &results, limit: limit)
+        return results
+    }
+
+    private func collectPairs(from node: TrieNode, buffer: inout [Character], results: inout [(String, String)], limit: Int) {
+        if results.count >= limit { return }
+        if node.isEndOfCode && !node.isDeleted, let e = node.emoji {
+            results.append((String(buffer), e))
+        }
+        if results.count >= limit { return }
+        for (ch, child) in node.children.sorted(by: { $0.key < $1.key }) {
+            buffer.append(ch)
+            collectPairs(from: child, buffer: &buffer, results: &results, limit: limit)
+            buffer.removeLast()
+            if results.count >= limit { return }
+        }
+    }
 }

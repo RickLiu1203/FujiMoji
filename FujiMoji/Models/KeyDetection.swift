@@ -37,6 +37,11 @@ class KeyDetection: ObservableObject {
         guard type == .keyDown else { return Unmanaged.passUnretained(event) }
         
         if let nsEvent = NSEvent(cgEvent: event) {
+            // Ignore shortcuts and non-text keystrokes: don't process when Command/Control/Fn are held
+            let flags = nsEvent.modifierFlags
+            if flags.contains(.command) || flags.contains(.control) || flags.contains(.function) {
+                return Unmanaged.passUnretained(event)
+            }
             if let characters = nsEvent.charactersIgnoringModifiers {
                 let keyCode = nsEvent.keyCode
                 
@@ -52,7 +57,17 @@ class KeyDetection: ObservableObject {
                     }
                 } else if keyCode == 48 { // Tab key
                     if KeyDetection.shared.captureStarted {
-                        KeyDetection.shared.finishCapture(endWithSpace: false)
+                        // Notify the popup to select the highlighted item
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
+                        }
+                        return nil
+                    } else {
+                        return Unmanaged.passUnretained(event)
+                    }
+                } else if keyCode == 53 { // Escape key
+                    if KeyDetection.shared.captureStarted {
+                        KeyDetection.shared.cancelCapture()
                         return nil
                     } else {
                         return Unmanaged.passUnretained(event)
@@ -202,6 +217,31 @@ class KeyDetection: ObservableObject {
             }
         }
         
+        stopCapture()
+    }
+    
+    // Finish capture by directly specifying the replacement unit (emoji or custom string)
+    func finishCaptureWithDirectReplacement(_ replacementUnit: String, endWithSpace: Bool) {
+        let capturedString = currentString
+        if !capturedString.isEmpty {
+            DispatchQueue.main.async {
+                self.detectedStrings.append(capturedString)
+                TextReplacement.shared.replaceWithUnit(
+                    replacementUnit,
+                    forCapturedText: capturedString,
+                    startDelimiter: self.startDelimiter,
+                    endDelimiter: endWithSpace ? self.endDelimiter : "",
+                    multiplier: self.multiplier,
+                    digitsCountBeforeStart: self.digitsCountBeforeStart,
+                    endDelimiterPresentInDocument: endWithSpace
+                )
+            }
+        }
+        stopCapture()
+    }
+
+    // Public cancel without replacement
+    func cancelCapture() {
         stopCapture()
     }
     

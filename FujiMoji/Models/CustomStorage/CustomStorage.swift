@@ -88,5 +88,10 @@ final class CustomStorage {
     func getAllSorted() -> [(tag: String, text: String)] {
         return map.getAllMappings().sorted { $0.tag < $1.tag }
     }
+
+    // MARK: - Prefix search facade
+    func collectTags(withPrefix prefix: String, limit: Int = 50) -> [String] {
+        return trie.collectTags(withPrefix: prefix, limit: limit)
+    }
 }
 

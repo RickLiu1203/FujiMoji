@@ -33,6 +33,18 @@ class TextReplacement {
 
         print("Replaced '\(String(repeating: "#", count: digitsCountBeforeStart))\(startDelimiter)\(capturedText)\(endDelimiter)' with \(repeatCount)x \(replacementUnit)")
     }
+
+    // Direct replacement with a provided unit (emoji or custom string)
+    func replaceWithUnit(_ replacementUnit: String, forCapturedText capturedText: String, startDelimiter: String, endDelimiter: String, multiplier: Int, digitsCountBeforeStart: Int, endDelimiterPresentInDocument: Bool) {
+        let endCount = endDelimiterPresentInDocument ? endDelimiter.count : 0
+        let totalCharactersToDelete = max(0, digitsCountBeforeStart) + startDelimiter.count + capturedText.count + endCount
+        deleteCharacters(count: totalCharactersToDelete)
+
+        let repeatCount = max(1, multiplier)
+        let replacement = String(repeating: replacementUnit, count: repeatCount) + endDelimiter
+        pasteInsert(replacement)
+        print("Direct replace of captured '\(capturedText)' with \(repeatCount)x '\(replacementUnit)'")
+    }
     
     private func deleteCharacters(count: Int) {
         for _ in 0..<count {
