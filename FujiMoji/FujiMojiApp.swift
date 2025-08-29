@@ -10,7 +10,8 @@ import AppKit
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        _ = PopupWindowController.shared // initialize controller and observers
+        _ = DetectedTextWindowController.shared // initialize detected text window
+        _ = PredictionResultsWindowController.shared // initialize prediction results window
     }
 }
 

@@ -8,9 +8,14 @@
 import SwiftUI
 import Combine
 
+struct EmojiMatch: Hashable {
+    let tag: String
+    let emoji: String
+}
+
 class PopupViewModel: ObservableObject {
     @Published var customMatches: [String] = []
-    @Published var emojiMatches: [(tag: String, emoji: String)] = []
+    @Published var emojiMatches: [EmojiMatch] = []
     @Published var highlightedIndex: Int = 0
     
     private let minCharsForSuggestions = 2
@@ -56,7 +61,7 @@ class PopupViewModel: ObservableObject {
                 if exact1 && !exact2 { return true }
                 if !exact1 && exact2 { return false }
                 return pair1.tag < pair2.tag 
-            }
+            }.map { EmojiMatch(tag: $0.tag, emoji: $0.emoji) }
             
             DispatchQueue.main.async {
                 if KeyDetection.shared.currentString.lowercased() == fetchPrefix {
