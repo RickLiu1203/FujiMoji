@@ -345,7 +345,7 @@ final class PredictionResultsWindowController: NSWindowController {
         let x = screenFrame.midX - contentSize.width / 2
         // Anchor bottom edge at top of detected text - only top edge moves as height changes
         // This creates the expanding/contracting effect from bottom up
-        let y = screenFrame.minY + screenBottomMargin + detectedTextWindowHeight
+        let y = screenFrame.minY + screenBottomMargin + detectedTextWindowHeight - 8
         return NSRect(x: x, y: y, width: contentSize.width, height: contentSize.height)
     }
 

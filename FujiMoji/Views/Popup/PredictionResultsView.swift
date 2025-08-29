@@ -126,7 +126,7 @@ struct TagPill: View {
     }
     
     var body: some View {
-        let highlightColor = Color(red: 0xfc/255, green: 0xcf/255, blue: 0x03/255)
+            let highlightColor = Color(red: 255/255, green: 226/255, blue: 99/255)
         Text(text)
             .font(.system(size: 16, weight: .medium))
             .padding(.horizontal, 10)
