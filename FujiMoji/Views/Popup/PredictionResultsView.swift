@@ -69,19 +69,18 @@ struct TagPill: View {
     }
     
     var body: some View {
-        let highlightColor = Color(red: 255/255, green: 226/255, blue: 99/255)
         Text(text)
             .font(.system(size: 14, weight: .medium))
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .fill(isHighlighted ? highlightColor.opacity(0.2) : isHovering ? Color.primary.opacity(0.12) : Color.primary.opacity(0.08))
+                    .fill(isHighlighted ? .accentColor.opacity(0.2) : isHovering ? Color.primary.opacity(0.12) : Color.primary.opacity(0.08))
                     .animation(.easeInOut(duration: 0.15), value: isHovering)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
-                    .stroke(isHighlighted ? highlightColor : Color.primary.opacity(0.15), lineWidth: 1)
+                    .stroke(isHighlighted ? .accentColor : Color.primary.opacity(0.15), lineWidth: 1)
             )
             .overlay(
                 Group {
@@ -91,7 +90,7 @@ struct TagPill: View {
                             .foregroundColor(.orange)
                     }
                 }
-                .offset(x: 4, y: -4), // Position in top-right corner
+                .offset(x: 5, y: -5), // Position in top-right corner
                 alignment: .topTrailing
             )
             .onHover { hovering in

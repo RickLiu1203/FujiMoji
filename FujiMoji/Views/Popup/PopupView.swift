@@ -84,7 +84,7 @@ struct PredictionResultsPopupView: View {
                 }
             }
             .padding(.horizontal, padding)
-            .padding(.bottom, 16)
+            .padding(.bottom, 12)
             .padding(.top, 8)
             .frame(width: popupWidth)
             .background(

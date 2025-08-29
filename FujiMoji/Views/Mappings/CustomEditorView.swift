@@ -18,64 +18,8 @@ struct CustomEditorView: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 24) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Unique Custom Tag")
-                    .font(.system(size: 14))
-                    .foregroundColor(.secondary)
-                ZStack {
-                    TextEditor(text: $tagInput)
-                        .font(.system(size: 14))
-                        .foregroundColor(.primary)
-                        .scrollContentBackground(.hidden)
-                        .frame(height: 60)
-                        .padding(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(focusedField == .tag ? Color.black.opacity(0.15) : Color.white.opacity(0.06))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.white.opacity(0.12), lineWidth: 1)
-                        )
-                        .focused($focusedField, equals: .tag)
-                }
-                .onKeyPress(.return) {
-                    submitIfPossible()
-                    focusedField = nil
-                    return .handled
-                }
-            }
-            .frame(width: 220)
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Custom Text")
-                    .font(.system(size: 14))
-                    .foregroundColor(.secondary)
-                ZStack {
-                    TextEditor(text: $textInput)
-                        .font(.system(size: 14))
-                        .foregroundColor(.primary)
-                        .scrollContentBackground(.hidden)
-                        .frame(height: 150)
-                        .padding(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10)
-                                .fill(focusedField == .text ? Color.black.opacity(0.15) : Color.white.opacity(0.06))
-                        )
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.white.opacity(0.12), lineWidth: 1)
-                        )
-                        .focused($focusedField, equals: .text)
-                }
-                .onKeyPress(.return) {
-                    submitIfPossible()
-                    focusedField = nil
-                    return .handled
-                }
-            }
-            .frame(width: 220)
-
+            tagInputView
+            textInputView
             Spacer()
         }
         .frame(width: .infinity, height: .infinity, alignment: .top)
@@ -89,6 +33,87 @@ struct CustomEditorView: View {
         }
         .onChange(of: vm.selectedTag) { _ in
             syncInputsFromSelection()
+        }
+    }
+
+    private var tagInputView: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Unique Custom Tag")
+                .font(.system(size: 14))
+                .foregroundColor(.secondary)
+            tagEditorView
+        }
+        .frame(width: 220)
+    }
+
+    private var textInputView: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Custom Text")
+                .font(.system(size: 14))
+                .foregroundColor(.secondary)
+            textEditorView
+        }
+        .frame(width: 220)
+    }
+
+    private var tagEditorView: some View {
+        ZStack {
+            TextEditor(text: $tagInput)
+                .font(.system(size: 14))
+                .foregroundColor(.primary)
+                .scrollContentBackground(.hidden)
+                .frame(height: 60)
+                .padding(8)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(focusedField == .tag ? Color.black.opacity(0.15) : Color.white.opacity(0.06))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.white.opacity(0.12), lineWidth: 1)
+                )
+                .focused($focusedField, equals: .tag)
+        }
+        .onKeyPress(phases: .down) { keyPress in
+            if keyPress.key == .return {
+                submitIfPossible()
+                focusedField = nil
+                return .handled
+            }
+            return .ignored
+        }
+    }
+
+    private var textEditorView: some View {
+        ZStack {
+            TextEditor(text: $textInput)
+                .font(.system(size: 14))
+                .foregroundColor(.primary)
+                .scrollContentBackground(.hidden)
+                .frame(height: 150)
+                .padding(8)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(focusedField == .text ? Color.black.opacity(0.15) : Color.white.opacity(0.06))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.white.opacity(0.12), lineWidth: 1)
+                )
+                .focused($focusedField, equals: .text)
+        }
+        .onKeyPress(phases: .down) { keyPress in
+            if keyPress.key == .return {
+                if keyPress.modifiers.contains(.shift) {
+                    // Allow Shift+Enter to insert a newline in custom text input
+                    return .ignored
+                } else {
+                    submitIfPossible()
+                    focusedField = nil
+                    return .handled
+                }
+            }
+            return .ignored
         }
     }
 
