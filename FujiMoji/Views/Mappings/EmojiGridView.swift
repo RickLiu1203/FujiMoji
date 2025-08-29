@@ -56,7 +56,7 @@ struct EmojiGridView: View {
                 }
             }
         }
-        .frame(width: .infinity, height: .infinity, alignment: .center)
+        .frame(alignment: .center)
         .padding(.leading, 16)
     }
 }

@@ -167,6 +167,5 @@ struct CustomListView: View {
         }
         .padding(.leading, 16)
         .padding(.trailing, vm.items.count < 10 ? 8 : 4)
-        .frame(width: .infinity, height: .infinity)
     }
 }

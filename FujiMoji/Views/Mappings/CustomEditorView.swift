@@ -22,7 +22,7 @@ struct CustomEditorView: View {
             textInputView
             Spacer()
         }
-        .frame(width: .infinity, height: .infinity, alignment: .top)
+        .frame(alignment: .top)
         .contentShape(Rectangle())
         .onTapGesture { focusedField = nil }
         .onChange(of: focusedField) { _ in

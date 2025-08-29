@@ -109,7 +109,7 @@ class TextReplacement {
         }
         
         if let previous = savedString {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
                 self.pasteboard.clearContents()
                 self.pasteboard.setString(previous, forType: .string)
             }
