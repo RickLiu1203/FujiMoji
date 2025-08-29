@@ -90,7 +90,7 @@ final class CustomStorage {
     }
 
     // MARK: - Prefix search facade
-    func collectTags(withPrefix prefix: String, limit: Int = 50) -> [String] {
+    func collectTags(withPrefix prefix: String, limit: Int = 25) -> [String] {
         return trie.collectTags(withPrefix: prefix, limit: limit)
     }
 }

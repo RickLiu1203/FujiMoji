@@ -162,7 +162,7 @@ final class CustomTrie {
     }
 
     // MARK: - Prefix search
-    func collectTags(withPrefix prefix: String, limit: Int = 50) -> [String] {
+    func collectTags(withPrefix prefix: String, limit: Int = 25) -> [String] {
         let normalized = prefix.lowercased()
         var current = root
         for char in normalized {

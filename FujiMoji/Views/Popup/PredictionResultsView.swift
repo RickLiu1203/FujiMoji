@@ -12,105 +12,46 @@ struct PredictionResultsView<T: Hashable>: View {
     let items: [T]
     let displayText: (T) -> String
     let isHighlighted: (Int, T) -> Bool
+    let isFavorite: (T) -> Bool
     let onTap: (T) -> Void
+    let highlightedIndex: Int
     let height: CGFloat = 60
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 14, weight: .semibold))
+                .font(.system(size: 13, weight: .medium))
                 .foregroundStyle(.secondary)
             
-            HorizontalMouseScrollView {
-                HStack(spacing: 8) {
-                    ForEach(Array(items.enumerated()), id: \.element) { index, item in
-                        Button(action: {
-                            onTap(item)
-                        }) {
-                            TagPill(
-                                text: displayText(item),
-                                isHighlighted: isHighlighted(index, item)
-                            )
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(Array(items.enumerated()), id: \.element) { index, item in
+                            Button(action: {
+                                onTap(item)
+                            }) {
+                                TagPill(
+                                    text: displayText(item),
+                                    isHighlighted: isHighlighted(index, item),
+                                    isFavorite: isFavorite(item)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .id("pill_\(index)")
                         }
-                        .buttonStyle(.plain)
+                    }
+                    .padding(.trailing, 12)
+                    .padding(.leading, 2)
+                }
+                .scrollDisabled(true) // Only allow programmatic scrolling
+                .onChange(of: highlightedIndex) { newIndex in
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        proxy.scrollTo("pill_\(newIndex)", anchor: .center)
                     }
                 }
-                .padding(.trailing, 12)
-                .padding(.leading, 2)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-// MARK: - Horizontal scroll with mouse wheel support
-struct HorizontalMouseScrollView<Content: View>: NSViewRepresentable {
-    let content: Content
-    
-    init(@ViewBuilder content: @escaping () -> Content) {
-        self.content = content()
-    }
-    
-    func makeNSView(context: Context) -> NSScrollView {
-        let scrollView = MouseWheelScrollView()
-        scrollView.hasHorizontalScroller = false
-        scrollView.hasVerticalScroller = false
-        scrollView.scrollerStyle = .overlay
-        scrollView.drawsBackground = false
-        scrollView.autohidesScrollers = true
-        scrollView.horizontalScrollElasticity = .automatic
-        scrollView.verticalScrollElasticity = .none
-        scrollView.automaticallyAdjustsContentInsets = false
-        scrollView.borderType = .noBorder
-        
-        let hosting = NSHostingView(rootView: content)
-        hosting.translatesAutoresizingMaskIntoConstraints = false
-        
-        let documentView = NSView()
-        documentView.translatesAutoresizingMaskIntoConstraints = false
-        documentView.addSubview(hosting)
-        scrollView.documentView = documentView
-        
-        NSLayoutConstraint.activate([
-            hosting.leadingAnchor.constraint(equalTo: documentView.leadingAnchor),
-            hosting.topAnchor.constraint(equalTo: documentView.topAnchor),
-            hosting.bottomAnchor.constraint(equalTo: documentView.bottomAnchor),
-            hosting.trailingAnchor.constraint(greaterThanOrEqualTo: documentView.trailingAnchor),
-            hosting.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
-        ])
-        
-        return scrollView
-    }
-    
-    func updateNSView(_ nsView: NSScrollView, context: Context) {
-        if let hosting = nsView.documentView?.subviews.first as? NSHostingView<Content> {
-            hosting.rootView = content
-        }
-    }
-}
-
-private class MouseWheelScrollView: NSScrollView {
-    override func scrollWheel(with event: NSEvent) {
-        // Only convert vertical to horizontal for non-precise scrolling (mouse wheel)
-        // Trackpad has precise scrolling and should handle horizontal scrolling naturally
-        if event.scrollingDeltaX == 0 && event.scrollingDeltaY != 0 && !event.hasPreciseScrollingDeltas {
-            guard let documentView = self.documentView else { return }
-            let clipView = self.contentView
-            let isNatural = event.isDirectionInvertedFromDevice
-            let factor: CGFloat = 10.0  // Mouse wheel factor
-            let delta = -event.scrollingDeltaY * (isNatural ? 1.0 : -1.0) * factor
-
-            var newOrigin = clipView.bounds.origin
-            newOrigin.x += delta
-
-            let maxX = max(0, documentView.bounds.width - clipView.bounds.width)
-            newOrigin.x = min(max(newOrigin.x, 0), maxX)
-
-            clipView.scroll(to: NSPoint(x: newOrigin.x, y: newOrigin.y))
-            self.reflectScrolledClipView(clipView)
-            return
-        }
-        super.scrollWheel(with: event)
     }
 }
 
@@ -118,17 +59,19 @@ private class MouseWheelScrollView: NSScrollView {
 struct TagPill: View {
     let text: String
     let isHighlighted: Bool
+    let isFavorite: Bool
     @State private var isHovering: Bool = false
     
-    init(text: String, isHighlighted: Bool = false) {
+    init(text: String, isHighlighted: Bool = false, isFavorite: Bool = false) {
         self.text = text
         self.isHighlighted = isHighlighted
+        self.isFavorite = isFavorite
     }
     
     var body: some View {
-            let highlightColor = Color(red: 255/255, green: 226/255, blue: 99/255)
+        let highlightColor = Color(red: 255/255, green: 226/255, blue: 99/255)
         Text(text)
-            .font(.system(size: 16, weight: .medium))
+            .font(.system(size: 14, weight: .medium))
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
             .background(
@@ -140,10 +83,21 @@ struct TagPill: View {
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .stroke(isHighlighted ? highlightColor : Color.primary.opacity(0.15), lineWidth: 1)
             )
+            .overlay(
+                Group {
+                    if isFavorite {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 10))
+                            .foregroundColor(.orange)
+                    }
+                }
+                .offset(x: 4, y: -4), // Position in top-right corner
+                alignment: .topTrailing
+            )
             .onHover { hovering in
                 isHovering = hovering
             }
-            .frame(height: 34)
+            .frame(height: 36)
     }
 }
 

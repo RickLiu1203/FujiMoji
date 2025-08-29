@@ -10,16 +10,14 @@ import AppKit
 import Combine
 
 private let popupWidth: CGFloat = 300
-private let screenBottomMargin: CGFloat = 24
+private let screenBottomMargin: CGFloat = 0
 private let detectedTextWindowHeight: CGFloat = 72
 private let predictionResultsDefaultHeight: CGFloat = 100
 private let debounceDelayMs: Int = 150
 private let windowAnimationDuration: Double = 0.25
 private let layoutDelay: Double = 0.05 // Small delay for SwiftUI layout before window resize
 
-extension Notification.Name {
-    static let selectHighlightedSuggestion = Notification.Name("selectHighlightedSuggestion")
-}
+
 
 // MARK: - Detected Text View (Fixed at bottom)
 struct DetectedTextPopupView: View {
@@ -58,9 +56,13 @@ struct PredictionResultsPopupView: View {
                             return (viewModel.customMatches.isEmpty && index == viewModel.highlightedIndex) || 
                                    (!viewModel.customMatches.isEmpty && adjustedIndex == viewModel.highlightedIndex)
                         },
+                        isFavorite: { match in
+                            viewModel.isFavorite(emoji: match.emoji)
+                        },
                         onTap: { match in
                             viewModel.performEmojiSelection(tag: match.tag, emoji: match.emoji)
-                        }
+                        },
+                        highlightedIndex: viewModel.customMatches.isEmpty ? viewModel.highlightedIndex : viewModel.highlightedIndex - viewModel.customMatches.count
                     )
                 }
                 
@@ -73,9 +75,11 @@ struct PredictionResultsPopupView: View {
                         isHighlighted: { index, _ in
                             index == viewModel.highlightedIndex
                         },
+                        isFavorite: { _ in false }, // Custom matches are not favorites
                         onTap: { tag in
                             viewModel.performCustomSelection(tag: tag)
-                        }
+                        },
+                        highlightedIndex: viewModel.highlightedIndex
                     )
                 }
             }
@@ -89,7 +93,7 @@ struct PredictionResultsPopupView: View {
             )
             .background(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(.white.opacity(0.3))
+                    .fill(.white.opacity(0.4))
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12, style: .continuous)

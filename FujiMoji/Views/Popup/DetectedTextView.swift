@@ -14,7 +14,7 @@ struct DetectedTextView: View {
     var body: some View {
         VStack {
             Text(text)
-                .font(.system(size: 16, weight: .semibold))
+                .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(.primary)
                 .lineLimit(1)
         }
@@ -27,7 +27,7 @@ struct DetectedTextView: View {
         )
         .background(
             RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(.white.opacity(0.3))
+                .fill(.white.opacity(0.4))
         )
         .overlay {
             RoundedRectangle(cornerRadius: 12)

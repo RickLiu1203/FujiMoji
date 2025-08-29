@@ -108,11 +108,11 @@ class EmojiStorage {
     }
     
     // MARK: - Prefix search facade
-    func collectTags(withPrefix prefix: String, limit: Int = 50) -> [String] {
+    func collectTags(withPrefix prefix: String, limit: Int = 25) -> [String] {
         return searchTrie.collectTags(withPrefix: prefix, limit: limit)
     }
 
-    func collectPairs(withPrefix prefix: String, limit: Int = 50) -> [(tag: String, emoji: String)] {
+    func collectPairs(withPrefix prefix: String, limit: Int = 25) -> [(tag: String, emoji: String)] {
         return searchTrie.collectPairs(withPrefix: prefix, limit: limit)
     }
 } 
