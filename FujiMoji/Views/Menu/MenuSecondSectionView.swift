@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct MenuSecondSectionView: View {
     @Environment(\.dismiss) private var dismiss
@@ -14,11 +15,10 @@ struct MenuSecondSectionView: View {
         VStack(alignment: .leading, spacing: 8) {
             Button(action: {
                 dismiss()
-                openEmojiMappingsWindow()
+                openMappingsWindow(initialSelection: .emojiCategory(.smileysPeople))
             }) {
                 HStack {
                     Text("Set Emojis")
-                        .bold()
                     
                     Spacer()
                     
@@ -31,24 +31,31 @@ struct MenuSecondSectionView: View {
             .keyboardShortcut("m")
             .buttonStyle(.plain)
             .frame(maxWidth: .infinity)
+            
+            Button(action: {
+                dismiss()
+                openMappingsWindow(initialSelection: .customMappings)
+            }) {
+                HStack {
+                    Text("Set Custom Text")
+                    
+                    Spacer()
+                    
+                    Text("⌘T")
+                        .foregroundColor(.secondary)
+                }
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+            }
+            .keyboardShortcut("t")
+            .buttonStyle(.plain)
+            .frame(maxWidth: .infinity)
         }
+        .background(.clear)
+        .font(.system(size: 13, weight: .medium))
     }
     
-    private func openEmojiMappingsWindow() {
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 500, height: 500),
-            styleMask: [.titled, .fullSizeContentView, .closable, .miniaturizable],
-            backing: .buffered,
-            defer: false
-        )
-        window.contentView = NSHostingView(rootView: MappingContentView())
-        window.level = .floating
-        window.isMovable = true
-        window.center()
-        window.titlebarAppearsTransparent = true
-        window.backgroundColor = .clear
-
-        let controller = NSWindowController(window: window)
-        controller.showWindow(self)
+    private func openMappingsWindow(initialSelection: MappingSidebarItem) {
+        MappingsWindowCoordinator.shared.show(initialSelection: initialSelection)
     }
 }

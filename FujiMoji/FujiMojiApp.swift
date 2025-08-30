@@ -18,7 +18,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct FujiMojiApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @StateObject private var fujiMojiState = FujiMojiState()
+    @StateObject private var fujiMojiState = FujiMojiState.shared
     
     var body: some Scene {
         MenuBarExtra("🍎") {

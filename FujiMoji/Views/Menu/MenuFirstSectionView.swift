@@ -17,5 +17,6 @@ struct MenuFirstSectionView: View {
             Text(fujiMojiState.isEnabled ? "On" : "Off")
                 .foregroundColor(.secondary)
         }
+        .background(.clear)
     }
 }

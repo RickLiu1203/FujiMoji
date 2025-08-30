@@ -16,6 +16,7 @@ struct PredictionResultsView<T: Hashable>: View {
     let onTap: (T) -> Void
     let highlightedIndex: Int
     let height: CGFloat = 60
+    @State private var didPerformInitialScroll: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -44,13 +45,35 @@ struct PredictionResultsView<T: Hashable>: View {
                     .padding(.leading, 2)
                 }
                 .scrollDisabled(true) // Only allow programmatic scrolling
+                .onAppear {
+                    // Keep initial content left-aligned; don't scroll if highlighting first item
+                    guard highlightedIndex > 0, !items.isEmpty, highlightedIndex < items.count else { return }
+                    var transaction = Transaction(animation: nil)
+                    withTransaction(transaction) {
+                        proxy.scrollTo("pill_\(highlightedIndex)", anchor: .center)
+                    }
+                    didPerformInitialScroll = true
+                }
+                .onChange(of: items) { _ in
+                    // Avoid any jump when data swaps; only align if highlight not at start
+                    didPerformInitialScroll = false
+                    guard highlightedIndex > 0, !items.isEmpty, highlightedIndex < items.count else { return }
+                    var transaction = Transaction(animation: nil)
+                    withTransaction(transaction) {
+                        proxy.scrollTo("pill_\(highlightedIndex)", anchor: .center)
+                    }
+                    didPerformInitialScroll = true
+                }
                 .onChange(of: highlightedIndex) { newIndex in
-                    withAnimation(.easeInOut(duration: 0.25)) {
+                    guard !items.isEmpty, newIndex >= 0, newIndex < items.count else { return }
+                    var transaction = Transaction(animation: nil)
+                    withTransaction(transaction) {
                         proxy.scrollTo("pill_\(newIndex)", anchor: .center)
                     }
                 }
             }
         }
+        .transaction { transaction in transaction.animation = nil }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

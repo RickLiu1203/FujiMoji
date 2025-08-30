@@ -36,7 +36,11 @@ class PopupViewModel: ObservableObject {
     // Favorites data cached for O(1) lookup
     private var favoriteEmojis: Set<String> = []
     
-    init() {
+    // Reference to FujiMojiState for controlling popup behavior
+    weak var fujiMojiState: FujiMojiState?
+    
+    init(fujiMojiState: FujiMojiState? = nil) {
+        self.fujiMojiState = fujiMojiState
         loadFavorites()
         setupObservers()
     }
@@ -96,6 +100,32 @@ class PopupViewModel: ObservableObject {
     
     func updateMatches(for current: String) {
         let prefix = current.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        
+        // If popup is disabled, only show exact matches
+        guard fujiMojiState?.showSuggestionPopup != false else {
+            // Only show if there's an exact match
+            let hasExactCustom = CustomStorage.shared.getText(forTag: prefix) != nil
+            let hasExactEmoji = EmojiStorage.shared.findEmoji(forTag: prefix) != nil
+            
+            if hasExactCustom || hasExactEmoji {
+                // Show exact matches only
+                let customTags = hasExactCustom ? [prefix] : []
+                let emojiPairs = hasExactEmoji ? EmojiStorage.shared.collectPairs(withPrefix: prefix, limit: 1).filter { $0.tag.lowercased() == prefix } : []
+                
+                DispatchQueue.main.async {
+                    self.customMatches = customTags
+                    self.emojiMatches = emojiPairs.map { EmojiMatch(tag: $0.tag, emoji: $0.emoji) }
+                    self.highlightedIndex = 0
+                }
+            } else {
+                customMatches = []
+                emojiMatches = []
+                highlightedIndex = 0
+            }
+            return
+        }
+        
+        // Normal popup behavior - show suggestions with prefix matching
         guard prefix.count >= minCharsForSuggestions else {
             customMatches = []
             emojiMatches = []
@@ -172,7 +202,7 @@ class PopupViewModel: ObservableObject {
     }
     
     func selectHighlightedItem() {
-        // Always select whatever is currently highlighted - no exact match override
+        // First try to select from popup suggestions
         if !customMatches.isEmpty && highlightedIndex < customMatches.count {
             let tag = customMatches[highlightedIndex]
             performCustomSelection(tag: tag)
@@ -184,7 +214,36 @@ class PopupViewModel: ObservableObject {
                 performEmojiSelection(tag: pair.tag, emoji: pair.emoji)
                 print("🔍 DEBUG: Selected highlighted emoji item: \(pair.tag) at adjusted index \(adjustedIndex)")
             }
+        } else {
+            // No popup matches - try exact match replacement
+            performExactMatchReplacement()
         }
+    }
+    
+    private func performExactMatchReplacement() {
+        let currentText = KeyDetection.shared.currentString.lowercased()
+        guard !currentText.isEmpty else { 
+            KeyDetection.shared.finishCapture(triggerKeyConsumed: true)
+            return 
+        }
+        
+        // Try custom mapping first
+        if let customText = CustomStorage.shared.getText(forTag: currentText) {
+            performCustomSelection(tag: currentText)
+            print("🔍 DEBUG: Exact match custom replacement: \(currentText) -> \(customText)")
+            return
+        }
+        
+        // Try emoji mapping
+        if let emoji = EmojiStorage.shared.findEmoji(forTag: currentText) {
+            performEmojiSelection(tag: currentText, emoji: emoji)
+            print("🔍 DEBUG: Exact match emoji replacement: \(currentText) -> \(emoji)")
+            return
+        }
+        
+        // No match found - still use finishCapture to get proper logging and state cleanup
+        print("🔍 DEBUG: No exact match found for: \(currentText), calling finishCapture")
+        KeyDetection.shared.finishCapture(triggerKeyConsumed: true)
     }
     
     func isFavorite(emoji: String) -> Bool {
@@ -210,6 +269,7 @@ class PopupViewModel: ObservableObject {
     }
     
     var shouldShowSuggestions: Bool {
+        guard fujiMojiState?.showSuggestionPopup != false else { return false }
         return KeyDetection.shared.currentString.count >= minCharsForSuggestions
     }
     

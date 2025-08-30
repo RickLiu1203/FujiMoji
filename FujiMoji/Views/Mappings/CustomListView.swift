@@ -29,7 +29,7 @@ struct CustomListView: View {
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .frame(width: tagWidth, alignment: .leading)
-                    .padding(.leading, 4)
+                    .padding(.leading, 8)
                 Divider()
                     .opacity(0)
                 Text(item.value)
@@ -100,7 +100,7 @@ struct CustomListView: View {
                 }
             } label: {
                 Label("Add Custom Text", systemImage: "plus")
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.system(size: 14))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
                     .background(
@@ -122,7 +122,7 @@ struct CustomListView: View {
                 Text("Tags")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(.secondary)
-                    .padding(.leading, 4)
+                    .padding(.leading, 8)
                     .padding(.bottom, 12)
                     .frame(width: tagWidth + 12, alignment: .leading)
                 Divider()
@@ -130,7 +130,7 @@ struct CustomListView: View {
                 Text("Custom Texts")
                     .font(.system(size: 14, weight: .medium))
                     .foregroundStyle(.secondary)
-                    .padding(.leading, 6)
+                    .padding(.leading, 10)
                     .padding(.bottom, 12)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }

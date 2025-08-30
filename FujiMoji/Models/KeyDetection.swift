@@ -26,8 +26,8 @@ class KeyDetection: ObservableObject {
     @Published var currentString = ""
     @Published var isCapturing = false
     
-    private let startDelimiter = "/"
-    private let endDelimiter = " "
+    private var startDelimiter = "/"
+    private var endDelimiter = " "
     private var captureStarted = false 
     
     private var preDelimiterDigits = ""
@@ -36,12 +36,22 @@ class KeyDetection: ObservableObject {
     private var lastDigitTypedAt: Date?
     private let digitValidityWindow: TimeInterval = 2.0
 
-    private var replaceOnSpaceEnabled: Bool {
-        get { UserDefaults.standard.object(forKey: "spaceToggle") as? Bool ?? true }
-        set { UserDefaults.standard.set(newValue, forKey: "spaceToggle") }
+    // Remove space toggle logic - replacement now triggered by end delimiter, tab, or enter only
+    
+    private init() {
+        // Load saved delimiters or use defaults
+        startDelimiter = UserDefaults.standard.string(forKey: "startCaptureKey") ?? "/"
+        endDelimiter = UserDefaults.standard.string(forKey: "endCaptureKey") ?? " "
     }
     
-    private init() {}
+    func updateDelimiters(start: String, end: String) {
+        startDelimiter = start
+        endDelimiter = end
+    }
+    
+    var currentEndDelimiter: String {
+        return endDelimiter
+    }
     
     private let callback: CGEventTapCallBack = { _, type, event, _ in
         guard type == .keyDown else { return Unmanaged.passUnretained(event) }
@@ -89,17 +99,43 @@ class KeyDetection: ObservableObject {
                     KeyDetection.shared.handleBackspace()
                 }
                 else if keyCode == 49 { // Space key
-                    if KeyDetection.shared.captureStarted && KeyDetection.shared.replaceOnSpaceEnabled {
-                        KeyDetection.shared.handleCharacter(" ")
-                        return nil
+                    if KeyDetection.shared.captureStarted {
+                        // Space cancels capture AND prints space (unlike escape)
+                        KeyDetection.shared.cancelCapture()
+                        // Let the space character through by not consuming the event
+                        return Unmanaged.passUnretained(event)
                     } else {
-                        KeyDetection.shared.handleCharacter(characters)
+                        KeyDetection.shared.handleCharacter(" ")
                     }
                 } else if keyCode == 48 { // Tab key
                     if KeyDetection.shared.captureStarted {
                         // Notify the popup to select the highlighted item
                         DispatchQueue.main.async {
                             NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
+                        }
+                        // Fallback: ensure capture ends even if no observer reacts
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                            if KeyDetection.shared.captureStarted {
+                                print("⏱️ Fallback: Tab triggered finishCapture due to no observer reaction")
+                                KeyDetection.shared.finishCapture(triggerKeyConsumed: true)
+                            }
+                        }
+                        return nil
+                    } else {
+                        return Unmanaged.passUnretained(event)
+                    }
+                } else if keyCode == 36 { // Enter/Return key
+                    if KeyDetection.shared.captureStarted {
+                        // Notify the popup to select the highlighted item
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
+                        }
+                        // Fallback: ensure capture ends even if no observer reacts
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                            if KeyDetection.shared.captureStarted {
+                                print("⏱️ Fallback: Enter triggered finishCapture due to no observer reaction")
+                                KeyDetection.shared.finishCapture(triggerKeyConsumed: true)
+                            }
                         }
                         return nil
                     } else {
@@ -113,7 +149,23 @@ class KeyDetection: ObservableObject {
                         return Unmanaged.passUnretained(event)
                     }
                 } else {
-                    KeyDetection.shared.handleCharacter(characters)
+                    // Handle other end delimiters that might be typed (excluding space)
+                    if KeyDetection.shared.captureStarted && characters == KeyDetection.shared.currentEndDelimiter && characters != " " {
+                        // Custom end delimiter - consume and trigger suggestion logic
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
+                        }
+                        // Fallback: ensure capture ends even if no observer reacts
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                            if KeyDetection.shared.captureStarted {
+                                print("⏱️ Fallback: End delimiter triggered finishCapture due to no observer reaction")
+                                KeyDetection.shared.finishCapture(triggerKeyConsumed: true)
+                            }
+                        }
+                        return nil
+                    } else {
+                        KeyDetection.shared.handleCharacter(characters)
+                    }
                 }
             }
         }
@@ -148,8 +200,7 @@ class KeyDetection: ObservableObject {
         // Add local event monitor as backup for arrow keys
         setupLocalEventMonitor()
         
-        let modeDescription = replaceOnSpaceEnabled ? "[digits]?/tag␠ (space ends capture)" : "[digits]?/tag (immediate replacement)"
-        print("KeyDetection started - monitoring pattern: \(modeDescription)")
+        print("KeyDetection started - monitoring pattern: [digits]?/tag[delimiter/tab/enter] (triggers replacement)")
     }
     
     func stop() {
@@ -224,8 +275,18 @@ class KeyDetection: ObservableObject {
     }
     
     private func handleCharacter(_ character: String) {
-        if character == startDelimiter {
+        // Check for end delimiter first when capturing (handles same start/end delimiter case)
+        if character == endDelimiter && captureStarted {
+            // End delimiter triggers suggestion logic (except for space which cancels)
+            if endDelimiter != " " { // Space always cancels in callback
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
+                }
+            }
+        } else if character == startDelimiter {
             if captureStarted {
+                // If we're already capturing and this is the start delimiter (but not end delimiter),
+                // add it to the captured string
                 DispatchQueue.main.async {
                     self.currentString += character
                 }
@@ -247,21 +308,11 @@ class KeyDetection: ObservableObject {
                 lastDigitTypedAt = nil
                 startCapture()
             }
-        } else if character == endDelimiter && captureStarted && replaceOnSpaceEnabled {
-            finishCapture(endWithSpace: true)
         } else if captureStarted {
             DispatchQueue.main.async {
                 self.currentString += character
             }
-            if !replaceOnSpaceEnabled {
-                // Immediate mode: replace as soon as we have a match. Prefer custom mappings.
-                let tag = self.currentString.lowercased()
-                let hasCustom = CustomStorage.shared.getText(forTag: tag) != nil
-                let hasEmoji = EmojiStorage.shared.findEmoji(forTag: tag) != nil
-                if hasCustom || hasEmoji {
-                    finishCapture(endWithSpace: false)
-                }
-            }
+            // Remove immediate mode replacement - only triggered by end delimiter, tab, or enter
         } else {
             if character.range(of: "^\\d$", options: .regularExpression) != nil {
                 preDelimiterDigits.append(contentsOf: character)
@@ -300,12 +351,20 @@ class KeyDetection: ObservableObject {
             self.captureStarted = true
             self.isCapturing = true
             self.currentString = ""
-            print("🚀 Started capturing after '\(self.startDelimiter)' key (end on space)")
+            let endTrigger: String
+            if self.endDelimiter == " " {
+                endTrigger = "none (space cancels)"
+            } else if self.endDelimiter == self.startDelimiter {
+                endTrigger = "'\(self.endDelimiter)' (same as start)"
+            } else {
+                endTrigger = "'\(self.endDelimiter)'"
+            }
+            print("🚀 Started capturing after '\(self.startDelimiter)' key (triggers: \(endTrigger), tab, or enter; space cancels + prints)")
             print("🔍 DEBUG: captureStarted = \(self.captureStarted)")
         }
     }
     
-    func finishCapture(endWithSpace: Bool) {
+    func finishCapture(triggerKeyConsumed: Bool) {
         let capturedString = currentString
         
         if !capturedString.isEmpty {
@@ -313,37 +372,49 @@ class KeyDetection: ObservableObject {
                 self.detectedStrings.append(capturedString)
                 print("Detected string: '\(capturedString)'")
                 
-                TextReplacement.shared.replaceWithEmoji(
+                let replacementSuccess = TextReplacement.shared.replaceWithEmoji(
                     capturedString,
                     startDelimiter: self.startDelimiter,
-                    endDelimiter: endWithSpace ? self.endDelimiter : "",
                     multiplier: self.multiplier,
                     digitsCountBeforeStart: self.digitsCountBeforeStart,
-                    endDelimiterPresentInDocument: endWithSpace
+                    triggerKeyConsumed: triggerKeyConsumed
                 )
+                
+                if !replacementSuccess {
+                    print("🔍 No replacement occurred for '\(capturedString)', but capture will still end")
+                }
             }
+        } else {
+            print("🔍 Captured string was empty, but capture will still end")
         }
         
+        // Always stop capture regardless of whether replacement occurred
         stopCapture()
     }
     
     // Finish capture by directly specifying the replacement unit (emoji or custom string)
     func finishCaptureWithDirectReplacement(_ replacementUnit: String, endWithSpace: Bool) {
         let capturedString = currentString
+        
         if !capturedString.isEmpty {
             DispatchQueue.main.async {
                 self.detectedStrings.append(capturedString)
-                TextReplacement.shared.replaceWithUnit(
+                let replacementSuccess = TextReplacement.shared.replaceWithUnit(
                     replacementUnit,
                     forCapturedText: capturedString,
                     startDelimiter: self.startDelimiter,
-                    endDelimiter: endWithSpace ? self.endDelimiter : "",
                     multiplier: self.multiplier,
                     digitsCountBeforeStart: self.digitsCountBeforeStart,
-                    endDelimiterPresentInDocument: endWithSpace
+                    triggerKeyConsumed: true // Popup selections ARE triggered by consumed keys (tab/enter/end delimiter)
                 )
+                
+                if !replacementSuccess {
+                    print("🔍 No replacement occurred for '\(capturedString)', but capture will still end")
+                }
             }
         }
+        
+        // Always stop capture regardless of whether replacement occurred
         stopCapture()
     }
 
@@ -359,6 +430,7 @@ class KeyDetection: ObservableObject {
             self.currentString = ""
             self.multiplier = 1
             self.digitsCountBeforeStart = 0
+            print("🛑 Capture stopped immediately - ready for next capture")
         }
     }
     

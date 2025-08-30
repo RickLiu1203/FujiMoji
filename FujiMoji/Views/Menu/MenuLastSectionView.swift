@@ -48,5 +48,7 @@ struct MenuLastSectionView: View {
             .buttonStyle(.plain)
             .frame(maxWidth: .infinity)
         }
+        .background(.clear)
+        .font(.system(size: 13, weight: .medium))
     }
 }

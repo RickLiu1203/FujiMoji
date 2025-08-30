@@ -22,12 +22,23 @@ struct MenuView: View {
             Divider()
                 .padding(.vertical, 8)
 
+            MenuThirdSectionView(fujiMojiState: fujiMojiState)
+
+            Divider()
+                .padding(.vertical, 8)
+
+            MenuFourthSectionView(fujiMojiState: fujiMojiState)
+
+            Divider()
+                .padding(.vertical, 8)
+
             MenuLastSectionView(fujiMojiState: fujiMojiState)
 
         }
         .padding(16)
-        .frame(width: 150)
-        .onChange(of: fujiMojiState.isEnabled) {_ in    
+        .frame(width: 200)
+        .background(.ultraThinMaterial)
+        .onChange(of: fujiMojiState.isEnabled) {
             fujiMojiState.updateKeyDetection()
         }
     }

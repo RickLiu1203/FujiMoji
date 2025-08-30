@@ -18,7 +18,11 @@ struct EmojiDetail: Identifiable {
 }
 
 struct MappingContentView: View {
-    @StateObject private var mappingViewModel = MappingsViewModel()
+    @StateObject private var mappingViewModel: MappingsViewModel
+    
+    init(mappingViewModel: MappingsViewModel? = nil) {
+        self._mappingViewModel = StateObject(wrappedValue: mappingViewModel ?? MappingsViewModel())
+    }
     private let columnsCount = 6
     private let categoryRowAnchors: [EmojiCategory: Int] = [
         .smileysPeople: 0,

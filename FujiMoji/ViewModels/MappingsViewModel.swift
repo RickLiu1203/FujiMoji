@@ -1,5 +1,6 @@
 import Foundation
 import SwiftUI
+import AppKit
 
 final class MappingsViewModel: ObservableObject {
     @Published var allEmojis: [String] = []
@@ -10,7 +11,8 @@ final class MappingsViewModel: ObservableObject {
 
     private var defaultMap: [String: DefaultEmojiRecord] = [:]
 
-    init() {
+    init(initialSelection: MappingSidebarItem? = .emojiCategory(.smileysPeople)) {
+        self.selection = initialSelection
         loadFromEmojiArray()
         loadDefaultMap()
         loadFavorites()
@@ -147,4 +149,66 @@ final class CustomMappingsViewModel: ObservableObject {
         objectWillChange.send()
     }
 }
+
+// MARK: - Shared Mappings Window Coordinator (singleton)
+final class MappingsWindowCoordinator: NSWindowController {
+    static let shared = MappingsWindowCoordinator()
+
+    private var hostingController: NSHostingController<MappingContentView>?
+    private var mappingsViewModel: MappingsViewModel?
+
+    private override init(window: NSWindow?) {
+        super.init(window: window)
+    }
+
+    convenience init() {
+        self.init(window: nil)
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    func show(initialSelection: MappingSidebarItem) {
+        if window == nil {
+            setupWindow(initialSelection: initialSelection)
+        } else {
+            if mappingsViewModel == nil {
+                mappingsViewModel = MappingsViewModel(initialSelection: initialSelection)
+            }
+            mappingsViewModel?.selection = initialSelection
+        }
+
+        guard let window = self.window else { return }
+
+        window.center()
+        NSApp.activate(ignoringOtherApps: true)
+        window.makeKeyAndOrderFront(nil)
+    }
+
+    private func setupWindow(initialSelection: MappingSidebarItem) {
+        let viewModel = MappingsViewModel(initialSelection: initialSelection)
+        self.mappingsViewModel = viewModel
+
+        let contentView = MappingContentView(mappingViewModel: viewModel)
+        let hosting = NSHostingController(rootView: contentView)
+        self.hostingController = hosting
+
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 900, height: 500),
+            styleMask: [.titled, .fullSizeContentView, .closable, .miniaturizable],
+            backing: .buffered,
+            defer: false
+        )
+        window.contentViewController = hosting
+        window.title = ""
+        window.titlebarAppearsTransparent = true
+        window.backgroundColor = .clear
+        window.isMovable = true
+        window.isReleasedWhenClosed = false
+        window.level = .floating
+        window.collectionBehavior = [.moveToActiveSpace]
+
+        self.window = window
+    }
+}
+
 

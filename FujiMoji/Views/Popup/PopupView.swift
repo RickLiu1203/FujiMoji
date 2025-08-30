@@ -9,13 +9,15 @@ import SwiftUI
 import AppKit
 import Combine
 
+extension Notification.Name {
+    static let resultsRenderModeChanged = Notification.Name("resultsRenderModeChanged")
+}
 private let popupWidth: CGFloat = 300
 private let screenBottomMargin: CGFloat = 0
 private let detectedTextWindowHeight: CGFloat = 72
 private let predictionResultsDefaultHeight: CGFloat = 100
-private let debounceDelayMs: Int = 150
-private let windowAnimationDuration: Double = 0.25
-private let layoutDelay: Double = 0.05 // Small delay for SwiftUI layout before window resize
+private let resultsYOffset: CGFloat = -12
+private let debounceDelayMs: Int = 250
 
 
 
@@ -33,76 +35,150 @@ struct DetectedTextPopupView: View {
 }
 
 // MARK: - Prediction Results View (Appears above detected text)
+enum ResultsRenderMode: String { case single, double }
 struct PredictionResultsPopupView: View {
-    @StateObject private var viewModel = PopupViewModel()
+    @StateObject private var viewModel = PopupViewModel(fujiMojiState: FujiMojiState.shared)
+    private let padding: CGFloat = 16
+    @State private var renderedMode: ResultsRenderMode? = nil
+    
+    
+    private var desiredMode: ResultsRenderMode? {
+        let hasEmoji = !viewModel.emojiMatches.isEmpty
+        let hasCustom = !viewModel.customMatches.isEmpty
+        if hasEmoji && hasCustom { return .double }
+        if hasEmoji || hasCustom { return .single }
+        return nil
+    }
+    
+    private func postMode(_ mode: ResultsRenderMode?) {
+        guard let mode = mode else { return }
+        NotificationCenter.default.post(name: .resultsRenderModeChanged, object: nil, userInfo: ["mode": mode.rawValue])
+    }
+
+    private func applyImmediateModeChange() {
+        let target = desiredMode
+        if target == renderedMode {
+            return
+        }
+        renderedMode = target
+        postMode(target)
+    }
+    
+    var body: some View {
+        ZStack { // Floating layers so one does not affect the other
+            DoubleResultsPopupView(viewModel: viewModel)
+                .opacity(renderedMode == .double ? 1 : 0)
+                .allowsHitTesting(renderedMode == .double)
+                .frame(width: popupWidth)
+                .frame(height: renderedMode == .double ? nil : 0)
+            SingleResultsPopupView(viewModel: viewModel)
+                .opacity(renderedMode == .single ? 1 : 0)
+                .allowsHitTesting(renderedMode == .single)
+                .frame(width: popupWidth)
+                .frame(height: renderedMode == .single ? nil : 0)
+        }
+        .frame(width: popupWidth)
+        .onReceive(NotificationCenter.default.publisher(for: .selectHighlightedSuggestion)) { _ in
+            viewModel.selectHighlightedItem()
+        }
+        .onAppear { renderedMode = desiredMode; postMode(renderedMode) }
+        .onChange(of: viewModel.customMatches) { _ in applyImmediateModeChange() }
+        .onChange(of: viewModel.emojiMatches) { _ in applyImmediateModeChange() }
+    }
+}
+
+// MARK: - Split Results Containers
+private struct SingleResultsPopupView: View {
+    @ObservedObject var viewModel: PopupViewModel
     private let padding: CGFloat = 16
     
     var body: some View {
-        // Instantly clear the entire view when there are no results
-        if viewModel.customMatches.isEmpty && viewModel.emojiMatches.isEmpty {
-            EmptyView()
-        } else {
-            VStack(alignment: .center, spacing: 8) {
-                Spacer(minLength: 0)
-                if !viewModel.emojiMatches.isEmpty {
-                    PredictionResultsView(
-                        title: "Emojis",
-                        items: viewModel.emojiMatches,
-                        displayText: { match in
-                            "\(match.emoji)  \(match.tag)"
-                        },
-                        isHighlighted: { index, _ in
-                            let adjustedIndex = viewModel.customMatches.count + index
-                            return (viewModel.customMatches.isEmpty && index == viewModel.highlightedIndex) || 
-                                   (!viewModel.customMatches.isEmpty && adjustedIndex == viewModel.highlightedIndex)
-                        },
-                        isFavorite: { match in
-                            viewModel.isFavorite(emoji: match.emoji)
-                        },
-                        onTap: { match in
-                            viewModel.performEmojiSelection(tag: match.tag, emoji: match.emoji)
-                        },
-                        highlightedIndex: viewModel.customMatches.isEmpty ? viewModel.highlightedIndex : viewModel.highlightedIndex - viewModel.customMatches.count
-                    )
-                }
-                
-                // Custom matches (appears above emoji)
-                if !viewModel.customMatches.isEmpty {
-                    PredictionResultsView(
-                        title: "Custom",
-                        items: viewModel.customMatches,
-                        displayText: { $0 },
-                        isHighlighted: { index, _ in
-                            index == viewModel.highlightedIndex
-                        },
-                        isFavorite: { _ in false }, // Custom matches are not favorites
-                        onTap: { tag in
-                            viewModel.performCustomSelection(tag: tag)
-                        },
-                        highlightedIndex: viewModel.highlightedIndex
-                    )
-                }
-            }
-            .padding(.horizontal, padding)
-            .padding(.bottom, 12)
-            .padding(.top, 8)
-            .frame(width: popupWidth)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(.ultraThinMaterial)
-            )
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(.white.opacity(0.4))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .stroke(.white.opacity(0.3), lineWidth: 1.5)
-            )
-            .onReceive(NotificationCenter.default.publisher(for: .selectHighlightedSuggestion)) { _ in
-                viewModel.selectHighlightedItem()
+        VStack(alignment: .center, spacing: 8) {
+            Spacer(minLength: 0)
+            if !viewModel.customMatches.isEmpty {
+                PredictionResultsView(
+                    title: "Custom",
+                    items: viewModel.customMatches,
+                    displayText: { $0 },
+                    isHighlighted: { index, _ in index == viewModel.highlightedIndex },
+                    isFavorite: { _ in false },
+                    onTap: { tag in viewModel.performCustomSelection(tag: tag) },
+                    highlightedIndex: viewModel.highlightedIndex
+                )
+            } else if !viewModel.emojiMatches.isEmpty {
+                PredictionResultsView(
+                    title: "Emojis",
+                    items: viewModel.emojiMatches,
+                    displayText: { "\($0.emoji)  \($0.tag)" },
+                    isHighlighted: { index, _ in index == viewModel.highlightedIndex },
+                    isFavorite: { viewModel.isFavorite(emoji: $0.emoji) },
+                    onTap: { match in viewModel.performEmojiSelection(tag: match.tag, emoji: match.emoji) },
+                    highlightedIndex: viewModel.highlightedIndex
+                )
             }
         }
+        .padding(.horizontal, padding)
+        .padding(.bottom, 12)
+        .padding(.top, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(.ultraThinMaterial)
+        )
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(.white.opacity(0.4))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(.white.opacity(0.3), lineWidth: 1.5)
+        )
+    }
+}
+
+private struct DoubleResultsPopupView: View {
+    @ObservedObject var viewModel: PopupViewModel
+    private let padding: CGFloat = 16
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: 8) {
+            Spacer(minLength: 0)
+            PredictionResultsView(
+                title: "Emojis",
+                items: viewModel.emojiMatches,
+                displayText: { "\($0.emoji)  \($0.tag)" },
+                isHighlighted: { index, _ in
+                    let adjustedIndex = viewModel.customMatches.count + index
+                    return adjustedIndex == viewModel.highlightedIndex
+                },
+                isFavorite: { viewModel.isFavorite(emoji: $0.emoji) },
+                onTap: { match in viewModel.performEmojiSelection(tag: match.tag, emoji: match.emoji) },
+                highlightedIndex: max(0, viewModel.highlightedIndex - viewModel.customMatches.count)
+            )
+            PredictionResultsView(
+                title: "Custom",
+                items: viewModel.customMatches,
+                displayText: { $0 },
+                isHighlighted: { index, _ in index == viewModel.highlightedIndex },
+                isFavorite: { _ in false },
+                onTap: { tag in viewModel.performCustomSelection(tag: tag) },
+                highlightedIndex: viewModel.highlightedIndex
+            )
+        }
+        .padding(.horizontal, padding)
+        .padding(.bottom, 12)
+        .padding(.top, 8)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(.ultraThinMaterial)
+        )
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(.white.opacity(0.4))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(.white.opacity(0.3), lineWidth: 1.5)
+        )
     }
 }
 
@@ -166,19 +242,9 @@ final class DetectedTextWindowController: NSWindowController {
                 guard let window = self.window, let screen = NSScreen.main else { return }
                 
                 let targetFrame = self.frameForBottomCenter(on: screen)
-                var startFrame = targetFrame
-                startFrame.origin.y = screen.visibleFrame.minY - targetFrame.height - 10
-                
-                window.setFrame(startFrame, display: false)
-                window.alphaValue = 0
+                window.setFrame(targetFrame, display: true)
+                window.alphaValue = 1
                 window.orderFrontRegardless()
-                
-                NSAnimationContext.runAnimationGroup { context in
-                    context.duration = 0.18
-                    context.timingFunction = CAMediaTimingFunction(name: .easeOut)
-                    window.animator().setFrame(targetFrame, display: true)
-                    window.animator().alphaValue = 1
-                }
             }
         }
     }
@@ -188,23 +254,8 @@ final class DetectedTextWindowController: NSWindowController {
             guard let self = self else { return }
             
             DispatchQueue.main.async {
-                guard let window = self.window, let screen = NSScreen.main else { return }
-                
-                let targetFrame = self.frameForBottomCenter(on: screen)
-                var endFrame = targetFrame
-                endFrame.origin.y = screen.visibleFrame.minY - targetFrame.height - 10
-                
-                NSAnimationContext.runAnimationGroup({ context in
-                    context.duration = 0.16
-                    context.timingFunction = CAMediaTimingFunction(name: .easeIn)
-                    window.animator().setFrame(endFrame, display: true)
-                    window.animator().alphaValue = 0
-                }, completionHandler: { [weak self] in
-                    window.orderOut(nil)
-                    window.setFrame(targetFrame, display: false)
-                    window.alphaValue = 1
-                    self?.positionAtBottomCenter()
-                })
+                guard let window = self.window else { return }
+                window.orderOut(nil)
             }
         }
     }
@@ -225,22 +276,33 @@ final class DetectedTextWindowController: NSWindowController {
             return NSRect(x: 0, y: 0, width: popupWidth, height: detectedTextWindowHeight)
         }
         
-        // Get the actual content size from the hosting controller
+        // Use a fixed width to keep X position stable and aligned
         let contentSize = window.contentView?.fittingSize ?? NSSize(width: popupWidth, height: detectedTextWindowHeight)
         let screenFrame = screen.visibleFrame
-        let x = screenFrame.midX - contentSize.width / 2
+        let x = screenFrame.midX - popupWidth / 2
         let y = screenFrame.minY + screenBottomMargin // Fixed bottom position
         
-        return NSRect(x: x, y: y, width: contentSize.width, height: contentSize.height)
+        return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)
     }
 
     private func setupObservers() {
         KeyDetection.shared.$isCapturing
             .receive(on: RunLoop.main)
             .sink { [weak self] isCapturing in
-                if isCapturing {
+                // Only show detected text popup if suggestion popup is enabled
+                if isCapturing && FujiMojiState.shared.showSuggestionPopup {
                     self?.show()
                 } else {
+                    self?.hide()
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Also listen for changes to the popup setting
+        FujiMojiState.shared.$showSuggestionPopup
+            .receive(on: RunLoop.main)
+            .sink { [weak self] showPopup in
+                if !showPopup {
                     self?.hide()
                 }
             }
@@ -256,6 +318,7 @@ final class PredictionResultsWindowController: NSWindowController {
     private var cancellables = Set<AnyCancellable>()
     private let updateQueue = DispatchQueue(label: "PredictionResultsWindowUpdate", qos: .userInteractive)
     private var updateWorkItem: DispatchWorkItem?
+    private var currentRenderMode: ResultsRenderMode = .single
 
     private override init(window: NSWindow?) {
         super.init(window: window)
@@ -307,16 +370,10 @@ final class PredictionResultsWindowController: NSWindowController {
                 }
                 guard let window = self.window, let screen = NSScreen.main else { return }
                 
-                let targetFrame = self.frameAboveDetectedText(on: screen)
-                window.setFrame(targetFrame, display: false)
-                window.alphaValue = 0
+                let frame = self.frameAboveDetectedText(on: screen)
+                window.setFrame(frame, display: true)
+                window.alphaValue = 1
                 window.orderFrontRegardless()
-                
-                NSAnimationContext.runAnimationGroup { context in
-                    context.duration = 0.25
-                    context.timingFunction = CAMediaTimingFunction(name: .easeOut)
-                    window.animator().alphaValue = 1
-                }
             }
         }
     }
@@ -327,14 +384,7 @@ final class PredictionResultsWindowController: NSWindowController {
             
             DispatchQueue.main.async {
                 guard let window = self.window else { return }
-                
-                NSAnimationContext.runAnimationGroup({ context in
-                    context.duration = 0.2
-                    context.timingFunction = CAMediaTimingFunction(name: .easeIn)
-                    window.animator().alphaValue = 0
-                }, completionHandler: {
-                    window.orderOut(nil)
-                })
+                window.orderOut(nil)
             }
         }
     }
@@ -344,13 +394,14 @@ final class PredictionResultsWindowController: NSWindowController {
             return NSRect(x: 0, y: 0, width: popupWidth, height: predictionResultsDefaultHeight)
         }
         
+        // Use a fixed width to keep X position stable and aligned with detected text
         let contentSize = window.contentView?.fittingSize ?? NSSize(width: popupWidth, height: predictionResultsDefaultHeight)
         let screenFrame = screen.visibleFrame
-        let x = screenFrame.midX - contentSize.width / 2
-        // Anchor bottom edge at top of detected text - only top edge moves as height changes
-        // This creates the expanding/contracting effect from bottom up
-        let y = screenFrame.minY + screenBottomMargin + detectedTextWindowHeight - 8
-        return NSRect(x: x, y: y, width: contentSize.width, height: contentSize.height)
+        let x = screenFrame.midX - popupWidth / 2
+        // Single unified vertical offset for all modes
+        let yOffset = resultsYOffset
+        let y = screenFrame.minY + screenBottomMargin + detectedTextWindowHeight + yOffset
+        return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)
     }
 
     private func setupObservers() {
@@ -363,12 +414,42 @@ final class PredictionResultsWindowController: NSWindowController {
             }
             .store(in: &cancellables)
         
-        // Immediate window frame updates for smooth animations (no debounce)
+        // Also listen for changes to the popup setting
+        FujiMojiState.shared.$showSuggestionPopup
+            .receive(on: RunLoop.main)
+            .sink { [weak self] showPopup in
+                if !showPopup {
+                    self?.hide()
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Immediate SHOW when there are matches (no debounce)
+        KeyDetection.shared.$currentString
+            .removeDuplicates()
+            .receive(on: RunLoop.main)
+            .sink { [weak self] currentString in
+                self?.handleImmediateShow(currentString)
+            }
+            .store(in: &cancellables)
+        
+        // Immediate window frame updates (no debounce)
         KeyDetection.shared.$currentString
             .removeDuplicates()
             .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateWindowFrameIfVisible()
+            }
+            .store(in: &cancellables)
+        
+        // Track actual rendered mode to compute Y offset correctly
+        NotificationCenter.default.publisher(for: .resultsRenderModeChanged)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] notification in
+                if let raw = notification.userInfo?["mode"] as? String, let mode = ResultsRenderMode(rawValue: raw) {
+                    self?.currentRenderMode = mode
+                    self?.updateWindowFrameIfVisible()
+                }
             }
             .store(in: &cancellables)
     }
@@ -381,6 +462,12 @@ final class PredictionResultsWindowController: NSWindowController {
             guard let self = self else { return }
             
             if KeyDetection.shared.isCapturing && currentString.count >= 2 {
+                // Only show popup if suggestion popup is enabled
+                guard FujiMojiState.shared.showSuggestionPopup else {
+                    self.hide()
+                    return
+                }
+                
                 // Check if we have any matches
                 let hasMatches = !CustomStorage.shared.collectTags(withPrefix: currentString.lowercased(), limit: 1).isEmpty ||
                                 !EmojiStorage.shared.collectPairs(withPrefix: currentString.lowercased(), limit: 1).isEmpty
@@ -402,14 +489,25 @@ final class PredictionResultsWindowController: NSWindowController {
         DispatchQueue.main.async(execute: workItem)
     }
     
+    private func handleImmediateShow(_ currentString: String) {
+        guard KeyDetection.shared.isCapturing,
+              currentString.count >= 2,
+              FujiMojiState.shared.showSuggestionPopup else { return }
+        
+        let prefix = currentString.lowercased()
+        // Quick existence check only (limit: 1) to keep it cheap
+        let hasMatches = !CustomStorage.shared.collectTags(withPrefix: prefix, limit: 1).isEmpty ||
+                         !EmojiStorage.shared.collectPairs(withPrefix: prefix, limit: 1).isEmpty
+        
+        if hasMatches, self.window?.isVisible != true {
+            self.show()
+        }
+    }
+    
     private func updateWindowFrameIfVisible() {
         // Only update frame if window is visible, avoiding unnecessary work
         guard let window = self.window, window.isVisible else { return }
-        
-        // Small delay to let SwiftUI content layout first for smoother transitions
-        DispatchQueue.main.asyncAfter(deadline: .now() + layoutDelay) {
-            self.updateWindowFrame()
-        }
+        self.updateWindowFrame()
     }
     
     private func updateWindowFrame() {
@@ -419,13 +517,7 @@ final class PredictionResultsWindowController: NSWindowController {
             DispatchQueue.main.async {
                 guard let window = self.window, let screen = NSScreen.main else { return }
                 let newFrame = self.frameAboveDetectedText(on: screen)
-                
-                // Animate window frame changes for smooth container size transitions
-                NSAnimationContext.runAnimationGroup { context in
-                    context.duration = windowAnimationDuration
-                    context.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-                    window.animator().setFrame(newFrame, display: true)
-                }
+                window.setFrame(newFrame, display: true)
             }
         }
     }
