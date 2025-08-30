@@ -3,7 +3,7 @@
       "id": 1,
       "default_tag": "grinning_face",
       "unicode": "U+1F600",
-      "aliases": ["oop"]
+      "aliases": []
     },
     "😃️": {
       "id": 2,
@@ -343,7 +343,7 @@
     },
     "🫩️": {
       "id": 58,
-      "default_tag": "⊛_face_with_bags_under_eyes",
+      "default_tag": "face_with_bags_under_eyes",
       "unicode": "U+1FAE9",
       "aliases": []
     },
@@ -3325,7 +3325,7 @@
     },
     "🫆️": {
       "id": 555,
-      "default_tag": "⊛_fingerprint",
+      "default_tag": "fingerprint",
       "unicode": "U+1FAC6",
       "aliases": []
     },
@@ -4303,7 +4303,7 @@
     },
     "🪾️": {
       "id": 718,
-      "default_tag": "⊛_leafless_tree",
+      "default_tag": "leafless_tree",
       "unicode": "U+1FABE",
       "aliases": []
     },
@@ -4537,7 +4537,7 @@
     },
     "🫜️": {
       "id": 757,
-      "default_tag": "⊛_root_vegetable",
+      "default_tag": "root_vegetable",
       "unicode": "U+1FADC",
       "aliases": []
     },
@@ -7369,7 +7369,7 @@
     },
     "🪉️": {
       "id": 1229,
-      "default_tag": "⊛_harp",
+      "default_tag": "harp",
       "unicode": "U+1FA89",
       "aliases": []
     },
@@ -8203,7 +8203,7 @@
     },
     "🪏️": {
       "id": 1368,
-      "default_tag": "⊛_shovel",
+      "default_tag": "shovel",
       "unicode": "U+1FA8F",
       "aliases": []
     },
@@ -9319,7 +9319,7 @@
     },
     "🫟️": {
       "id": 1554,
-      "default_tag": "⊛_splatter",
+      "default_tag": "splatter",
       "unicode": "U+1FADF",
       "aliases": []
     },
@@ -9889,1573 +9889,1573 @@
     },
     "🇦🇨": {
       "id": 1649,
-      "default_tag": "flag:_Ascension_Island",
+      "default_tag": "Ascension_Island",
       "unicode": "U+1F1E6 U+1F1E8",
       "aliases": []
     },
     "🇦🇩": {
       "id": 1650,
-      "default_tag": "flag:_Andorra",
+      "default_tag": "Andorra",
       "unicode": "U+1F1E6 U+1F1E9",
       "aliases": []
     },
     "🇦🇪": {
       "id": 1651,
-      "default_tag": "flag:_United_Arab_Emirates",
+      "default_tag": "United_Arab_Emirates",
       "unicode": "U+1F1E6 U+1F1EA",
       "aliases": []
     },
     "🇦🇫": {
       "id": 1652,
-      "default_tag": "flag:_Afghanistan",
+      "default_tag": "Afghanistan",
       "unicode": "U+1F1E6 U+1F1EB",
       "aliases": []
     },
     "🇦🇬": {
       "id": 1653,
-      "default_tag": "flag:_Antigua_&_Barbuda",
+      "default_tag": "Antigua_&_Barbuda",
       "unicode": "U+1F1E6 U+1F1EC",
       "aliases": []
     },
     "🇦🇮": {
       "id": 1654,
-      "default_tag": "flag:_Anguilla",
+      "default_tag": "Anguilla",
       "unicode": "U+1F1E6 U+1F1EE",
       "aliases": []
     },
     "🇦🇱": {
       "id": 1655,
-      "default_tag": "flag:_Albania",
+      "default_tag": "Albania",
       "unicode": "U+1F1E6 U+1F1F1",
       "aliases": []
     },
     "🇦🇲": {
       "id": 1656,
-      "default_tag": "flag:_Armenia",
+      "default_tag": "Armenia",
       "unicode": "U+1F1E6 U+1F1F2",
       "aliases": []
     },
     "🇦🇴": {
       "id": 1657,
-      "default_tag": "flag:_Angola",
+      "default_tag": "Angola",
       "unicode": "U+1F1E6 U+1F1F4",
       "aliases": []
     },
     "🇦🇶": {
       "id": 1658,
-      "default_tag": "flag:_Antarctica",
+      "default_tag": "Antarctica",
       "unicode": "U+1F1E6 U+1F1F6",
       "aliases": []
     },
     "🇦🇷": {
       "id": 1659,
-      "default_tag": "flag:_Argentina",
+      "default_tag": "Argentina",
       "unicode": "U+1F1E6 U+1F1F7",
       "aliases": []
     },
     "🇦🇸": {
       "id": 1660,
-      "default_tag": "flag:_American_Samoa",
+      "default_tag": "American_Samoa",
       "unicode": "U+1F1E6 U+1F1F8",
       "aliases": []
     },
     "🇦🇹": {
       "id": 1661,
-      "default_tag": "flag:_Austria",
+      "default_tag": "Austria",
       "unicode": "U+1F1E6 U+1F1F9",
       "aliases": []
     },
     "🇦🇺": {
       "id": 1662,
-      "default_tag": "flag:_Australia",
+      "default_tag": "Australia",
       "unicode": "U+1F1E6 U+1F1FA",
       "aliases": []
     },
     "🇦🇼": {
       "id": 1663,
-      "default_tag": "flag:_Aruba",
+      "default_tag": "Aruba",
       "unicode": "U+1F1E6 U+1F1FC",
       "aliases": []
     },
     "🇦🇽": {
       "id": 1664,
-      "default_tag": "flag:_Åland_Islands",
+      "default_tag": "Åland_Islands",
       "unicode": "U+1F1E6 U+1F1FD",
       "aliases": []
     },
     "🇦🇿": {
       "id": 1665,
-      "default_tag": "flag:_Azerbaijan",
+      "default_tag": "Azerbaijan",
       "unicode": "U+1F1E6 U+1F1FF",
       "aliases": []
     },
     "🇧🇦": {
       "id": 1666,
-      "default_tag": "flag:_Bosnia_&_Herzegovina",
+      "default_tag": "Bosnia_&_Herzegovina",
       "unicode": "U+1F1E7 U+1F1E6",
       "aliases": []
     },
     "🇧🇧": {
       "id": 1667,
-      "default_tag": "flag:_Barbados",
+      "default_tag": "Barbados",
       "unicode": "U+1F1E7 U+1F1E7",
       "aliases": []
     },
     "🇧🇩": {
       "id": 1668,
-      "default_tag": "flag:_Bangladesh",
+      "default_tag": "Bangladesh",
       "unicode": "U+1F1E7 U+1F1E9",
       "aliases": []
     },
     "🇧🇪": {
       "id": 1669,
-      "default_tag": "flag:_Belgium",
+      "default_tag": "Belgium",
       "unicode": "U+1F1E7 U+1F1EA",
       "aliases": []
     },
     "🇧🇫": {
       "id": 1670,
-      "default_tag": "flag:_Burkina_Faso",
+      "default_tag": "Burkina_Faso",
       "unicode": "U+1F1E7 U+1F1EB",
       "aliases": []
     },
     "🇧🇬": {
       "id": 1671,
-      "default_tag": "flag:_Bulgaria",
+      "default_tag": "Bulgaria",
       "unicode": "U+1F1E7 U+1F1EC",
       "aliases": []
     },
     "🇧🇭": {
       "id": 1672,
-      "default_tag": "flag:_Bahrain",
+      "default_tag": "Bahrain",
       "unicode": "U+1F1E7 U+1F1ED",
       "aliases": []
     },
     "🇧🇮": {
       "id": 1673,
-      "default_tag": "flag:_Burundi",
+      "default_tag": "Burundi",
       "unicode": "U+1F1E7 U+1F1EE",
       "aliases": []
     },
     "🇧🇯": {
       "id": 1674,
-      "default_tag": "flag:_Benin",
+      "default_tag": "Benin",
       "unicode": "U+1F1E7 U+1F1EF",
       "aliases": []
     },
     "🇧🇱": {
       "id": 1675,
-      "default_tag": "flag:_St._Barthélemy",
+      "default_tag": "St._Barthélemy",
       "unicode": "U+1F1E7 U+1F1F1",
       "aliases": []
     },
     "🇧🇲": {
       "id": 1676,
-      "default_tag": "flag:_Bermuda",
+      "default_tag": "Bermuda",
       "unicode": "U+1F1E7 U+1F1F2",
       "aliases": []
     },
     "🇧🇳": {
       "id": 1677,
-      "default_tag": "flag:_Brunei",
+      "default_tag": "Brunei",
       "unicode": "U+1F1E7 U+1F1F3",
       "aliases": []
     },
     "🇧🇴": {
       "id": 1678,
-      "default_tag": "flag:_Bolivia",
+      "default_tag": "Bolivia",
       "unicode": "U+1F1E7 U+1F1F4",
       "aliases": []
     },
     "🇧🇶": {
       "id": 1679,
-      "default_tag": "flag:_Caribbean_Netherlands",
+      "default_tag": "Caribbean_Netherlands",
       "unicode": "U+1F1E7 U+1F1F6",
       "aliases": []
     },
     "🇧🇷": {
       "id": 1680,
-      "default_tag": "flag:_Brazil",
+      "default_tag": "Brazil",
       "unicode": "U+1F1E7 U+1F1F7",
       "aliases": []
     },
     "🇧🇸": {
       "id": 1681,
-      "default_tag": "flag:_Bahamas",
+      "default_tag": "Bahamas",
       "unicode": "U+1F1E7 U+1F1F8",
       "aliases": []
     },
     "🇧🇹": {
       "id": 1682,
-      "default_tag": "flag:_Bhutan",
+      "default_tag": "Bhutan",
       "unicode": "U+1F1E7 U+1F1F9",
       "aliases": []
     },
     "🇧🇻": {
       "id": 1683,
-      "default_tag": "flag:_Bouvet_Island",
+      "default_tag": "Bouvet_Island",
       "unicode": "U+1F1E7 U+1F1FB",
       "aliases": []
     },
     "🇧🇼": {
       "id": 1684,
-      "default_tag": "flag:_Botswana",
+      "default_tag": "Botswana",
       "unicode": "U+1F1E7 U+1F1FC",
       "aliases": []
     },
     "🇧🇾": {
       "id": 1685,
-      "default_tag": "flag:_Belarus",
+      "default_tag": "Belarus",
       "unicode": "U+1F1E7 U+1F1FE",
       "aliases": []
     },
     "🇧🇿": {
       "id": 1686,
-      "default_tag": "flag:_Belize",
+      "default_tag": "Belize",
       "unicode": "U+1F1E7 U+1F1FF",
       "aliases": []
     },
     "🇨🇦": {
       "id": 1687,
-      "default_tag": "flag:_Canada",
+      "default_tag": "Canada",
       "unicode": "U+1F1E8 U+1F1E6",
       "aliases": []
     },
     "🇨🇨": {
       "id": 1688,
-      "default_tag": "flag:_Cocos_(Keeling)_Islands",
+      "default_tag": "Cocos_(Keeling)_Islands",
       "unicode": "U+1F1E8 U+1F1E8",
       "aliases": []
     },
     "🇨🇩": {
       "id": 1689,
-      "default_tag": "flag:_Congo_-_Kinshasa",
+      "default_tag": "Congo_-_Kinshasa",
       "unicode": "U+1F1E8 U+1F1E9",
       "aliases": []
     },
     "🇨🇫": {
       "id": 1690,
-      "default_tag": "flag:_Central_African_Republic",
+      "default_tag": "Central_African_Republic",
       "unicode": "U+1F1E8 U+1F1EB",
       "aliases": []
     },
     "🇨🇬": {
       "id": 1691,
-      "default_tag": "flag:_Congo_-_Brazzaville",
+      "default_tag": "Congo_-_Brazzaville",
       "unicode": "U+1F1E8 U+1F1EC",
       "aliases": []
     },
     "🇨🇭": {
       "id": 1692,
-      "default_tag": "flag:_Switzerland",
+      "default_tag": "Switzerland",
       "unicode": "U+1F1E8 U+1F1ED",
       "aliases": []
     },
     "🇨🇮": {
       "id": 1693,
-      "default_tag": "flag:_Côte_d’Ivoire",
+      "default_tag": "Côte_d’Ivoire",
       "unicode": "U+1F1E8 U+1F1EE",
       "aliases": []
     },
     "🇨🇰": {
       "id": 1694,
-      "default_tag": "flag:_Cook_Islands",
+      "default_tag": "Cook_Islands",
       "unicode": "U+1F1E8 U+1F1F0",
       "aliases": []
     },
     "🇨🇱": {
       "id": 1695,
-      "default_tag": "flag:_Chile",
+      "default_tag": "Chile",
       "unicode": "U+1F1E8 U+1F1F1",
       "aliases": []
     },
     "🇨🇲": {
       "id": 1696,
-      "default_tag": "flag:_Cameroon",
+      "default_tag": "Cameroon",
       "unicode": "U+1F1E8 U+1F1F2",
       "aliases": []
     },
     "🇨🇳": {
       "id": 1697,
-      "default_tag": "flag:_China",
+      "default_tag": "China",
       "unicode": "U+1F1E8 U+1F1F3",
       "aliases": []
     },
     "🇨🇴": {
       "id": 1698,
-      "default_tag": "flag:_Colombia",
+      "default_tag": "Colombia",
       "unicode": "U+1F1E8 U+1F1F4",
       "aliases": []
     },
     "🇨🇵": {
       "id": 1699,
-      "default_tag": "flag:_Clipperton_Island",
+      "default_tag": "Clipperton_Island",
       "unicode": "U+1F1E8 U+1F1F5",
       "aliases": []
     },
     "🇨🇶": {
       "id": 1700,
-      "default_tag": "⊛_flag:_Sark",
+      "default_tag": "Sark",
       "unicode": "U+1F1E8 U+1F1F6",
       "aliases": []
     },
     "🇨🇷": {
       "id": 1701,
-      "default_tag": "flag:_Costa_Rica",
+      "default_tag": "Costa_Rica",
       "unicode": "U+1F1E8 U+1F1F7",
       "aliases": []
     },
     "🇨🇺": {
       "id": 1702,
-      "default_tag": "flag:_Cuba",
+      "default_tag": "Cuba",
       "unicode": "U+1F1E8 U+1F1FA",
       "aliases": []
     },
     "🇨🇻": {
       "id": 1703,
-      "default_tag": "flag:_Cape_Verde",
+      "default_tag": "Cape_Verde",
       "unicode": "U+1F1E8 U+1F1FB",
       "aliases": []
     },
     "🇨🇼": {
       "id": 1704,
-      "default_tag": "flag:_Curaçao",
+      "default_tag": "Curaçao",
       "unicode": "U+1F1E8 U+1F1FC",
       "aliases": []
     },
     "🇨🇽": {
       "id": 1705,
-      "default_tag": "flag:_Christmas_Island",
+      "default_tag": "Christmas_Island",
       "unicode": "U+1F1E8 U+1F1FD",
       "aliases": []
     },
     "🇨🇾": {
       "id": 1706,
-      "default_tag": "flag:_Cyprus",
+      "default_tag": "Cyprus",
       "unicode": "U+1F1E8 U+1F1FE",
       "aliases": []
     },
     "🇨🇿": {
       "id": 1707,
-      "default_tag": "flag:_Czechia",
+      "default_tag": "Czechia",
       "unicode": "U+1F1E8 U+1F1FF",
       "aliases": []
     },
     "🇩🇪": {
       "id": 1708,
-      "default_tag": "flag:_Germany",
+      "default_tag": "Germany",
       "unicode": "U+1F1E9 U+1F1EA",
       "aliases": []
     },
     "🇩🇬": {
       "id": 1709,
-      "default_tag": "flag:_Diego_Garcia",
+      "default_tag": "Diego_Garcia",
       "unicode": "U+1F1E9 U+1F1EC",
       "aliases": []
     },
     "🇩🇯": {
       "id": 1710,
-      "default_tag": "flag:_Djibouti",
+      "default_tag": "Djibouti",
       "unicode": "U+1F1E9 U+1F1EF",
       "aliases": []
     },
     "🇩🇰": {
       "id": 1711,
-      "default_tag": "flag:_Denmark",
+      "default_tag": "Denmark",
       "unicode": "U+1F1E9 U+1F1F0",
       "aliases": []
     },
     "🇩🇲": {
       "id": 1712,
-      "default_tag": "flag:_Dominica",
+      "default_tag": "Dominica",
       "unicode": "U+1F1E9 U+1F1F2",
       "aliases": []
     },
     "🇩🇴": {
       "id": 1713,
-      "default_tag": "flag:_Dominican_Republic",
+      "default_tag": "Dominican_Republic",
       "unicode": "U+1F1E9 U+1F1F4",
       "aliases": []
     },
     "🇩🇿": {
       "id": 1714,
-      "default_tag": "flag:_Algeria",
+      "default_tag": "Algeria",
       "unicode": "U+1F1E9 U+1F1FF",
       "aliases": []
     },
     "🇪🇦": {
       "id": 1715,
-      "default_tag": "flag:_Ceuta_&_Melilla",
+      "default_tag": "Ceuta_&_Melilla",
       "unicode": "U+1F1EA U+1F1E6",
       "aliases": []
     },
     "🇪🇨": {
       "id": 1716,
-      "default_tag": "flag:_Ecuador",
+      "default_tag": "Ecuador",
       "unicode": "U+1F1EA U+1F1E8",
       "aliases": []
     },
     "🇪🇪": {
       "id": 1717,
-      "default_tag": "flag:_Estonia",
+      "default_tag": "Estonia",
       "unicode": "U+1F1EA U+1F1EA",
       "aliases": []
     },
     "🇪🇬": {
       "id": 1718,
-      "default_tag": "flag:_Egypt",
+      "default_tag": "Egypt",
       "unicode": "U+1F1EA U+1F1EC",
       "aliases": []
     },
     "🇪🇭": {
       "id": 1719,
-      "default_tag": "flag:_Western_Sahara",
+      "default_tag": "Western_Sahara",
       "unicode": "U+1F1EA U+1F1ED",
       "aliases": []
     },
     "🇪🇷": {
       "id": 1720,
-      "default_tag": "flag:_Eritrea",
+      "default_tag": "Eritrea",
       "unicode": "U+1F1EA U+1F1F7",
       "aliases": []
     },
     "🇪🇸": {
       "id": 1721,
-      "default_tag": "flag:_Spain",
+      "default_tag": "Spain",
       "unicode": "U+1F1EA U+1F1F8",
       "aliases": []
     },
     "🇪🇹": {
       "id": 1722,
-      "default_tag": "flag:_Ethiopia",
+      "default_tag": "Ethiopia",
       "unicode": "U+1F1EA U+1F1F9",
       "aliases": []
     },
     "🇪🇺": {
       "id": 1723,
-      "default_tag": "flag:_European_Union",
+      "default_tag": "European_Union",
       "unicode": "U+1F1EA U+1F1FA",
       "aliases": []
     },
     "🇫🇮": {
       "id": 1724,
-      "default_tag": "flag:_Finland",
+      "default_tag": "Finland",
       "unicode": "U+1F1EB U+1F1EE",
       "aliases": []
     },
     "🇫🇯": {
       "id": 1725,
-      "default_tag": "flag:_Fiji",
+      "default_tag": "Fiji",
       "unicode": "U+1F1EB U+1F1EF",
       "aliases": []
     },
     "🇫🇰": {
       "id": 1726,
-      "default_tag": "flag:_Falkland_Islands",
+      "default_tag": "Falkland_Islands",
       "unicode": "U+1F1EB U+1F1F0",
       "aliases": []
     },
     "🇫🇲": {
       "id": 1727,
-      "default_tag": "flag:_Micronesia",
+      "default_tag": "Micronesia",
       "unicode": "U+1F1EB U+1F1F2",
       "aliases": []
     },
     "🇫🇴": {
       "id": 1728,
-      "default_tag": "flag:_Faroe_Islands",
+      "default_tag": "Faroe_Islands",
       "unicode": "U+1F1EB U+1F1F4",
       "aliases": []
     },
     "🇫🇷": {
       "id": 1729,
-      "default_tag": "flag:_France",
+      "default_tag": "France",
       "unicode": "U+1F1EB U+1F1F7",
       "aliases": []
     },
     "🇬🇦": {
       "id": 1730,
-      "default_tag": "flag:_Gabon",
+      "default_tag": "Gabon",
       "unicode": "U+1F1EC U+1F1E6",
       "aliases": []
     },
     "🇬🇧": {
       "id": 1731,
-      "default_tag": "flag:_United_Kingdom",
+      "default_tag": "United_Kingdom",
       "unicode": "U+1F1EC U+1F1E7",
       "aliases": []
     },
     "🇬🇩": {
       "id": 1732,
-      "default_tag": "flag:_Grenada",
+      "default_tag": "Grenada",
       "unicode": "U+1F1EC U+1F1E9",
       "aliases": []
     },
     "🇬🇪": {
       "id": 1733,
-      "default_tag": "flag:_Georgia",
+      "default_tag": "Georgia",
       "unicode": "U+1F1EC U+1F1EA",
       "aliases": []
     },
     "🇬🇫": {
       "id": 1734,
-      "default_tag": "flag:_French_Guiana",
+      "default_tag": "French_Guiana",
       "unicode": "U+1F1EC U+1F1EB",
       "aliases": []
     },
     "🇬🇬": {
       "id": 1735,
-      "default_tag": "flag:_Guernsey",
+      "default_tag": "Guernsey",
       "unicode": "U+1F1EC U+1F1EC",
       "aliases": []
     },
     "🇬🇭": {
       "id": 1736,
-      "default_tag": "flag:_Ghana",
+      "default_tag": "Ghana",
       "unicode": "U+1F1EC U+1F1ED",
       "aliases": []
     },
     "🇬🇮": {
       "id": 1737,
-      "default_tag": "flag:_Gibraltar",
+      "default_tag": "Gibraltar",
       "unicode": "U+1F1EC U+1F1EE",
       "aliases": []
     },
     "🇬🇱": {
       "id": 1738,
-      "default_tag": "flag:_Greenland",
+      "default_tag": "Greenland",
       "unicode": "U+1F1EC U+1F1F1",
       "aliases": []
     },
     "🇬🇲": {
       "id": 1739,
-      "default_tag": "flag:_Gambia",
+      "default_tag": "Gambia",
       "unicode": "U+1F1EC U+1F1F2",
       "aliases": []
     },
     "🇬🇳": {
       "id": 1740,
-      "default_tag": "flag:_Guinea",
+      "default_tag": "Guinea",
       "unicode": "U+1F1EC U+1F1F3",
       "aliases": []
     },
     "🇬🇵": {
       "id": 1741,
-      "default_tag": "flag:_Guadeloupe",
+      "default_tag": "Guadeloupe",
       "unicode": "U+1F1EC U+1F1F5",
       "aliases": []
     },
     "🇬🇶": {
       "id": 1742,
-      "default_tag": "flag:_Equatorial_Guinea",
+      "default_tag": "Equatorial_Guinea",
       "unicode": "U+1F1EC U+1F1F6",
       "aliases": []
     },
     "🇬🇷": {
       "id": 1743,
-      "default_tag": "flag:_Greece",
+      "default_tag": "Greece",
       "unicode": "U+1F1EC U+1F1F7",
       "aliases": []
     },
     "🇬🇸": {
       "id": 1744,
-      "default_tag": "flag:_South_Georgia_&_South_Sandwich_Islands",
+      "default_tag": "South_Georgia_&_South_Sandwich_Islands",
       "unicode": "U+1F1EC U+1F1F8",
       "aliases": []
     },
     "🇬🇹": {
       "id": 1745,
-      "default_tag": "flag:_Guatemala",
+      "default_tag": "Guatemala",
       "unicode": "U+1F1EC U+1F1F9",
       "aliases": []
     },
     "🇬🇺": {
       "id": 1746,
-      "default_tag": "flag:_Guam",
+      "default_tag": "Guam",
       "unicode": "U+1F1EC U+1F1FA",
       "aliases": []
     },
     "🇬🇼": {
       "id": 1747,
-      "default_tag": "flag:_Guinea-Bissau",
+      "default_tag": "Guinea-Bissau",
       "unicode": "U+1F1EC U+1F1FC",
       "aliases": []
     },
     "🇬🇾": {
       "id": 1748,
-      "default_tag": "flag:_Guyana",
+      "default_tag": "Guyana",
       "unicode": "U+1F1EC U+1F1FE",
       "aliases": []
     },
     "🇭🇰": {
       "id": 1749,
-      "default_tag": "flag:_Hong_Kong_SAR_China",
+      "default_tag": "Hong_Kong_SAR_China",
       "unicode": "U+1F1ED U+1F1F0",
       "aliases": []
     },
     "🇭🇲": {
       "id": 1750,
-      "default_tag": "flag:_Heard_&_McDonald_Islands",
+      "default_tag": "Heard_&_McDonald_Islands",
       "unicode": "U+1F1ED U+1F1F2",
       "aliases": []
     },
     "🇭🇳": {
       "id": 1751,
-      "default_tag": "flag:_Honduras",
+      "default_tag": "Honduras",
       "unicode": "U+1F1ED U+1F1F3",
       "aliases": []
     },
     "🇭🇷": {
       "id": 1752,
-      "default_tag": "flag:_Croatia",
+      "default_tag": "Croatia",
       "unicode": "U+1F1ED U+1F1F7",
       "aliases": []
     },
     "🇭🇹": {
       "id": 1753,
-      "default_tag": "flag:_Haiti",
+      "default_tag": "Haiti",
       "unicode": "U+1F1ED U+1F1F9",
       "aliases": []
     },
     "🇭🇺": {
       "id": 1754,
-      "default_tag": "flag:_Hungary",
+      "default_tag": "Hungary",
       "unicode": "U+1F1ED U+1F1FA",
       "aliases": []
     },
     "🇮🇨": {
       "id": 1755,
-      "default_tag": "flag:_Canary_Islands",
+      "default_tag": "Canary_Islands",
       "unicode": "U+1F1EE U+1F1E8",
       "aliases": []
     },
     "🇮🇩": {
       "id": 1756,
-      "default_tag": "flag:_Indonesia",
+      "default_tag": "Indonesia",
       "unicode": "U+1F1EE U+1F1E9",
       "aliases": []
     },
     "🇮🇪": {
       "id": 1757,
-      "default_tag": "flag:_Ireland",
+      "default_tag": "Ireland",
       "unicode": "U+1F1EE U+1F1EA",
       "aliases": []
     },
     "🇮🇱": {
       "id": 1758,
-      "default_tag": "flag:_Israel",
+      "default_tag": "Israel",
       "unicode": "U+1F1EE U+1F1F1",
       "aliases": []
     },
     "🇮🇲": {
       "id": 1759,
-      "default_tag": "flag:_Isle_of_Man",
+      "default_tag": "Isle_of_Man",
       "unicode": "U+1F1EE U+1F1F2",
       "aliases": []
     },
     "🇮🇳": {
       "id": 1760,
-      "default_tag": "flag:_India",
+      "default_tag": "India",
       "unicode": "U+1F1EE U+1F1F3",
       "aliases": []
     },
     "🇮🇴": {
       "id": 1761,
-      "default_tag": "flag:_British_Indian_Ocean_Territory",
+      "default_tag": "British_Indian_Ocean_Territory",
       "unicode": "U+1F1EE U+1F1F4",
       "aliases": []
     },
     "🇮🇶": {
       "id": 1762,
-      "default_tag": "flag:_Iraq",
+      "default_tag": "Iraq",
       "unicode": "U+1F1EE U+1F1F6",
       "aliases": []
     },
     "🇮🇷": {
       "id": 1763,
-      "default_tag": "flag:_Iran",
+      "default_tag": "Iran",
       "unicode": "U+1F1EE U+1F1F7",
       "aliases": []
     },
     "🇮🇸": {
       "id": 1764,
-      "default_tag": "flag:_Iceland",
+      "default_tag": "Iceland",
       "unicode": "U+1F1EE U+1F1F8",
       "aliases": []
     },
     "🇮🇹": {
       "id": 1765,
-      "default_tag": "flag:_Italy",
+      "default_tag": "Italy",
       "unicode": "U+1F1EE U+1F1F9",
       "aliases": []
     },
     "🇯🇪": {
       "id": 1766,
-      "default_tag": "flag:_Jersey",
+      "default_tag": "Jersey",
       "unicode": "U+1F1EF U+1F1EA",
       "aliases": []
     },
     "🇯🇲": {
       "id": 1767,
-      "default_tag": "flag:_Jamaica",
+      "default_tag": "Jamaica",
       "unicode": "U+1F1EF U+1F1F2",
       "aliases": []
     },
     "🇯🇴": {
       "id": 1768,
-      "default_tag": "flag:_Jordan",
+      "default_tag": "Jordan",
       "unicode": "U+1F1EF U+1F1F4",
       "aliases": []
     },
     "🇯🇵": {
       "id": 1769,
-      "default_tag": "flag:_Japan",
+      "default_tag": "Japan",
       "unicode": "U+1F1EF U+1F1F5",
       "aliases": []
     },
     "🇰🇪": {
       "id": 1770,
-      "default_tag": "flag:_Kenya",
+      "default_tag": "Kenya",
       "unicode": "U+1F1F0 U+1F1EA",
       "aliases": []
     },
     "🇰🇬": {
       "id": 1771,
-      "default_tag": "flag:_Kyrgyzstan",
+      "default_tag": "Kyrgyzstan",
       "unicode": "U+1F1F0 U+1F1EC",
       "aliases": []
     },
     "🇰🇭": {
       "id": 1772,
-      "default_tag": "flag:_Cambodia",
+      "default_tag": "Cambodia",
       "unicode": "U+1F1F0 U+1F1ED",
       "aliases": []
     },
     "🇰🇮": {
       "id": 1773,
-      "default_tag": "flag:_Kiribati",
+      "default_tag": "Kiribati",
       "unicode": "U+1F1F0 U+1F1EE",
       "aliases": []
     },
     "🇰🇲": {
       "id": 1774,
-      "default_tag": "flag:_Comoros",
+      "default_tag": "Comoros",
       "unicode": "U+1F1F0 U+1F1F2",
       "aliases": []
     },
     "🇰🇳": {
       "id": 1775,
-      "default_tag": "flag:_St._Kitts_&_Nevis",
+      "default_tag": "St._Kitts_&_Nevis",
       "unicode": "U+1F1F0 U+1F1F3",
       "aliases": []
     },
     "🇰🇵": {
       "id": 1776,
-      "default_tag": "flag:_North_Korea",
+      "default_tag": "North_Korea",
       "unicode": "U+1F1F0 U+1F1F5",
       "aliases": []
     },
     "🇰🇷": {
       "id": 1777,
-      "default_tag": "flag:_South_Korea",
+      "default_tag": "South_Korea",
       "unicode": "U+1F1F0 U+1F1F7",
       "aliases": []
     },
     "🇰🇼": {
       "id": 1778,
-      "default_tag": "flag:_Kuwait",
+      "default_tag": "Kuwait",
       "unicode": "U+1F1F0 U+1F1FC",
       "aliases": []
     },
     "🇰🇾": {
       "id": 1779,
-      "default_tag": "flag:_Cayman_Islands",
+      "default_tag": "Cayman_Islands",
       "unicode": "U+1F1F0 U+1F1FE",
       "aliases": []
     },
     "🇰🇿": {
       "id": 1780,
-      "default_tag": "flag:_Kazakhstan",
+      "default_tag": "Kazakhstan",
       "unicode": "U+1F1F0 U+1F1FF",
       "aliases": []
     },
     "🇱🇦": {
       "id": 1781,
-      "default_tag": "flag:_Laos",
+      "default_tag": "Laos",
       "unicode": "U+1F1F1 U+1F1E6",
       "aliases": []
     },
     "🇱🇧": {
       "id": 1782,
-      "default_tag": "flag:_Lebanon",
+      "default_tag": "Lebanon",
       "unicode": "U+1F1F1 U+1F1E7",
       "aliases": []
     },
     "🇱🇨": {
       "id": 1783,
-      "default_tag": "flag:_St._Lucia",
+      "default_tag": "St._Lucia",
       "unicode": "U+1F1F1 U+1F1E8",
       "aliases": []
     },
     "🇱🇮": {
       "id": 1784,
-      "default_tag": "flag:_Liechtenstein",
+      "default_tag": "Liechtenstein",
       "unicode": "U+1F1F1 U+1F1EE",
       "aliases": []
     },
     "🇱🇰": {
       "id": 1785,
-      "default_tag": "flag:_Sri_Lanka",
+      "default_tag": "Sri_Lanka",
       "unicode": "U+1F1F1 U+1F1F0",
       "aliases": []
     },
     "🇱🇷": {
       "id": 1786,
-      "default_tag": "flag:_Liberia",
+      "default_tag": "Liberia",
       "unicode": "U+1F1F1 U+1F1F7",
       "aliases": []
     },
     "🇱🇸": {
       "id": 1787,
-      "default_tag": "flag:_Lesotho",
+      "default_tag": "Lesotho",
       "unicode": "U+1F1F1 U+1F1F8",
       "aliases": []
     },
     "🇱🇹": {
       "id": 1788,
-      "default_tag": "flag:_Lithuania",
+      "default_tag": "Lithuania",
       "unicode": "U+1F1F1 U+1F1F9",
       "aliases": []
     },
     "🇱🇺": {
       "id": 1789,
-      "default_tag": "flag:_Luxembourg",
+      "default_tag": "Luxembourg",
       "unicode": "U+1F1F1 U+1F1FA",
       "aliases": []
     },
     "🇱🇻": {
       "id": 1790,
-      "default_tag": "flag:_Latvia",
+      "default_tag": "Latvia",
       "unicode": "U+1F1F1 U+1F1FB",
       "aliases": []
     },
     "🇱🇾": {
       "id": 1791,
-      "default_tag": "flag:_Libya",
+      "default_tag": "Libya",
       "unicode": "U+1F1F1 U+1F1FE",
       "aliases": []
     },
     "🇲🇦": {
       "id": 1792,
-      "default_tag": "flag:_Morocco",
+      "default_tag": "Morocco",
       "unicode": "U+1F1F2 U+1F1E6",
       "aliases": []
     },
     "🇲🇨": {
       "id": 1793,
-      "default_tag": "flag:_Monaco",
+      "default_tag": "Monaco",
       "unicode": "U+1F1F2 U+1F1E8",
       "aliases": []
     },
     "🇲🇩": {
       "id": 1794,
-      "default_tag": "flag:_Moldova",
+      "default_tag": "Moldova",
       "unicode": "U+1F1F2 U+1F1E9",
       "aliases": []
     },
     "🇲🇪": {
       "id": 1795,
-      "default_tag": "flag:_Montenegro",
+      "default_tag": "Montenegro",
       "unicode": "U+1F1F2 U+1F1EA",
       "aliases": []
     },
     "🇲🇫": {
       "id": 1796,
-      "default_tag": "flag:_St._Martin",
+      "default_tag": "St._Martin",
       "unicode": "U+1F1F2 U+1F1EB",
       "aliases": []
     },
     "🇲🇬": {
       "id": 1797,
-      "default_tag": "flag:_Madagascar",
+      "default_tag": "Madagascar",
       "unicode": "U+1F1F2 U+1F1EC",
       "aliases": []
     },
     "🇲🇭": {
       "id": 1798,
-      "default_tag": "flag:_Marshall_Islands",
+      "default_tag": "Marshall_Islands",
       "unicode": "U+1F1F2 U+1F1ED",
       "aliases": []
     },
     "🇲🇰": {
       "id": 1799,
-      "default_tag": "flag:_North_Macedonia",
+      "default_tag": "North_Macedonia",
       "unicode": "U+1F1F2 U+1F1F0",
       "aliases": []
     },
     "🇲🇱": {
       "id": 1800,
-      "default_tag": "flag:_Mali",
+      "default_tag": "Mali",
       "unicode": "U+1F1F2 U+1F1F1",
       "aliases": []
     },
     "🇲🇲": {
       "id": 1801,
-      "default_tag": "flag:_Myanmar_(Burma)",
+      "default_tag": "Myanmar_(Burma)",
       "unicode": "U+1F1F2 U+1F1F2",
       "aliases": []
     },
     "🇲🇳": {
       "id": 1802,
-      "default_tag": "flag:_Mongolia",
+      "default_tag": "Mongolia",
       "unicode": "U+1F1F2 U+1F1F3",
       "aliases": []
     },
     "🇲🇴": {
       "id": 1803,
-      "default_tag": "flag:_Macao_SAR_China",
+      "default_tag": "Macao_SAR_China",
       "unicode": "U+1F1F2 U+1F1F4",
       "aliases": []
     },
     "🇲🇵": {
       "id": 1804,
-      "default_tag": "flag:_Northern_Mariana_Islands",
+      "default_tag": "Northern_Mariana_Islands",
       "unicode": "U+1F1F2 U+1F1F5",
       "aliases": []
     },
     "🇲🇶": {
       "id": 1805,
-      "default_tag": "flag:_Martinique",
+      "default_tag": "Martinique",
       "unicode": "U+1F1F2 U+1F1F6",
       "aliases": []
     },
     "🇲🇷": {
       "id": 1806,
-      "default_tag": "flag:_Mauritania",
+      "default_tag": "Mauritania",
       "unicode": "U+1F1F2 U+1F1F7",
       "aliases": []
     },
     "🇲🇸": {
       "id": 1807,
-      "default_tag": "flag:_Montserrat",
+      "default_tag": "Montserrat",
       "unicode": "U+1F1F2 U+1F1F8",
       "aliases": []
     },
     "🇲🇹": {
       "id": 1808,
-      "default_tag": "flag:_Malta",
+      "default_tag": "Malta",
       "unicode": "U+1F1F2 U+1F1F9",
       "aliases": []
     },
     "🇲🇺": {
       "id": 1809,
-      "default_tag": "flag:_Mauritius",
+      "default_tag": "Mauritius",
       "unicode": "U+1F1F2 U+1F1FA",
       "aliases": []
     },
     "🇲🇻": {
       "id": 1810,
-      "default_tag": "flag:_Maldives",
+      "default_tag": "Maldives",
       "unicode": "U+1F1F2 U+1F1FB",
       "aliases": []
     },
     "🇲🇼": {
       "id": 1811,
-      "default_tag": "flag:_Malawi",
+      "default_tag": "Malawi",
       "unicode": "U+1F1F2 U+1F1FC",
       "aliases": []
     },
     "🇲🇽": {
       "id": 1812,
-      "default_tag": "flag:_Mexico",
+      "default_tag": "Mexico",
       "unicode": "U+1F1F2 U+1F1FD",
       "aliases": []
     },
     "🇲🇾": {
       "id": 1813,
-      "default_tag": "flag:_Malaysia",
+      "default_tag": "Malaysia",
       "unicode": "U+1F1F2 U+1F1FE",
       "aliases": []
     },
     "🇲🇿": {
       "id": 1814,
-      "default_tag": "flag:_Mozambique",
+      "default_tag": "Mozambique",
       "unicode": "U+1F1F2 U+1F1FF",
       "aliases": []
     },
     "🇳🇦": {
       "id": 1815,
-      "default_tag": "flag:_Namibia",
+      "default_tag": "Namibia",
       "unicode": "U+1F1F3 U+1F1E6",
       "aliases": []
     },
     "🇳🇨": {
       "id": 1816,
-      "default_tag": "flag:_New_Caledonia",
+      "default_tag": "New_Caledonia",
       "unicode": "U+1F1F3 U+1F1E8",
       "aliases": []
     },
     "🇳🇪": {
       "id": 1817,
-      "default_tag": "flag:_Niger",
+      "default_tag": "Niger",
       "unicode": "U+1F1F3 U+1F1EA",
       "aliases": []
     },
     "🇳🇫": {
       "id": 1818,
-      "default_tag": "flag:_Norfolk_Island",
+      "default_tag": "Norfolk_Island",
       "unicode": "U+1F1F3 U+1F1EB",
       "aliases": []
     },
     "🇳🇬": {
       "id": 1819,
-      "default_tag": "flag:_Nigeria",
+      "default_tag": "Nigeria",
       "unicode": "U+1F1F3 U+1F1EC",
       "aliases": []
     },
     "🇳🇮": {
       "id": 1820,
-      "default_tag": "flag:_Nicaragua",
+      "default_tag": "Nicaragua",
       "unicode": "U+1F1F3 U+1F1EE",
       "aliases": []
     },
     "🇳🇱": {
       "id": 1821,
-      "default_tag": "flag:_Netherlands",
+      "default_tag": "Netherlands",
       "unicode": "U+1F1F3 U+1F1F1",
       "aliases": []
     },
     "🇳🇴": {
       "id": 1822,
-      "default_tag": "flag:_Norway",
+      "default_tag": "Norway",
       "unicode": "U+1F1F3 U+1F1F4",
       "aliases": []
     },
     "🇳🇵": {
       "id": 1823,
-      "default_tag": "flag:_Nepal",
+      "default_tag": "Nepal",
       "unicode": "U+1F1F3 U+1F1F5",
       "aliases": []
     },
     "🇳🇷": {
       "id": 1824,
-      "default_tag": "flag:_Nauru",
+      "default_tag": "Nauru",
       "unicode": "U+1F1F3 U+1F1F7",
       "aliases": []
     },
     "🇳🇺": {
       "id": 1825,
-      "default_tag": "flag:_Niue",
+      "default_tag": "Niue",
       "unicode": "U+1F1F3 U+1F1FA",
       "aliases": []
     },
     "🇳🇿": {
       "id": 1826,
-      "default_tag": "flag:_New_Zealand",
+      "default_tag": "New_Zealand",
       "unicode": "U+1F1F3 U+1F1FF",
       "aliases": []
     },
     "🇴🇲": {
       "id": 1827,
-      "default_tag": "flag:_Oman",
+      "default_tag": "Oman",
       "unicode": "U+1F1F4 U+1F1F2",
       "aliases": []
     },
     "🇵🇦": {
       "id": 1828,
-      "default_tag": "flag:_Panama",
+      "default_tag": "Panama",
       "unicode": "U+1F1F5 U+1F1E6",
       "aliases": []
     },
     "🇵🇪": {
       "id": 1829,
-      "default_tag": "flag:_Peru",
+      "default_tag": "Peru",
       "unicode": "U+1F1F5 U+1F1EA",
       "aliases": []
     },
     "🇵🇫": {
       "id": 1830,
-      "default_tag": "flag:_French_Polynesia",
+      "default_tag": "French_Polynesia",
       "unicode": "U+1F1F5 U+1F1EB",
       "aliases": []
     },
     "🇵🇬": {
       "id": 1831,
-      "default_tag": "flag:_Papua_New_Guinea",
+      "default_tag": "Papua_New_Guinea",
       "unicode": "U+1F1F5 U+1F1EC",
       "aliases": []
     },
     "🇵🇭": {
       "id": 1832,
-      "default_tag": "flag:_Philippines",
+      "default_tag": "Philippines",
       "unicode": "U+1F1F5 U+1F1ED",
       "aliases": []
     },
     "🇵🇰": {
       "id": 1833,
-      "default_tag": "flag:_Pakistan",
+      "default_tag": "Pakistan",
       "unicode": "U+1F1F5 U+1F1F0",
       "aliases": []
     },
     "🇵🇱": {
       "id": 1834,
-      "default_tag": "flag:_Poland",
+      "default_tag": "Poland",
       "unicode": "U+1F1F5 U+1F1F1",
       "aliases": []
     },
     "🇵🇲": {
       "id": 1835,
-      "default_tag": "flag:_St._Pierre_&_Miquelon",
+      "default_tag": "St._Pierre_&_Miquelon",
       "unicode": "U+1F1F5 U+1F1F2",
       "aliases": []
     },
     "🇵🇳": {
       "id": 1836,
-      "default_tag": "flag:_Pitcairn_Islands",
+      "default_tag": "Pitcairn_Islands",
       "unicode": "U+1F1F5 U+1F1F3",
       "aliases": []
     },
     "🇵🇷": {
       "id": 1837,
-      "default_tag": "flag:_Puerto_Rico",
+      "default_tag": "Puerto_Rico",
       "unicode": "U+1F1F5 U+1F1F7",
       "aliases": []
     },
     "🇵🇸": {
       "id": 1838,
-      "default_tag": "flag:_Palestinian_Territories",
+      "default_tag": "Palestinian_Territories",
       "unicode": "U+1F1F5 U+1F1F8",
       "aliases": []
     },
     "🇵🇹": {
       "id": 1839,
-      "default_tag": "flag:_Portugal",
+      "default_tag": "Portugal",
       "unicode": "U+1F1F5 U+1F1F9",
       "aliases": []
     },
     "🇵🇼": {
       "id": 1840,
-      "default_tag": "flag:_Palau",
+      "default_tag": "Palau",
       "unicode": "U+1F1F5 U+1F1FC",
       "aliases": []
     },
     "🇵🇾": {
       "id": 1841,
-      "default_tag": "flag:_Paraguay",
+      "default_tag": "Paraguay",
       "unicode": "U+1F1F5 U+1F1FE",
       "aliases": []
     },
     "🇶🇦": {
       "id": 1842,
-      "default_tag": "flag:_Qatar",
+      "default_tag": "Qatar",
       "unicode": "U+1F1F6 U+1F1E6",
       "aliases": []
     },
     "🇷🇪": {
       "id": 1843,
-      "default_tag": "flag:_Réunion",
+      "default_tag": "Réunion",
       "unicode": "U+1F1F7 U+1F1EA",
       "aliases": []
     },
     "🇷🇴": {
       "id": 1844,
-      "default_tag": "flag:_Romania",
+      "default_tag": "Romania",
       "unicode": "U+1F1F7 U+1F1F4",
       "aliases": []
     },
     "🇷🇸": {
       "id": 1845,
-      "default_tag": "flag:_Serbia",
+      "default_tag": "Serbia",
       "unicode": "U+1F1F7 U+1F1F8",
       "aliases": []
     },
     "🇷🇺": {
       "id": 1846,
-      "default_tag": "flag:_Russia",
+      "default_tag": "Russia",
       "unicode": "U+1F1F7 U+1F1FA",
       "aliases": []
     },
     "🇷🇼": {
       "id": 1847,
-      "default_tag": "flag:_Rwanda",
+      "default_tag": "Rwanda",
       "unicode": "U+1F1F7 U+1F1FC",
       "aliases": []
     },
     "🇸🇦": {
       "id": 1848,
-      "default_tag": "flag:_Saudi_Arabia",
+      "default_tag": "Saudi_Arabia",
       "unicode": "U+1F1F8 U+1F1E6",
       "aliases": []
     },
     "🇸🇧": {
       "id": 1849,
-      "default_tag": "flag:_Solomon_Islands",
+      "default_tag": "Solomon_Islands",
       "unicode": "U+1F1F8 U+1F1E7",
       "aliases": []
     },
     "🇸🇨": {
       "id": 1850,
-      "default_tag": "flag:_Seychelles",
+      "default_tag": "Seychelles",
       "unicode": "U+1F1F8 U+1F1E8",
       "aliases": []
     },
     "🇸🇩": {
       "id": 1851,
-      "default_tag": "flag:_Sudan",
+      "default_tag": "Sudan",
       "unicode": "U+1F1F8 U+1F1E9",
       "aliases": []
     },
     "🇸🇪": {
       "id": 1852,
-      "default_tag": "flag:_Sweden",
+      "default_tag": "Sweden",
       "unicode": "U+1F1F8 U+1F1EA",
       "aliases": []
     },
     "🇸🇬": {
       "id": 1853,
-      "default_tag": "flag:_Singapore",
+      "default_tag": "Singapore",
       "unicode": "U+1F1F8 U+1F1EC",
       "aliases": []
     },
     "🇸🇭": {
       "id": 1854,
-      "default_tag": "flag:_St._Helena",
+      "default_tag": "St._Helena",
       "unicode": "U+1F1F8 U+1F1ED",
       "aliases": []
     },
     "🇸🇮": {
       "id": 1855,
-      "default_tag": "flag:_Slovenia",
+      "default_tag": "Slovenia",
       "unicode": "U+1F1F8 U+1F1EE",
       "aliases": []
     },
     "🇸🇯": {
       "id": 1856,
-      "default_tag": "flag:_Svalbard_&_Jan_Mayen",
+      "default_tag": "Svalbard_&_Jan_Mayen",
       "unicode": "U+1F1F8 U+1F1EF",
       "aliases": []
     },
     "🇸🇰": {
       "id": 1857,
-      "default_tag": "flag:_Slovakia",
+      "default_tag": "Slovakia",
       "unicode": "U+1F1F8 U+1F1F0",
       "aliases": []
     },
     "🇸🇱": {
       "id": 1858,
-      "default_tag": "flag:_Sierra_Leone",
+      "default_tag": "Sierra_Leone",
       "unicode": "U+1F1F8 U+1F1F1",
       "aliases": []
     },
     "🇸🇲": {
       "id": 1859,
-      "default_tag": "flag:_San_Marino",
+      "default_tag": "San_Marino",
       "unicode": "U+1F1F8 U+1F1F2",
       "aliases": []
     },
     "🇸🇳": {
       "id": 1860,
-      "default_tag": "flag:_Senegal",
+      "default_tag": "Senegal",
       "unicode": "U+1F1F8 U+1F1F3",
       "aliases": []
     },
     "🇸🇴": {
       "id": 1861,
-      "default_tag": "flag:_Somalia",
+      "default_tag": "Somalia",
       "unicode": "U+1F1F8 U+1F1F4",
       "aliases": []
     },
     "🇸🇷": {
       "id": 1862,
-      "default_tag": "flag:_Suriname",
+      "default_tag": "Suriname",
       "unicode": "U+1F1F8 U+1F1F7",
       "aliases": []
     },
     "🇸🇸": {
       "id": 1863,
-      "default_tag": "flag:_South_Sudan",
+      "default_tag": "South_Sudan",
       "unicode": "U+1F1F8 U+1F1F8",
       "aliases": []
     },
     "🇸🇹": {
       "id": 1864,
-      "default_tag": "flag:_São_Tomé_&_Príncipe",
+      "default_tag": "São_Tomé_&_Príncipe",
       "unicode": "U+1F1F8 U+1F1F9",
       "aliases": []
     },
     "🇸🇻": {
       "id": 1865,
-      "default_tag": "flag:_El_Salvador",
+      "default_tag": "El_Salvador",
       "unicode": "U+1F1F8 U+1F1FB",
       "aliases": []
     },
     "🇸🇽": {
       "id": 1866,
-      "default_tag": "flag:_Sint_Maarten",
+      "default_tag": "Sint_Maarten",
       "unicode": "U+1F1F8 U+1F1FD",
       "aliases": []
     },
     "🇸🇾": {
       "id": 1867,
-      "default_tag": "flag:_Syria",
+      "default_tag": "Syria",
       "unicode": "U+1F1F8 U+1F1FE",
       "aliases": []
     },
     "🇸🇿": {
       "id": 1868,
-      "default_tag": "flag:_Eswatini",
+      "default_tag": "Eswatini",
       "unicode": "U+1F1F8 U+1F1FF",
       "aliases": []
     },
     "🇹🇦": {
       "id": 1869,
-      "default_tag": "flag:_Tristan_da_Cunha",
+      "default_tag": "Tristan_da_Cunha",
       "unicode": "U+1F1F9 U+1F1E6",
       "aliases": []
     },
     "🇹🇨": {
       "id": 1870,
-      "default_tag": "flag:_Turks_&_Caicos_Islands",
+      "default_tag": "Turks_&_Caicos_Islands",
       "unicode": "U+1F1F9 U+1F1E8",
       "aliases": []
     },
     "🇹🇩": {
       "id": 1871,
-      "default_tag": "flag:_Chad",
+      "default_tag": "Chad",
       "unicode": "U+1F1F9 U+1F1E9",
       "aliases": []
     },
     "🇹🇫": {
       "id": 1872,
-      "default_tag": "flag:_French_Southern_Territories",
+      "default_tag": "French_Southern_Territories",
       "unicode": "U+1F1F9 U+1F1EB",
       "aliases": []
     },
     "🇹🇬": {
       "id": 1873,
-      "default_tag": "flag:_Togo",
+      "default_tag": "Togo",
       "unicode": "U+1F1F9 U+1F1EC",
       "aliases": []
     },
     "🇹🇭": {
       "id": 1874,
-      "default_tag": "flag:_Thailand",
+      "default_tag": "Thailand",
       "unicode": "U+1F1F9 U+1F1ED",
       "aliases": []
     },
     "🇹🇯": {
       "id": 1875,
-      "default_tag": "flag:_Tajikistan",
+      "default_tag": "Tajikistan",
       "unicode": "U+1F1F9 U+1F1EF",
       "aliases": []
     },
     "🇹🇰": {
       "id": 1876,
-      "default_tag": "flag:_Tokelau",
+      "default_tag": "Tokelau",
       "unicode": "U+1F1F9 U+1F1F0",
       "aliases": []
     },
     "🇹🇱": {
       "id": 1877,
-      "default_tag": "flag:_Timor-Leste",
+      "default_tag": "Timor-Leste",
       "unicode": "U+1F1F9 U+1F1F1",
       "aliases": []
     },
     "🇹🇲": {
       "id": 1878,
-      "default_tag": "flag:_Turkmenistan",
+      "default_tag": "Turkmenistan",
       "unicode": "U+1F1F9 U+1F1F2",
       "aliases": []
     },
     "🇹🇳": {
       "id": 1879,
-      "default_tag": "flag:_Tunisia",
+      "default_tag": "Tunisia",
       "unicode": "U+1F1F9 U+1F1F3",
       "aliases": []
     },
     "🇹🇴": {
       "id": 1880,
-      "default_tag": "flag:_Tonga",
+      "default_tag": "Tonga",
       "unicode": "U+1F1F9 U+1F1F4",
       "aliases": []
     },
     "🇹🇷": {
       "id": 1881,
-      "default_tag": "flag:_Türkiye",
+      "default_tag": "Türkiye",
       "unicode": "U+1F1F9 U+1F1F7",
       "aliases": []
     },
     "🇹🇹": {
       "id": 1882,
-      "default_tag": "flag:_Trinidad_&_Tobago",
+      "default_tag": "Trinidad_&_Tobago",
       "unicode": "U+1F1F9 U+1F1F9",
       "aliases": []
     },
     "🇹🇻": {
       "id": 1883,
-      "default_tag": "flag:_Tuvalu",
+      "default_tag": "Tuvalu",
       "unicode": "U+1F1F9 U+1F1FB",
       "aliases": []
     },
     "🇹🇼": {
       "id": 1884,
-      "default_tag": "flag:_Taiwan",
+      "default_tag": "Taiwan",
       "unicode": "U+1F1F9 U+1F1FC",
       "aliases": []
     },
     "🇹🇿": {
       "id": 1885,
-      "default_tag": "flag:_Tanzania",
+      "default_tag": "Tanzania",
       "unicode": "U+1F1F9 U+1F1FF",
       "aliases": []
     },
     "🇺🇦": {
       "id": 1886,
-      "default_tag": "flag:_Ukraine",
+      "default_tag": "Ukraine",
       "unicode": "U+1F1FA U+1F1E6",
       "aliases": []
     },
     "🇺🇬": {
       "id": 1887,
-      "default_tag": "flag:_Uganda",
+      "default_tag": "Uganda",
       "unicode": "U+1F1FA U+1F1EC",
       "aliases": []
     },
     "🇺🇲": {
       "id": 1888,
-      "default_tag": "flag:_U.S._Outlying_Islands",
+      "default_tag": "U.S._Outlying_Islands",
       "unicode": "U+1F1FA U+1F1F2",
       "aliases": []
     },
     "🇺🇳": {
       "id": 1889,
-      "default_tag": "flag:_United_Nations",
+      "default_tag": "United_Nations",
       "unicode": "U+1F1FA U+1F1F3",
       "aliases": []
     },
     "🇺🇸": {
       "id": 1890,
-      "default_tag": "flag:_United_States",
+      "default_tag": "United_States",
       "unicode": "U+1F1FA U+1F1F8",
       "aliases": []
     },
     "🇺🇾": {
       "id": 1891,
-      "default_tag": "flag:_Uruguay",
+      "default_tag": "Uruguay",
       "unicode": "U+1F1FA U+1F1FE",
       "aliases": []
     },
     "🇺🇿": {
       "id": 1892,
-      "default_tag": "flag:_Uzbekistan",
+      "default_tag": "Uzbekistan",
       "unicode": "U+1F1FA U+1F1FF",
       "aliases": []
     },
     "🇻🇦": {
       "id": 1893,
-      "default_tag": "flag:_Vatican_City",
+      "default_tag": "Vatican_City",
       "unicode": "U+1F1FB U+1F1E6",
       "aliases": []
     },
     "🇻🇨": {
       "id": 1894,
-      "default_tag": "flag:_St._Vincent_&_Grenadines",
+      "default_tag": "St._Vincent_&_Grenadines",
       "unicode": "U+1F1FB U+1F1E8",
       "aliases": []
     },
     "🇻🇪": {
       "id": 1895,
-      "default_tag": "flag:_Venezuela",
+      "default_tag": "Venezuela",
       "unicode": "U+1F1FB U+1F1EA",
       "aliases": []
     },
     "🇻🇬": {
       "id": 1896,
-      "default_tag": "flag:_British_Virgin_Islands",
+      "default_tag": "British_Virgin_Islands",
       "unicode": "U+1F1FB U+1F1EC",
       "aliases": []
     },
     "🇻🇮": {
       "id": 1897,
-      "default_tag": "flag:_U.S._Virgin_Islands",
+      "default_tag": "U.S._Virgin_Islands",
       "unicode": "U+1F1FB U+1F1EE",
       "aliases": []
     },
     "🇻🇳": {
       "id": 1898,
-      "default_tag": "flag:_Vietnam",
+      "default_tag": "Vietnam",
       "unicode": "U+1F1FB U+1F1F3",
       "aliases": []
     },
     "🇻🇺": {
       "id": 1899,
-      "default_tag": "flag:_Vanuatu",
+      "default_tag": "Vanuatu",
       "unicode": "U+1F1FB U+1F1FA",
       "aliases": []
     },
     "🇼🇫": {
       "id": 1900,
-      "default_tag": "flag:_Wallis_&_Futuna",
+      "default_tag": "Wallis_&_Futuna",
       "unicode": "U+1F1FC U+1F1EB",
       "aliases": []
     },
     "🇼🇸": {
       "id": 1901,
-      "default_tag": "flag:_Samoa",
+      "default_tag": "Samoa",
       "unicode": "U+1F1FC U+1F1F8",
       "aliases": []
     },
     "🇽🇰": {
       "id": 1902,
-      "default_tag": "flag:_Kosovo",
+      "default_tag": "Kosovo",
       "unicode": "U+1F1FD U+1F1F0",
       "aliases": []
     },
     "🇾🇪": {
       "id": 1903,
-      "default_tag": "flag:_Yemen",
+      "default_tag": "Yemen",
       "unicode": "U+1F1FE U+1F1EA",
       "aliases": []
     },
     "🇾🇹": {
       "id": 1904,
-      "default_tag": "flag:_Mayotte",
+      "default_tag": "Mayotte",
       "unicode": "U+1F1FE U+1F1F9",
       "aliases": []
     },
     "🇿🇦": {
       "id": 1905,
-      "default_tag": "flag:_South_Africa",
+      "default_tag": "South_Africa",
       "unicode": "U+1F1FF U+1F1E6",
       "aliases": []
     },
     "🇿🇲": {
       "id": 1906,
-      "default_tag": "flag:_Zambia",
+      "default_tag": "Zambia",
       "unicode": "U+1F1FF U+1F1F2",
       "aliases": []
     },
     "🇿🇼": {
       "id": 1907,
-      "default_tag": "flag:_Zimbabwe",
+      "default_tag": "Zimbabwe",
       "unicode": "U+1F1FF U+1F1FC",
       "aliases": []
     },
     "🏴󠁧󠁢󠁥󠁮󠁧󠁿": {
       "id": 1908,
-      "default_tag": "flag:_England",
+      "default_tag": "England",
       "unicode": "U+1F3F4 U+E0067 U+E0062 U+E0065 U+E006E U+E0067 U+E007F",
       "aliases": ["england"]
     },
     "🏴󠁧󠁢󠁳󠁣󠁴󠁿": {
       "id": 1909,
-      "default_tag": "flag:_Scotland",
+      "default_tag": "Scotland",
       "unicode": "U+1F3F4 U+E0067 U+E0062 U+E0073 U+E0063 U+E0074 U+E007F",
       "aliases": []
     },
     "🏴󠁧󠁢󠁷󠁬󠁳󠁿": {
       "id": 1910,
-      "default_tag": "flag:_Wales",
+      "default_tag": "Wales",
       "unicode": "U+1F3F4 U+E0067 U+E0062 U+E0077 U+E006C U+E0073 U+E007F",
       "aliases": []
     }
