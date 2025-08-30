@@ -98,15 +98,43 @@ final class MappingsViewModel: ObservableObject {
 final class CustomMappingsViewModel: ObservableObject {
     @Published var items: [(tag: String, text: String)] = []
     @Published var selectedTag: String? = nil
+    @Published var favoriteTags: Set<String> = []
+    private var lastAddedTag: String? = nil
 
     init() {
         reload()
+        loadFavorites()
     }
 
     func reload() {
-        items = CustomStorage.shared.getAllSorted()
+        items = CustomStorage.shared.getAllNewestFirst()
         if selectedTag == nil { selectedTag = items.first?.tag }
+        // Newest-first ordering is provided by storage; no extra sorting here
     }
+
+    // MARK: - Favorites
+    func loadFavorites() {
+        if let saved = UserDefaults.standard.array(forKey: "favoriteCustomTags") as? [String] {
+            favoriteTags = Set(saved.map { $0.lowercased() })
+        }
+    }
+
+    private func saveFavorites() {
+        UserDefaults.standard.set(Array(favoriteTags), forKey: "favoriteCustomTags")
+    }
+
+    func toggleFavorite(tag: String) {
+        let key = tag.lowercased()
+        if favoriteTags.contains(key) {
+            favoriteTags.remove(key)
+        } else {
+            favoriteTags.insert(key)
+        }
+        saveFavorites()
+        objectWillChange.send()
+    }
+
+    // Removed global sorting to preserve main list order
 
     func addNew() {
         let base = "new_tag"
@@ -117,9 +145,8 @@ final class CustomMappingsViewModel: ObservableObject {
             candidate = "\(base)_\(index)"
         }
         CustomStorage.shared.set(text: "custom string", forTag: candidate)
-        // Prepend new item to the top without re-sorting
+        // Prepend new item to the top (newest-first)
         let newItem = (tag: candidate, text: "custom string")
-        // Remove any existing instance of the same tag just in case
         items.removeAll { $0.tag.lowercased() == candidate.lowercased() }
         items.insert(newItem, at: 0)
         selectedTag = candidate
@@ -138,6 +165,14 @@ final class CustomMappingsViewModel: ObservableObject {
         CustomStorage.shared.set(text: text, forTag: newTag)
         reload()
         selectedTag = newTag
+        // Migrate favorite flag if present
+        let oldKey = oldTag.lowercased()
+        let newKey = newTag.lowercased()
+        if favoriteTags.contains(oldKey) {
+            favoriteTags.remove(oldKey)
+            favoriteTags.insert(newKey)
+            UserDefaults.standard.set(Array(favoriteTags), forKey: "favoriteCustomTags")
+        }
     }
 
     func delete(tag: String) {
@@ -147,6 +182,12 @@ final class CustomMappingsViewModel: ObservableObject {
             selectedTag = items.first?.tag
         }
         objectWillChange.send()
+        // Remove from favorites if present
+        let key = tag.lowercased()
+        if favoriteTags.contains(key) {
+            favoriteTags.remove(key)
+            UserDefaults.standard.set(Array(favoriteTags), forKey: "favoriteCustomTags")
+        }
     }
 }
 

@@ -89,6 +89,11 @@ final class CustomStorage {
         return map.getAllMappings().sorted { $0.tag < $1.tag }
     }
 
+    func getAllNewestFirst() -> [(tag: String, text: String)] {
+        let entries = map.getAllByInsertionOrder()
+        return Array(entries.reversed())
+    }
+
     // MARK: - Prefix search facade
     func collectTags(withPrefix prefix: String, limit: Int = 25) -> [String] {
         return trie.collectTags(withPrefix: prefix, limit: limit)

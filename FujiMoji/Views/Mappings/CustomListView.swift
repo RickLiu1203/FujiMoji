@@ -21,6 +21,8 @@ struct CustomListView: View {
         let isSelected: Bool
         let tagWidth: CGFloat
         let onDelete: (String) -> Void
+        let onToggleFavorite: (String) -> Void
+        let isFavorite: Bool
         @State private var isHovered = false
 
         var body: some View {
@@ -39,8 +41,8 @@ struct CustomListView: View {
                     .padding(.leading, 4)
 
                 HStack(spacing: 8) {
-                    Button(action: {}) {
-                        Image(systemName: "star")
+                    Button(action: { onToggleFavorite(item.tag) }) {
+                        Image(systemName: isFavorite ? "star.fill" : "star")
                             .font(.system(size: 13, weight: .regular))
                     }
                     .buttonStyle(.plain)
@@ -51,9 +53,8 @@ struct CustomListView: View {
                     }
                     .buttonStyle(.plain)
                 }
-                .opacity((isSelected || isHovered) ? 1 : 0)
-                .animation(.easeInOut(duration: 0.15), value: isSelected || isHovered)
-                .allowsHitTesting(isSelected || isHovered)
+                .opacity(1)
+                .allowsHitTesting(true)
                 .foregroundStyle(.secondary)
                 .padding(.trailing, 2)
             }
@@ -88,6 +89,7 @@ struct CustomListView: View {
     @ObservedObject var vm: CustomMappingsViewModel
     @State private var isHoveringAdd = false
 
+    var showOnlyFavorites: Bool = false
     var onSelect: (String) -> Void = { _ in }
 
     var body: some View {
@@ -96,7 +98,10 @@ struct CustomListView: View {
             Button {
                 withAnimation {
                     vm.addNew()
-                    if let tag = vm.selectedTag { onSelect(tag) }
+                    if let tag = vm.selectedTag {
+                        if showOnlyFavorites { vm.toggleFavorite(tag: tag) }
+                        onSelect(tag)
+                    }
                 }
             } label: {
                 Label("Add Custom Text", systemImage: "plus")
@@ -143,22 +148,51 @@ struct CustomListView: View {
             }
 
             ScrollView {
-                LazyVStack(spacing: 4) {
-                    ForEach(vm.items, id: \.tag) { pair in
-                        CustomRowView(
-                            item: CustomItem(tag: pair.tag, value: pair.text),
-                            isSelected: vm.selectedTag?.lowercased() == pair.tag.lowercased(),
-                            tagWidth: tagWidth,
-                            onDelete: { tag in
-                                withAnimation {
-                                    vm.delete(tag: tag)
-                                }
+                if (showOnlyFavorites && vm.items.filter { vm.favoriteTags.contains($0.tag.lowercased()) }.isEmpty) {
+                    VStack(spacing: 8) {
+                        Text("No Favourite Custom Texts Yet!")
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundStyle(.secondary)
+                            .padding(.bottom, 16)
+                            .padding(.top, 64)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                } else if vm.items.isEmpty {
+                    VStack(spacing: 8) {
+                        Text("No Custom Text Yet!")
+                            .font(.system(size: 14, weight: .regular))
+                            .foregroundStyle(.secondary)
+                            .padding(.top, 64)
+                            .padding(.bottom, 16)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                } else {
+                    LazyVStack(spacing: 4) {
+                        ForEach((showOnlyFavorites ? vm.items.filter { vm.favoriteTags.contains($0.tag.lowercased()) } : vm.items), id: \.tag) { pair in
+                            CustomRowView(
+                                item: CustomItem(tag: pair.tag, value: pair.text),
+                                isSelected: vm.selectedTag?.lowercased() == pair.tag.lowercased(),
+                                tagWidth: tagWidth,
+                                onDelete: { tag in
+                                    withAnimation {
+                                        vm.delete(tag: tag)
+                                    }
+                                },
+                                onToggleFavorite: { tag in
+                                    withAnimation {
+                                        vm.toggleFavorite(tag: tag)
+                                        if showOnlyFavorites {
+                                            // If toggled off while in favorites list, it will drop from view
+                                        }
+                                    }
+                                },
+                                isFavorite: vm.favoriteTags.contains(pair.tag.lowercased())
+                            )
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                vm.selectedTag = pair.tag
+                                onSelect(pair.tag)
                             }
-                        )
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            vm.selectedTag = pair.tag
-                            onSelect(pair.tag)
                         }
                     }
                 }

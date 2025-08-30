@@ -12,10 +12,15 @@ struct EmojiEditorView: View {
     var isFavorite: Bool
     var onSaveAliases: (String, [String]) -> Void
     var onToggleFavorite: (String, Bool) -> Void
+    var isEmptyState: Bool = false
     @State private var aliasesInput: String = ""
     @FocusState private var isAliasesFocused: Bool
     var body: some View {
-        VStack(alignment: .center, spacing: 12) {
+        Group {
+            if isEmptyState {
+                VStack { Spacer() }
+            } else {
+                VStack(alignment: .center, spacing: 12) {
                 ZStack(alignment: .bottomTrailing) {
                     Text(selected?.emoji ?? "")
                     .font(.system(size: 110))
@@ -87,6 +92,8 @@ struct EmojiEditorView: View {
                     .padding(.bottom, 24)
                     .frame(width: 220)
                 }
+                }
+            }
         }
         .padding(.horizontal, 16)
         .contentShape(Rectangle())

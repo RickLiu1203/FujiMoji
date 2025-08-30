@@ -9,11 +9,11 @@ import SwiftUI
 
 enum EmojiCategory: String, CaseIterable, Identifiable, Hashable {
     case smileysPeople
+    case peopleBody
     case animalsNature
     case foodDrink
-    case activity
     case travelPlaces
-    case objects
+    case activityObjects
     case symbols
     case flags
 
@@ -21,13 +21,13 @@ enum EmojiCategory: String, CaseIterable, Identifiable, Hashable {
 
     var title: String {
         switch self {
-        case .smileysPeople: return "Smileys & People"
+        case .smileysPeople: return "Smileys & Emotions"
+        case .peopleBody: return "People & Body"
         case .animalsNature: return "Animals & Nature"
         case .foodDrink: return "Food & Drink"
-        case .activity: return "Activity"
         case .travelPlaces: return "Travel & Places"
-        case .objects: return "Objects"
-        case .symbols: return "Symbols"
+        case .activityObjects: return "Activities & Objects"
+        case .symbols: return "Symbols & Signs"
         case .flags: return "Flags"
         }
     }
@@ -35,11 +35,11 @@ enum EmojiCategory: String, CaseIterable, Identifiable, Hashable {
     var iconName: String {
         switch self {
         case .smileysPeople: return "face.smiling"
+        case .peopleBody: return "person.2"
         case .animalsNature: return "pawprint"
         case .foodDrink: return "fork.knife"
-        case .activity: return "sportscourt"
         case .travelPlaces: return "tram.fill"
-        case .objects: return "lightbulb"
+        case .activityObjects: return "gamecontroller"
         case .symbols: return "textformat"
         case .flags: return "flag"
         }
@@ -49,12 +49,14 @@ enum EmojiCategory: String, CaseIterable, Identifiable, Hashable {
 enum MappingSidebarItem: Identifiable, Hashable {
     case emojiCategory(EmojiCategory)
     case customMappings
+    case customFavorites
     case favorites
 
     var id: String {
         switch self {
         case .emojiCategory(let category): return "emoji-\(category.rawValue)"
         case .customMappings: return "custom"
+        case .customFavorites: return "custom-favorites"
         case .favorites: return "favorites"
         }
     }
@@ -81,6 +83,9 @@ struct SideBarView: View {
             Section("Favourites") {
                 Label("Favourite Emojis", systemImage: "star")
                     .tag(MappingSidebarItem.favorites)
+                    .font(.system(size: 14, weight: .medium))
+                Label("Favourite Texts", systemImage: "star")
+                    .tag(MappingSidebarItem.customFavorites)
                     .font(.system(size: 14, weight: .medium))
             }
         }

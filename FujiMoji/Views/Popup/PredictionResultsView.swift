@@ -112,7 +112,7 @@ struct TagPill: View {
                             .foregroundColor(.orange)
                     }
                 }
-                .offset(x: 5, y: -5), // Position in top-right corner
+                .offset(x: 5, y: -5),
                 alignment: .topTrailing
             )
             .onHover { hovering in

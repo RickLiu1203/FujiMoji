@@ -35,6 +35,7 @@ class PopupViewModel: ObservableObject {
     
     // Favorites data cached for O(1) lookup
     private var favoriteEmojis: Set<String> = []
+    private var favoriteCustomTags: Set<String> = []
     
     // Reference to FujiMojiState for controlling popup behavior
     weak var fujiMojiState: FujiMojiState?
@@ -96,6 +97,11 @@ class PopupViewModel: ObservableObject {
         } else {
             favoriteEmojis = []
         }
+        if let savedTags = UserDefaults.standard.array(forKey: "favoriteCustomTags") as? [String] {
+            favoriteCustomTags = Set(savedTags.map { $0.lowercased() })
+        } else {
+            favoriteCustomTags = []
+        }
     }
     
     func updateMatches(for current: String) {
@@ -142,6 +148,9 @@ class PopupViewModel: ObservableObject {
                 let exact2 = tag2.lowercased() == fetchPrefix
                 if exact1 && !exact2 { return true }
                 if !exact1 && exact2 { return false }
+                let fav1 = self.favoriteCustomTags.contains(tag1.lowercased())
+                let fav2 = self.favoriteCustomTags.contains(tag2.lowercased())
+                if fav1 != fav2 { return fav1 }
                 return tag1 < tag2 
             }
             
@@ -248,6 +257,9 @@ class PopupViewModel: ObservableObject {
     
     func isFavorite(emoji: String) -> Bool {
         return favoriteEmojis.contains(emoji)
+    }
+    func isFavoriteCustom(tag: String) -> Bool {
+        return favoriteCustomTags.contains(tag.lowercased())
     }
     
     private func getEmojiMatchPriority(for match: EmojiMatch, inputPrefix: String) -> EmojiMatchPriority {

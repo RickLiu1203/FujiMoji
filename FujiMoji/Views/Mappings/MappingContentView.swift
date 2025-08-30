@@ -23,18 +23,18 @@ struct MappingContentView: View {
     init(mappingViewModel: MappingsViewModel? = nil) {
         self._mappingViewModel = StateObject(wrappedValue: mappingViewModel ?? MappingsViewModel())
     }
-    private let columnsCount = 6
     private let categoryRowAnchors: [EmojiCategory: Int] = [
         .smileysPeople: 0,
-        .animalsNature: 1,
-        .foodDrink: 126,
-        .activity: 182,
-        .travelPlaces: 142,
-        .objects: 198,
-        .symbols: 258,
-        .flags: 300
+        .peopleBody: 24,
+        .animalsNature: 79,
+        .foodDrink: 102,
+        .travelPlaces: 121,
+        .activityObjects: 152,
+        .symbols: 202,
+        .flags: 234
     ]
     @State private var nsScrollView: NSScrollView?
+    @State private var pendingScrollRow: Int?
     private let cellSize: CGFloat = 48
     private let rowSpacing: CGFloat = 8
     private let topPadding: CGFloat = 2
@@ -60,11 +60,31 @@ struct MappingContentView: View {
                     .padding(.bottom, 20)
                 CustomEditorView(vm: customVM)
                     .frame(width: editorWidth)
+            } else if case .customFavorites? = mappingViewModel.selection {
+                CustomListView(vm: customVM, showOnlyFavorites: true, onSelect: { tag in
+                    customVM.selectedTag = tag
+                })
+                    .padding(.top, topPadding)
+                    .padding(.bottom, 20)
+                    .frame(width: midSectionWidth)
+                Divider()
+                    .padding(.bottom, 20)
+                CustomEditorView(
+                    vm: customVM,
+                    isEmptyState: (customVM.favoriteTags.isEmpty || customVM.selectedTag == nil)
+                )
+                .frame(width: editorWidth)
             } else {
                 ScrollView(.vertical, showsIndicators: true) {
                     EmojiGridView(emojis: mappingViewModel.currentEmojis, selectedEmoji: $mappingViewModel.selectedEmoji)
                         .background(EnclosingScrollViewFinder { sv in
                             nsScrollView = sv
+                            if let row = pendingScrollRow {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                                    scrollToRow(row)
+                                    pendingScrollRow = nil
+                                }
+                            }
                         })
                 }
                 .frame(width: midSectionWidth)
@@ -76,7 +96,13 @@ struct MappingContentView: View {
                     selected: mappingViewModel.selectedDetail,
                     isFavorite: mappingViewModel.selectedEmoji.map { mappingViewModel.favoriteEmojis.contains($0) } ?? false,
                     onSaveAliases: { emoji, aliases in mappingViewModel.setAliases(aliases, for: emoji) },
-                    onToggleFavorite: { emoji, newValue in mappingViewModel.toggleFavorite(emoji, isOn: newValue) }
+                    onToggleFavorite: { emoji, newValue in mappingViewModel.toggleFavorite(emoji, isOn: newValue) },
+                    isEmptyState: ({ () -> Bool in
+                        if case .favorites? = mappingViewModel.selection {
+                            return mappingViewModel.favoriteEmojis.isEmpty || mappingViewModel.selectedEmoji == nil
+                        }
+                        return false
+                    })()
                 )
                 .frame(width: editorWidth)
             }
@@ -85,7 +111,13 @@ struct MappingContentView: View {
         .background(.ultraThinMaterial)
         .onChange(of: mappingViewModel.selection) { newValue in
             if case let .emojiCategory(category) = newValue, let row = categoryRowAnchors[category] {
-                scrollToRow(row)
+                if nsScrollView != nil {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                        scrollToRow(row)
+                    }
+                } else {
+                    pendingScrollRow = row
+                }
             }
         }
         .onChange(of: mappingViewModel.selectedEmoji) { newEmoji in

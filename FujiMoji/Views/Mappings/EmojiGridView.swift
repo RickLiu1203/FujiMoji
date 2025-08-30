@@ -40,7 +40,7 @@ struct EmojiGridView: View {
     var body: some View {
         VStack(alignment: .center) {
             if emojis.isEmpty {
-                Text("No Emojis Yet!")
+                Text("No Favourite Emojis Yet!")
                     .foregroundColor(.secondary)
                     .font(.system(size: 14, weight: .medium))
                     .padding(.top, 200)

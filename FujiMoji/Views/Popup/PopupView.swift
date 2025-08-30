@@ -101,7 +101,7 @@ private struct SingleResultsPopupView: View {
                     items: viewModel.customMatches,
                     displayText: { $0 },
                     isHighlighted: { index, _ in index == viewModel.highlightedIndex },
-                    isFavorite: { _ in false },
+                    isFavorite: { viewModel.isFavoriteCustom(tag: $0) },
                     onTap: { tag in viewModel.performCustomSelection(tag: tag) },
                     highlightedIndex: viewModel.highlightedIndex
                 )
@@ -159,7 +159,7 @@ private struct DoubleResultsPopupView: View {
                 items: viewModel.customMatches,
                 displayText: { $0 },
                 isHighlighted: { index, _ in index == viewModel.highlightedIndex },
-                isFavorite: { _ in false },
+                isFavorite: { viewModel.isFavoriteCustom(tag: $0) },
                 onTap: { tag in viewModel.performCustomSelection(tag: tag) },
                 highlightedIndex: viewModel.highlightedIndex
             )

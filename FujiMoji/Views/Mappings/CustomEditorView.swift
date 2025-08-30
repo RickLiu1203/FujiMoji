@@ -15,12 +15,19 @@ struct CustomEditorView: View {
     private enum Field { case tag, text }
 
     @ObservedObject var vm: CustomMappingsViewModel
+    var isEmptyState: Bool = false
 
     var body: some View {
-        VStack(alignment: .center, spacing: 24) {
-            tagInputView
-            textInputView
-            Spacer()
+        Group {
+            if isEmptyState {
+                VStack { Spacer() }
+            } else {
+                VStack(alignment: .center, spacing: 24) {
+                    tagInputView
+                    textInputView
+                    Spacer()
+                }
+            }
         }
         .frame(alignment: .top)
         .contentShape(Rectangle())
