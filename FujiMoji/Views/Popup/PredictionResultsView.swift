@@ -50,7 +50,7 @@ struct PredictionResultsView<T: Hashable>: View {
                     guard highlightedIndex > 0, !items.isEmpty, highlightedIndex < items.count else { return }
                     var transaction = Transaction(animation: nil)
                     withTransaction(transaction) {
-                        proxy.scrollTo("pill_\(highlightedIndex)", anchor: .center)
+                        proxy.scrollTo("pill_\(highlightedIndex)", anchor: .leading)
                     }
                     didPerformInitialScroll = true
                 }
@@ -60,15 +60,14 @@ struct PredictionResultsView<T: Hashable>: View {
                     guard highlightedIndex > 0, !items.isEmpty, highlightedIndex < items.count else { return }
                     var transaction = Transaction(animation: nil)
                     withTransaction(transaction) {
-                        proxy.scrollTo("pill_\(highlightedIndex)", anchor: .center)
+                        proxy.scrollTo("pill_\(highlightedIndex)", anchor: .leading)
                     }
                     didPerformInitialScroll = true
                 }
                 .onChange(of: highlightedIndex) { newIndex in
                     guard !items.isEmpty, newIndex >= 0, newIndex < items.count else { return }
-                    var transaction = Transaction(animation: nil)
-                    withTransaction(transaction) {
-                        proxy.scrollTo("pill_\(newIndex)", anchor: .center)
+                    withAnimation(.easeInOut(duration: 0.18)) {
+                        proxy.scrollTo("pill_\(newIndex)", anchor: .leading)
                     }
                 }
             }

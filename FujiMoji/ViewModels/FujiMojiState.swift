@@ -7,7 +7,7 @@ class FujiMojiState: ObservableObject {
     @Published var isCool: Bool = true
     @Published var showSuggestionPopup: Bool = true
     @Published var startCaptureKey: String = "/"
-    @Published var endCaptureKey: String = " "
+    @Published var endCaptureKey: String = "/"
     
     private let keyDetection = KeyDetection.shared
 
@@ -20,7 +20,7 @@ class FujiMojiState: ObservableObject {
     
     private func loadCaptureKeys() {
         startCaptureKey = UserDefaults.standard.string(forKey: "startCaptureKey") ?? "/"
-        endCaptureKey = UserDefaults.standard.string(forKey: "endCaptureKey") ?? " "
+        endCaptureKey = UserDefaults.standard.string(forKey: "endCaptureKey") ?? "/"
     }
     
     func updateCaptureKeys() {

@@ -27,7 +27,7 @@ class KeyDetection: ObservableObject {
     @Published var isCapturing = false
     
     private var startDelimiter = "/"
-    private var endDelimiter = " "
+    private var endDelimiter = "/"
     private var captureStarted = false 
     
     private var preDelimiterDigits = ""
@@ -41,7 +41,7 @@ class KeyDetection: ObservableObject {
     private init() {
         // Load saved delimiters or use defaults
         startDelimiter = UserDefaults.standard.string(forKey: "startCaptureKey") ?? "/"
-        endDelimiter = UserDefaults.standard.string(forKey: "endCaptureKey") ?? " "
+        endDelimiter = UserDefaults.standard.string(forKey: "endCaptureKey") ?? "/"
     }
     
     func updateDelimiters(start: String, end: String) {

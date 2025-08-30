@@ -84,7 +84,7 @@ struct MenuFourthSectionView: View {
     }
     
     private func displayEndKey(_ key: String) -> String {
-        return key == " " ? "Space" : key
+        return key == " " ? "␣" : key
     }
     
     private func filterAndLimitInput(_ input: String) -> String {

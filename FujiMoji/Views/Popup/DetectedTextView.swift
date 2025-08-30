@@ -12,11 +12,15 @@ struct DetectedTextView: View {
     let height: CGFloat = 40
 
     var body: some View {
-        VStack {
+        HStack(alignment: .center) {
             Text(text)
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(.primary)
                 .lineLimit(1)
+            Spacer()
+            Image(systemName: "pencil.line")
+                .font(.system(size: 14, weight: .black))
+                .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: height)
