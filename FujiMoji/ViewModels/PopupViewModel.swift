@@ -180,7 +180,8 @@ class PopupViewModel: ObservableObject {
     }
 
     func performEmojiSelection(tag: String, emoji: String) {
-        KeyDetection.shared.finishCaptureWithDirectReplacement(emoji, endWithSpace: false)
+        let output = FujiMojiState.shared.applySkinTone(emoji)
+        KeyDetection.shared.finishCaptureWithDirectReplacement(output, endWithSpace: false)
     }
 
     func performCustomSelection(tag: String) {

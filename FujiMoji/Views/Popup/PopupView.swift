@@ -38,6 +38,7 @@ struct DetectedTextPopupView: View {
 enum ResultsRenderMode: String { case single, double }
 struct PredictionResultsPopupView: View {
     @StateObject private var viewModel = PopupViewModel(fujiMojiState: FujiMojiState.shared)
+    @ObservedObject private var fujiMojiState = FujiMojiState.shared
     private let padding: CGFloat = 16
     @State private var renderedMode: ResultsRenderMode? = nil
     
@@ -109,7 +110,7 @@ private struct SingleResultsPopupView: View {
                 PredictionResultsView(
                     title: "Emojis",
                     items: viewModel.emojiMatches,
-                    displayText: { "\($0.emoji)  \($0.tag)" },
+                    displayText: { "\(FujiMojiState.shared.applySkinTone($0.emoji))  \($0.tag)" },
                     isHighlighted: { index, _ in index == viewModel.highlightedIndex },
                     isFavorite: { viewModel.isFavorite(emoji: $0.emoji) },
                     onTap: { match in viewModel.performEmojiSelection(tag: match.tag, emoji: match.emoji) },
@@ -145,7 +146,7 @@ private struct DoubleResultsPopupView: View {
             PredictionResultsView(
                 title: "Emojis",
                 items: viewModel.emojiMatches,
-                displayText: { "\($0.emoji)  \($0.tag)" },
+                displayText: { "\(FujiMojiState.shared.applySkinTone($0.emoji))  \($0.tag)" },
                 isHighlighted: { index, _ in
                     let adjustedIndex = viewModel.customMatches.count + index
                     return adjustedIndex == viewModel.highlightedIndex

@@ -41,7 +41,7 @@ struct MenuThirdSectionView: View {
         VStack(alignment: .leading, spacing: 8) {
             Toggle(isOn: $fujiMojiState.showSuggestionPopup) {
                 HStack {
-                    Text("Show Suggestion Popup")
+                    Text("Show Suggestions")
                     
                     Spacer()
                 }

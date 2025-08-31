@@ -1,3 +1,9 @@
+// EmojiStorage.swift
+// FujiMoji
+//
+// Created by Rick Liu on 2025-08-20.
+//
+
 import Foundation
 
 class EmojiStorage {

@@ -1,0 +1,1957 @@
+{"👋️": {
+    "id": 170,
+    "default_tag": "waving_hand",
+    "unicode": "U+1F44B",
+    "aliases": []
+  },
+  "🤚️": {
+    "id": 171,
+    "default_tag": "raised_back_of_hand",
+    "unicode": "U+1F91A",
+    "aliases": []
+  },
+  "🖐️": {
+    "id": 172,
+    "default_tag": "hand_with_fingers_splayed",
+    "unicode": "U+1F590",
+    "aliases": []
+  },
+  "✋️": {
+    "id": 173,
+    "default_tag": "raised_hand",
+    "unicode": "U+270B",
+    "aliases": []
+  },
+  "🖖️": {
+    "id": 174,
+    "default_tag": "vulcan_salute",
+    "unicode": "U+1F596",
+    "aliases": []
+  },
+  "🫱️": {
+    "id": 175,
+    "default_tag": "rightwards_hand",
+    "unicode": "U+1FAF1",
+    "aliases": []
+  },
+  "🫲️": {
+    "id": 176,
+    "default_tag": "leftwards_hand",
+    "unicode": "U+1FAF2",
+    "aliases": []
+  },
+  "🫳️": {
+    "id": 177,
+    "default_tag": "palm_down_hand",
+    "unicode": "U+1FAF3",
+    "aliases": []
+  },
+  "🫴️": {
+    "id": 178,
+    "default_tag": "palm_up_hand",
+    "unicode": "U+1FAF4",
+    "aliases": []
+  },
+  "🫷️": {
+    "id": 179,
+    "default_tag": "leftwards_pushing_hand",
+    "unicode": "U+1FAF7",
+    "aliases": []
+  },
+  "🫸️": {
+    "id": 180,
+    "default_tag": "rightwards_pushing_hand",
+    "unicode": "U+1FAF8",
+    "aliases": []
+  },
+  "👌️": {
+    "id": 181,
+    "default_tag": "OK_hand",
+    "unicode": "U+1F44C",
+    "aliases": []
+  },
+  "🤌️": {
+    "id": 182,
+    "default_tag": "pinched_fingers",
+    "unicode": "U+1F90C",
+    "aliases": []
+  },
+  "🤏️": {
+    "id": 183,
+    "default_tag": "pinching_hand",
+    "unicode": "U+1F90F",
+    "aliases": []
+  },
+  "✌️": {
+    "id": 184,
+    "default_tag": "victory_hand",
+    "unicode": "U+270C",
+    "aliases": []
+  },
+  "🤞️": {
+    "id": 185,
+    "default_tag": "crossed_fingers",
+    "unicode": "U+1F91E",
+    "aliases": []
+  },
+  "🫰️": {
+    "id": 186,
+    "default_tag": "hand_with_index_finger_and_thumb_crossed",
+    "unicode": "U+1FAF0",
+    "aliases": []
+  },
+  "🤟️": {
+    "id": 187,
+    "default_tag": "love-you_gesture",
+    "unicode": "U+1F91F",
+    "aliases": []
+  },
+  "🤘️": {
+    "id": 188,
+    "default_tag": "sign_of_the_horns",
+    "unicode": "U+1F918",
+    "aliases": []
+  },
+  "🤙️": {
+    "id": 189,
+    "default_tag": "call_me_hand",
+    "unicode": "U+1F919",
+    "aliases": []
+  },
+  "👈️": {
+    "id": 190,
+    "default_tag": "backhand_index_pointing_left",
+    "unicode": "U+1F448",
+    "aliases": []
+  },
+  "👉️": {
+    "id": 191,
+    "default_tag": "backhand_index_pointing_right",
+    "unicode": "U+1F449",
+    "aliases": []
+  },
+  "👆️": {
+    "id": 192,
+    "default_tag": "backhand_index_pointing_up",
+    "unicode": "U+1F446",
+    "aliases": []
+  },
+  "🖕️": {
+    "id": 193,
+    "default_tag": "middle_finger",
+    "unicode": "U+1F595",
+    "aliases": []
+  },
+  "👇️": {
+    "id": 194,
+    "default_tag": "backhand_index_pointing_down",
+    "unicode": "U+1F447",
+    "aliases": []
+  },
+  "☝️": {
+    "id": 195,
+    "default_tag": "index_pointing_up",
+    "unicode": "U+261D",
+    "aliases": []
+  },
+  "🫵️": {
+    "id": 196,
+    "default_tag": "index_pointing_at_the_viewer",
+    "unicode": "U+1FAF5",
+    "aliases": []
+  },
+  "👍️": {
+    "id": 197,
+    "default_tag": "thumbs_up",
+    "unicode": "U+1F44D",
+    "aliases": []
+  },
+  "👎️": {
+    "id": 198,
+    "default_tag": "thumbs_down",
+    "unicode": "U+1F44E",
+    "aliases": []
+  },
+  "✊️": {
+    "id": 199,
+    "default_tag": "raised_fist",
+    "unicode": "U+270A",
+    "aliases": []
+  },
+  "👊️": {
+    "id": 200,
+    "default_tag": "oncoming_fist",
+    "unicode": "U+1F44A",
+    "aliases": []
+  },
+  "🤛️": {
+    "id": 201,
+    "default_tag": "left-facing_fist",
+    "unicode": "U+1F91B",
+    "aliases": []
+  },
+  "🤜️": {
+    "id": 202,
+    "default_tag": "right-facing_fist",
+    "unicode": "U+1F91C",
+    "aliases": []
+  },
+  "👏️": {
+    "id": 203,
+    "default_tag": "clapping_hands",
+    "unicode": "U+1F44F",
+    "aliases": []
+  },
+  "🙌️": {
+    "id": 204,
+    "default_tag": "raising_hands",
+    "unicode": "U+1F64C",
+    "aliases": []
+  },
+  "🫶️": {
+    "id": 205,
+    "default_tag": "heart_hands",
+    "unicode": "U+1FAF6",
+    "aliases": []
+  },
+  "👐️": {
+    "id": 206,
+    "default_tag": "open_hands",
+    "unicode": "U+1F450",
+    "aliases": []
+  },
+  "🤲️": {
+    "id": 207,
+    "default_tag": "palms_up_together",
+    "unicode": "U+1F932",
+    "aliases": []
+  },
+  "🤝️": {
+    "id": 208,
+    "default_tag": "handshake",
+    "unicode": "U+1F91D",
+    "aliases": []
+  },
+  "🙏️": {
+    "id": 209,
+    "default_tag": "folded_hands",
+    "unicode": "U+1F64F",
+    "aliases": []
+  },
+  "✍️": {
+    "id": 210,
+    "default_tag": "writing_hand",
+    "unicode": "U+270D",
+    "aliases": []
+  },
+  "💅️": {
+    "id": 211,
+    "default_tag": "nail_polish",
+    "unicode": "U+1F485",
+    "aliases": []
+  },
+  "🤳️": {
+    "id": 212,
+    "default_tag": "selfie",
+    "unicode": "U+1F933",
+    "aliases": []
+  },
+  "💪️": {
+    "id": 213,
+    "default_tag": "flexed_biceps",
+    "unicode": "U+1F4AA",
+    "aliases": []
+  },
+  "🦵️": {
+    "id": 216,
+    "default_tag": "leg",
+    "unicode": "U+1F9B5",
+    "aliases": []
+  },
+  "🦶️": {
+    "id": 217,
+    "default_tag": "foot",
+    "unicode": "U+1F9B6",
+    "aliases": []
+  },
+  "👂️": {
+    "id": 218,
+    "default_tag": "ear",
+    "unicode": "U+1F442",
+    "aliases": []
+  },
+  "🦻️": {
+    "id": 219,
+    "default_tag": "ear_with_hearing_aid",
+    "unicode": "U+1F9BB",
+    "aliases": []
+  },
+  "👃️": {
+    "id": 220,
+    "default_tag": "nose",
+    "unicode": "U+1F443",
+    "aliases": []
+  },
+  "👶️": {
+    "id": 231,
+    "default_tag": "baby",
+    "unicode": "U+1F476",
+    "aliases": []
+  },
+  "🧒️": {
+    "id": 232,
+    "default_tag": "child",
+    "unicode": "U+1F9D2",
+    "aliases": []
+  },
+  "👦️": {
+    "id": 233,
+    "default_tag": "boy",
+    "unicode": "U+1F466",
+    "aliases": []
+  },
+  "👧️": {
+    "id": 234,
+    "default_tag": "girl",
+    "unicode": "U+1F467",
+    "aliases": []
+  },
+  "🧑️": {
+    "id": 235,
+    "default_tag": "person",
+    "unicode": "U+1F9D1",
+    "aliases": []
+  },
+  "👱️": {
+    "id": 236,
+    "default_tag": "person:_blond_hair",
+    "unicode": "U+1F471",
+    "aliases": []
+  },
+  "👨️": {
+    "id": 237,
+    "default_tag": "man",
+    "unicode": "U+1F468",
+    "aliases": []
+  },
+  "🧔️": {
+    "id": 238,
+    "default_tag": "person:_beard",
+    "unicode": "U+1F9D4",
+    "aliases": []
+  },
+  "🧔‍♂️": {
+    "id": 239,
+    "default_tag": "man:_beard",
+    "unicode": "U+1F9D4 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧔‍♀️": {
+    "id": 240,
+    "default_tag": "woman:_beard",
+    "unicode": "U+1F9D4 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "👨‍🦰": {
+    "id": 241,
+    "default_tag": "man:_red_hair",
+    "unicode": "U+1F468 U+200D U+1F9B0",
+    "aliases": []
+  },
+  "👨‍🦱": {
+    "id": 242,
+    "default_tag": "man:_curly_hair",
+    "unicode": "U+1F468 U+200D U+1F9B1",
+    "aliases": []
+  },
+  "👨‍🦳": {
+    "id": 243,
+    "default_tag": "man:_white_hair",
+    "unicode": "U+1F468 U+200D U+1F9B3",
+    "aliases": []
+  },
+  "👨‍🦲": {
+    "id": 244,
+    "default_tag": "man:_bald",
+    "unicode": "U+1F468 U+200D U+1F9B2",
+    "aliases": []
+  },
+  "👩️": {
+    "id": 245,
+    "default_tag": "woman",
+    "unicode": "U+1F469",
+    "aliases": []
+  },
+  "👩‍🦰": {
+    "id": 246,
+    "default_tag": "woman:_red_hair",
+    "unicode": "U+1F469 U+200D U+1F9B0",
+    "aliases": []
+  },
+  "🧑‍🦰": {
+    "id": 247,
+    "default_tag": "person:_red_hair",
+    "unicode": "U+1F9D1 U+200D U+1F9B0",
+    "aliases": []
+  },
+  "👩‍🦱": {
+    "id": 248,
+    "default_tag": "woman:_curly_hair",
+    "unicode": "U+1F469 U+200D U+1F9B1",
+    "aliases": []
+  },
+  "🧑‍🦱": {
+    "id": 249,
+    "default_tag": "person:_curly_hair",
+    "unicode": "U+1F9D1 U+200D U+1F9B1",
+    "aliases": []
+  },
+  "👩‍🦳": {
+    "id": 250,
+    "default_tag": "woman:_white_hair",
+    "unicode": "U+1F469 U+200D U+1F9B3",
+    "aliases": []
+  },
+  "🧑‍🦳": {
+    "id": 251,
+    "default_tag": "person:_white_hair",
+    "unicode": "U+1F9D1 U+200D U+1F9B3",
+    "aliases": []
+  },
+  "👩‍🦲": {
+    "id": 252,
+    "default_tag": "woman:_bald",
+    "unicode": "U+1F469 U+200D U+1F9B2",
+    "aliases": []
+  },
+  "🧑‍🦲": {
+    "id": 253,
+    "default_tag": "person:_bald",
+    "unicode": "U+1F9D1 U+200D U+1F9B2",
+    "aliases": []
+  },
+  "👱‍♀️": {
+    "id": 254,
+    "default_tag": "woman:_blond_hair",
+    "unicode": "U+1F471 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "👱‍♂️": {
+    "id": 255,
+    "default_tag": "man:_blond_hair",
+    "unicode": "U+1F471 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧓️": {
+    "id": 256,
+    "default_tag": "older_person",
+    "unicode": "U+1F9D3",
+    "aliases": []
+  },
+  "👴️": {
+    "id": 257,
+    "default_tag": "old_man",
+    "unicode": "U+1F474",
+    "aliases": []
+  },
+  "👵️": {
+    "id": 258,
+    "default_tag": "old_woman",
+    "unicode": "U+1F475",
+    "aliases": []
+  },
+  "🙍️": {
+    "id": 259,
+    "default_tag": "person_frowning",
+    "unicode": "U+1F64D",
+    "aliases": []
+  },
+  "🙍‍♂️": {
+    "id": 260,
+    "default_tag": "man_frowning",
+    "unicode": "U+1F64D U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🙍‍♀️": {
+    "id": 261,
+    "default_tag": "woman_frowning",
+    "unicode": "U+1F64D U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🙎️": {
+    "id": 262,
+    "default_tag": "person_pouting",
+    "unicode": "U+1F64E",
+    "aliases": []
+  },
+  "🙎‍♂️": {
+    "id": 263,
+    "default_tag": "man_pouting",
+    "unicode": "U+1F64E U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🙎‍♀️": {
+    "id": 264,
+    "default_tag": "woman_pouting",
+    "unicode": "U+1F64E U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🙅️": {
+    "id": 265,
+    "default_tag": "person_gesturing_NO",
+    "unicode": "U+1F645",
+    "aliases": []
+  },
+  "🙅‍♂️": {
+    "id": 266,
+    "default_tag": "man_gesturing_NO",
+    "unicode": "U+1F645 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🙅‍♀️": {
+    "id": 267,
+    "default_tag": "woman_gesturing_NO",
+    "unicode": "U+1F645 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🙆️": {
+    "id": 268,
+    "default_tag": "person_gesturing_OK",
+    "unicode": "U+1F646",
+    "aliases": []
+  },
+  "🙆‍♂️": {
+    "id": 269,
+    "default_tag": "man_gesturing_OK",
+    "unicode": "U+1F646 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🙆‍♀️": {
+    "id": 270,
+    "default_tag": "woman_gesturing_OK",
+    "unicode": "U+1F646 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "💁️": {
+    "id": 271,
+    "default_tag": "person_tipping_hand",
+    "unicode": "U+1F481",
+    "aliases": []
+  },
+  "💁‍♂️": {
+    "id": 272,
+    "default_tag": "man_tipping_hand",
+    "unicode": "U+1F481 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "💁‍♀️": {
+    "id": 273,
+    "default_tag": "woman_tipping_hand",
+    "unicode": "U+1F481 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🙋️": {
+    "id": 274,
+    "default_tag": "person_raising_hand",
+    "unicode": "U+1F64B",
+    "aliases": []
+  },
+  "🙋‍♂️": {
+    "id": 275,
+    "default_tag": "man_raising_hand",
+    "unicode": "U+1F64B U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🙋‍♀️": {
+    "id": 276,
+    "default_tag": "woman_raising_hand",
+    "unicode": "U+1F64B U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧏️": {
+    "id": 277,
+    "default_tag": "deaf_person",
+    "unicode": "U+1F9CF",
+    "aliases": []
+  },
+  "🧏‍♂️": {
+    "id": 278,
+    "default_tag": "deaf_man",
+    "unicode": "U+1F9CF U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧏‍♀️": {
+    "id": 279,
+    "default_tag": "deaf_woman",
+    "unicode": "U+1F9CF U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🙇️": {
+    "id": 280,
+    "default_tag": "person_bowing",
+    "unicode": "U+1F647",
+    "aliases": []
+  },
+  "🙇‍♂️": {
+    "id": 281,
+    "default_tag": "man_bowing",
+    "unicode": "U+1F647 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🙇‍♀️": {
+    "id": 282,
+    "default_tag": "woman_bowing",
+    "unicode": "U+1F647 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🤦️": {
+    "id": 283,
+    "default_tag": "person_facepalming",
+    "unicode": "U+1F926",
+    "aliases": []
+  },
+  "🤦‍♂️": {
+    "id": 284,
+    "default_tag": "man_facepalming",
+    "unicode": "U+1F926 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🤦‍♀️": {
+    "id": 285,
+    "default_tag": "woman_facepalming",
+    "unicode": "U+1F926 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🤷️": {
+    "id": 286,
+    "default_tag": "person_shrugging",
+    "unicode": "U+1F937",
+    "aliases": []
+  },
+  "🤷‍♂️": {
+    "id": 287,
+    "default_tag": "man_shrugging",
+    "unicode": "U+1F937 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🤷‍♀️": {
+    "id": 288,
+    "default_tag": "woman_shrugging",
+    "unicode": "U+1F937 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧑‍⚕️": {
+    "id": 289,
+    "default_tag": "health_worker",
+    "unicode": "U+1F9D1 U+200D U+2695 U+FE0F",
+    "aliases": []
+  },
+  "👨‍⚕️": {
+    "id": 290,
+    "default_tag": "man_health_worker",
+    "unicode": "U+1F468 U+200D U+2695 U+FE0F",
+    "aliases": []
+  },
+  "👩‍⚕️": {
+    "id": 291,
+    "default_tag": "woman_health_worker",
+    "unicode": "U+1F469 U+200D U+2695 U+FE0F",
+    "aliases": []
+  },
+  "🧑‍🎓": {
+    "id": 292,
+    "default_tag": "student",
+    "unicode": "U+1F9D1 U+200D U+1F393",
+    "aliases": []
+  },
+  "👨‍🎓": {
+    "id": 293,
+    "default_tag": "man_student",
+    "unicode": "U+1F468 U+200D U+1F393",
+    "aliases": []
+  },
+  "👩‍🎓": {
+    "id": 294,
+    "default_tag": "woman_student",
+    "unicode": "U+1F469 U+200D U+1F393",
+    "aliases": []
+  },
+  "🧑‍🏫": {
+    "id": 295,
+    "default_tag": "teacher",
+    "unicode": "U+1F9D1 U+200D U+1F3EB",
+    "aliases": []
+  },
+  "👨‍🏫": {
+    "id": 296,
+    "default_tag": "man_teacher",
+    "unicode": "U+1F468 U+200D U+1F3EB",
+    "aliases": []
+  },
+  "👩‍🏫": {
+    "id": 297,
+    "default_tag": "woman_teacher",
+    "unicode": "U+1F469 U+200D U+1F3EB",
+    "aliases": []
+  },
+  "🧑‍⚖️": {
+    "id": 298,
+    "default_tag": "judge",
+    "unicode": "U+1F9D1 U+200D U+2696 U+FE0F",
+    "aliases": []
+  },
+  "👨‍⚖️": {
+    "id": 299,
+    "default_tag": "man_judge",
+    "unicode": "U+1F468 U+200D U+2696 U+FE0F",
+    "aliases": []
+  },
+  "👩‍⚖️": {
+    "id": 300,
+    "default_tag": "woman_judge",
+    "unicode": "U+1F469 U+200D U+2696 U+FE0F",
+    "aliases": []
+  },
+  "🧑‍🌾": {
+    "id": 301,
+    "default_tag": "farmer",
+    "unicode": "U+1F9D1 U+200D U+1F33E",
+    "aliases": []
+  },
+  "👨‍🌾": {
+    "id": 302,
+    "default_tag": "man_farmer",
+    "unicode": "U+1F468 U+200D U+1F33E",
+    "aliases": []
+  },
+  "👩‍🌾": {
+    "id": 303,
+    "default_tag": "woman_farmer",
+    "unicode": "U+1F469 U+200D U+1F33E",
+    "aliases": []
+  },
+  "🧑‍🍳": {
+    "id": 304,
+    "default_tag": "cook",
+    "unicode": "U+1F9D1 U+200D U+1F373",
+    "aliases": []
+  },
+  "👨‍🍳": {
+    "id": 305,
+    "default_tag": "man_cook",
+    "unicode": "U+1F468 U+200D U+1F373",
+    "aliases": []
+  },
+  "👩‍🍳": {
+    "id": 306,
+    "default_tag": "woman_cook",
+    "unicode": "U+1F469 U+200D U+1F373",
+    "aliases": []
+  },
+  "🧑‍🔧": {
+    "id": 307,
+    "default_tag": "mechanic",
+    "unicode": "U+1F9D1 U+200D U+1F527",
+    "aliases": []
+  },
+  "👨‍🔧": {
+    "id": 308,
+    "default_tag": "man_mechanic",
+    "unicode": "U+1F468 U+200D U+1F527",
+    "aliases": []
+  },
+  "👩‍🔧": {
+    "id": 309,
+    "default_tag": "woman_mechanic",
+    "unicode": "U+1F469 U+200D U+1F527",
+    "aliases": []
+  },
+  "🧑‍🏭": {
+    "id": 310,
+    "default_tag": "factory_worker",
+    "unicode": "U+1F9D1 U+200D U+1F3ED",
+    "aliases": []
+  },
+  "👨‍🏭": {
+    "id": 311,
+    "default_tag": "man_factory_worker",
+    "unicode": "U+1F468 U+200D U+1F3ED",
+    "aliases": []
+  },
+  "👩‍🏭": {
+    "id": 312,
+    "default_tag": "woman_factory_worker",
+    "unicode": "U+1F469 U+200D U+1F3ED",
+    "aliases": []
+  },
+  "🧑‍💼": {
+    "id": 313,
+    "default_tag": "office_worker",
+    "unicode": "U+1F9D1 U+200D U+1F4BC",
+    "aliases": []
+  },
+  "👨‍💼": {
+    "id": 314,
+    "default_tag": "man_office_worker",
+    "unicode": "U+1F468 U+200D U+1F4BC",
+    "aliases": []
+  },
+  "👩‍💼": {
+    "id": 315,
+    "default_tag": "woman_office_worker",
+    "unicode": "U+1F469 U+200D U+1F4BC",
+    "aliases": []
+  },
+  "🧑‍🔬": {
+    "id": 316,
+    "default_tag": "scientist",
+    "unicode": "U+1F9D1 U+200D U+1F52C",
+    "aliases": []
+  },
+  "👨‍🔬": {
+    "id": 317,
+    "default_tag": "man_scientist",
+    "unicode": "U+1F468 U+200D U+1F52C",
+    "aliases": []
+  },
+  "👩‍🔬": {
+    "id": 318,
+    "default_tag": "woman_scientist",
+    "unicode": "U+1F469 U+200D U+1F52C",
+    "aliases": []
+  },
+  "🧑‍💻": {
+    "id": 319,
+    "default_tag": "technologist",
+    "unicode": "U+1F9D1 U+200D U+1F4BB",
+    "aliases": []
+  },
+  "👨‍💻": {
+    "id": 320,
+    "default_tag": "man_technologist",
+    "unicode": "U+1F468 U+200D U+1F4BB",
+    "aliases": []
+  },
+  "👩‍💻": {
+    "id": 321,
+    "default_tag": "woman_technologist",
+    "unicode": "U+1F469 U+200D U+1F4BB",
+    "aliases": []
+  },
+  "🧑‍🎤": {
+    "id": 322,
+    "default_tag": "singer",
+    "unicode": "U+1F9D1 U+200D U+1F3A4",
+    "aliases": []
+  },
+  "👨‍🎤": {
+    "id": 323,
+    "default_tag": "man_singer",
+    "unicode": "U+1F468 U+200D U+1F3A4",
+    "aliases": []
+  },
+  "👩‍🎤": {
+    "id": 324,
+    "default_tag": "woman_singer",
+    "unicode": "U+1F469 U+200D U+1F3A4",
+    "aliases": []
+  },
+  "🧑‍🎨": {
+    "id": 325,
+    "default_tag": "artist",
+    "unicode": "U+1F9D1 U+200D U+1F3A8",
+    "aliases": []
+  },
+  "👨‍🎨": {
+    "id": 326,
+    "default_tag": "man_artist",
+    "unicode": "U+1F468 U+200D U+1F3A8",
+    "aliases": []
+  },
+  "👩‍🎨": {
+    "id": 327,
+    "default_tag": "woman_artist",
+    "unicode": "U+1F469 U+200D U+1F3A8",
+    "aliases": []
+  },
+  "🧑‍✈️": {
+    "id": 328,
+    "default_tag": "pilot",
+    "unicode": "U+1F9D1 U+200D U+2708 U+FE0F",
+    "aliases": []
+  },
+  "👨‍✈️": {
+    "id": 329,
+    "default_tag": "man_pilot",
+    "unicode": "U+1F468 U+200D U+2708 U+FE0F",
+    "aliases": []
+  },
+  "👩‍✈️": {
+    "id": 330,
+    "default_tag": "woman_pilot",
+    "unicode": "U+1F469 U+200D U+2708 U+FE0F",
+    "aliases": []
+  },
+  "🧑‍🚀": {
+    "id": 331,
+    "default_tag": "astronaut",
+    "unicode": "U+1F9D1 U+200D U+1F680",
+    "aliases": []
+  },
+  "👨‍🚀": {
+    "id": 332,
+    "default_tag": "man_astronaut",
+    "unicode": "U+1F468 U+200D U+1F680",
+    "aliases": []
+  },
+  "👩‍🚀": {
+    "id": 333,
+    "default_tag": "woman_astronaut",
+    "unicode": "U+1F469 U+200D U+1F680",
+    "aliases": []
+  },
+  "🧑‍🚒": {
+    "id": 334,
+    "default_tag": "firefighter",
+    "unicode": "U+1F9D1 U+200D U+1F692",
+    "aliases": []
+  },
+  "👨‍🚒": {
+    "id": 335,
+    "default_tag": "man_firefighter",
+    "unicode": "U+1F468 U+200D U+1F692",
+    "aliases": []
+  },
+  "👩‍🚒": {
+    "id": 336,
+    "default_tag": "woman_firefighter",
+    "unicode": "U+1F469 U+200D U+1F692",
+    "aliases": []
+  },
+  "👮️": {
+    "id": 337,
+    "default_tag": "police_officer",
+    "unicode": "U+1F46E",
+    "aliases": []
+  },
+  "👮‍♂️": {
+    "id": 338,
+    "default_tag": "man_police_officer",
+    "unicode": "U+1F46E U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "👮‍♀️": {
+    "id": 339,
+    "default_tag": "woman_police_officer",
+    "unicode": "U+1F46E U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🕵️": {
+    "id": 340,
+    "default_tag": "detective",
+    "unicode": "U+1F575",
+    "aliases": []
+  },
+  "🕵️‍♂️": {
+    "id": 341,
+    "default_tag": "man_detective",
+    "unicode": "U+1F575 U+FE0F U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🕵️‍♀️": {
+    "id": 342,
+    "default_tag": "woman_detective",
+    "unicode": "U+1F575 U+FE0F U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "💂️": {
+    "id": 343,
+    "default_tag": "guard",
+    "unicode": "U+1F482",
+    "aliases": []
+  },
+  "💂‍♂️": {
+    "id": 344,
+    "default_tag": "man_guard",
+    "unicode": "U+1F482 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "💂‍♀️": {
+    "id": 345,
+    "default_tag": "woman_guard",
+    "unicode": "U+1F482 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🥷️": {
+    "id": 346,
+    "default_tag": "ninja",
+    "unicode": "U+1F977",
+    "aliases": []
+  },
+  "👷️": {
+    "id": 347,
+    "default_tag": "construction_worker",
+    "unicode": "U+1F477",
+    "aliases": []
+  },
+  "👷‍♂️": {
+    "id": 348,
+    "default_tag": "man_construction_worker",
+    "unicode": "U+1F477 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "👷‍♀️": {
+    "id": 349,
+    "default_tag": "woman_construction_worker",
+    "unicode": "U+1F477 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🫅️": {
+    "id": 350,
+    "default_tag": "person_with_crown",
+    "unicode": "U+1FAC5",
+    "aliases": []
+  },
+  "🤴️": {
+    "id": 351,
+    "default_tag": "prince",
+    "unicode": "U+1F934",
+    "aliases": []
+  },
+  "👸️": {
+    "id": 352,
+    "default_tag": "princess",
+    "unicode": "U+1F478",
+    "aliases": []
+  },
+  "👳️": {
+    "id": 353,
+    "default_tag": "person_wearing_turban",
+    "unicode": "U+1F473",
+    "aliases": []
+  },
+  "👳‍♂️": {
+    "id": 354,
+    "default_tag": "man_wearing_turban",
+    "unicode": "U+1F473 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "👳‍♀️": {
+    "id": 355,
+    "default_tag": "woman_wearing_turban",
+    "unicode": "U+1F473 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "👲️": {
+    "id": 356,
+    "default_tag": "person_with_skullcap",
+    "unicode": "U+1F472",
+    "aliases": []
+  },
+  "🧕️": {
+    "id": 357,
+    "default_tag": "woman_with_headscarf",
+    "unicode": "U+1F9D5",
+    "aliases": []
+  },
+  "🤵️": {
+    "id": 358,
+    "default_tag": "person_in_tuxedo",
+    "unicode": "U+1F935",
+    "aliases": []
+  },
+  "🤵‍♂️": {
+    "id": 359,
+    "default_tag": "man_in_tuxedo",
+    "unicode": "U+1F935 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🤵‍♀️": {
+    "id": 360,
+    "default_tag": "woman_in_tuxedo",
+    "unicode": "U+1F935 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "👰️": {
+    "id": 361,
+    "default_tag": "person_with_veil",
+    "unicode": "U+1F470",
+    "aliases": []
+  },
+  "👰‍♂️": {
+    "id": 362,
+    "default_tag": "man_with_veil",
+    "unicode": "U+1F470 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "👰‍♀️": {
+    "id": 363,
+    "default_tag": "woman_with_veil",
+    "unicode": "U+1F470 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🤰️": {
+    "id": 364,
+    "default_tag": "pregnant_woman",
+    "unicode": "U+1F930",
+    "aliases": []
+  },
+  "🫃️": {
+    "id": 365,
+    "default_tag": "pregnant_man",
+    "unicode": "U+1FAC3",
+    "aliases": []
+  },
+  "🫄️": {
+    "id": 366,
+    "default_tag": "pregnant_person",
+    "unicode": "U+1FAC4",
+    "aliases": []
+  },
+  "🤱️": {
+    "id": 367,
+    "default_tag": "breast-feeding",
+    "unicode": "U+1F931",
+    "aliases": []
+  },
+  "👩‍🍼": {
+    "id": 368,
+    "default_tag": "woman_feeding_baby",
+    "unicode": "U+1F469 U+200D U+1F37C",
+    "aliases": []
+  },
+  "👨‍🍼": {
+    "id": 369,
+    "default_tag": "man_feeding_baby",
+    "unicode": "U+1F468 U+200D U+1F37C",
+    "aliases": []
+  },
+  "🧑‍🍼": {
+    "id": 370,
+    "default_tag": "person_feeding_baby",
+    "unicode": "U+1F9D1 U+200D U+1F37C",
+    "aliases": []
+  },
+  "👼️": {
+    "id": 371,
+    "default_tag": "baby_angel",
+    "unicode": "U+1F47C",
+    "aliases": []
+  },
+  "🎅️": {
+    "id": 372,
+    "default_tag": "Santa_Claus",
+    "unicode": "U+1F385",
+    "aliases": []
+  },
+  "🤶️": {
+    "id": 373,
+    "default_tag": "Mrs._Claus",
+    "unicode": "U+1F936",
+    "aliases": []
+  },
+  "🧑‍🎄": {
+    "id": 374,
+    "default_tag": "Mx_Claus",
+    "unicode": "U+1F9D1 U+200D U+1F384",
+    "aliases": []
+  },
+  "🦸️": {
+    "id": 375,
+    "default_tag": "superhero",
+    "unicode": "U+1F9B8",
+    "aliases": []
+  },
+  "🦸‍♂️": {
+    "id": 376,
+    "default_tag": "man_superhero",
+    "unicode": "U+1F9B8 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🦸‍♀️": {
+    "id": 377,
+    "default_tag": "woman_superhero",
+    "unicode": "U+1F9B8 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🦹️": {
+    "id": 378,
+    "default_tag": "supervillain",
+    "unicode": "U+1F9B9",
+    "aliases": []
+  },
+  "🦹‍♂️": {
+    "id": 379,
+    "default_tag": "man_supervillain",
+    "unicode": "U+1F9B9 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🦹‍♀️": {
+    "id": 380,
+    "default_tag": "woman_supervillain",
+    "unicode": "U+1F9B9 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧙️": {
+    "id": 381,
+    "default_tag": "mage",
+    "unicode": "U+1F9D9",
+    "aliases": []
+  },
+  "🧙‍♂️": {
+    "id": 382,
+    "default_tag": "man_mage",
+    "unicode": "U+1F9D9 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧙‍♀️": {
+    "id": 383,
+    "default_tag": "woman_mage",
+    "unicode": "U+1F9D9 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧚️": {
+    "id": 384,
+    "default_tag": "fairy",
+    "unicode": "U+1F9DA",
+    "aliases": []
+  },
+  "🧚‍♂️": {
+    "id": 385,
+    "default_tag": "man_fairy",
+    "unicode": "U+1F9DA U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧚‍♀️": {
+    "id": 386,
+    "default_tag": "woman_fairy",
+    "unicode": "U+1F9DA U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧛️": {
+    "id": 387,
+    "default_tag": "vampire",
+    "unicode": "U+1F9DB",
+    "aliases": []
+  },
+  "🧛‍♂️": {
+    "id": 388,
+    "default_tag": "man_vampire",
+    "unicode": "U+1F9DB U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧛‍♀️": {
+    "id": 389,
+    "default_tag": "woman_vampire",
+    "unicode": "U+1F9DB U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧜️": {
+    "id": 390,
+    "default_tag": "merperson",
+    "unicode": "U+1F9DC",
+    "aliases": []
+  },
+  "🧜‍♂️": {
+    "id": 391,
+    "default_tag": "merman",
+    "unicode": "U+1F9DC U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧜‍♀️": {
+    "id": 392,
+    "default_tag": "mermaid",
+    "unicode": "U+1F9DC U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧝️": {
+    "id": 393,
+    "default_tag": "elf",
+    "unicode": "U+1F9DD",
+    "aliases": []
+  },
+  "🧝‍♂️": {
+    "id": 394,
+    "default_tag": "man_elf",
+    "unicode": "U+1F9DD U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧝‍♀️": {
+    "id": 395,
+    "default_tag": "woman_elf",
+    "unicode": "U+1F9DD U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧟️": {
+    "id": 399,
+    "default_tag": "zombie",
+    "unicode": "U+1F9DF",
+    "aliases": []
+  },
+  "🧟‍♂️": {
+    "id": 400,
+    "default_tag": "man_zombie",
+    "unicode": "U+1F9DF U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧟‍♀️": {
+    "id": 401,
+    "default_tag": "woman_zombie",
+    "unicode": "U+1F9DF U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "💆️": {
+    "id": 403,
+    "default_tag": "person_getting_massage",
+    "unicode": "U+1F486",
+    "aliases": []
+  },
+  "💆‍♂️": {
+    "id": 404,
+    "default_tag": "man_getting_massage",
+    "unicode": "U+1F486 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "💆‍♀️": {
+    "id": 405,
+    "default_tag": "woman_getting_massage",
+    "unicode": "U+1F486 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "💇️": {
+    "id": 406,
+    "default_tag": "person_getting_haircut",
+    "unicode": "U+1F487",
+    "aliases": []
+  },
+  "💇‍♂️": {
+    "id": 407,
+    "default_tag": "man_getting_haircut",
+    "unicode": "U+1F487 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "💇‍♀️": {
+    "id": 408,
+    "default_tag": "woman_getting_haircut",
+    "unicode": "U+1F487 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🚶️": {
+    "id": 409,
+    "default_tag": "person_walking",
+    "unicode": "U+1F6B6",
+    "aliases": []
+  },
+  "🚶‍♂️": {
+    "id": 410,
+    "default_tag": "man_walking",
+    "unicode": "U+1F6B6 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🚶‍♀️": {
+    "id": 411,
+    "default_tag": "woman_walking",
+    "unicode": "U+1F6B6 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🚶‍➡️": {
+    "id": 412,
+    "default_tag": "person_walking_facing_right",
+    "unicode": "U+1F6B6 U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🚶‍♀️‍➡️": {
+    "id": 413,
+    "default_tag": "woman_walking_facing_right",
+    "unicode": "U+1F6B6 U+200D U+2640 U+FE0F U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🚶‍♂️‍➡️": {
+    "id": 414,
+    "default_tag": "man_walking_facing_right",
+    "unicode": "U+1F6B6 U+200D U+2642 U+FE0F U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🧍️": {
+    "id": 415,
+    "default_tag": "person_standing",
+    "unicode": "U+1F9CD",
+    "aliases": []
+  },
+  "🧍‍♂️": {
+    "id": 416,
+    "default_tag": "man_standing",
+    "unicode": "U+1F9CD U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧍‍♀️": {
+    "id": 417,
+    "default_tag": "woman_standing",
+    "unicode": "U+1F9CD U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧎️": {
+    "id": 418,
+    "default_tag": "person_kneeling",
+    "unicode": "U+1F9CE",
+    "aliases": []
+  },
+  "🧎‍♂️": {
+    "id": 419,
+    "default_tag": "man_kneeling",
+    "unicode": "U+1F9CE U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧎‍♀️": {
+    "id": 420,
+    "default_tag": "woman_kneeling",
+    "unicode": "U+1F9CE U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧎‍➡️": {
+    "id": 421,
+    "default_tag": "person_kneeling_facing_right",
+    "unicode": "U+1F9CE U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🧎‍♀️‍➡️": {
+    "id": 422,
+    "default_tag": "woman_kneeling_facing_right",
+    "unicode": "U+1F9CE U+200D U+2640 U+FE0F U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🧎‍♂️‍➡️": {
+    "id": 423,
+    "default_tag": "man_kneeling_facing_right",
+    "unicode": "U+1F9CE U+200D U+2642 U+FE0F U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🧑‍🦯": {
+    "id": 424,
+    "default_tag": "person_with_white_cane",
+    "unicode": "U+1F9D1 U+200D U+1F9AF",
+    "aliases": []
+  },
+  "🧑‍🦯‍➡️": {
+    "id": 425,
+    "default_tag": "person_with_white_cane_facing_right",
+    "unicode": "U+1F9D1 U+200D U+1F9AF U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "👨‍🦯": {
+    "id": 426,
+    "default_tag": "man_with_white_cane",
+    "unicode": "U+1F468 U+200D U+1F9AF",
+    "aliases": []
+  },
+  "👨‍🦯‍➡️": {
+    "id": 427,
+    "default_tag": "man_with_white_cane_facing_right",
+    "unicode": "U+1F468 U+200D U+1F9AF U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "👩‍🦯": {
+    "id": 428,
+    "default_tag": "woman_with_white_cane",
+    "unicode": "U+1F469 U+200D U+1F9AF",
+    "aliases": []
+  },
+  "👩‍🦯‍➡️": {
+    "id": 429,
+    "default_tag": "woman_with_white_cane_facing_right",
+    "unicode": "U+1F469 U+200D U+1F9AF U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🧑‍🦼": {
+    "id": 430,
+    "default_tag": "person_in_motorized_wheelchair",
+    "unicode": "U+1F9D1 U+200D U+1F9BC",
+    "aliases": []
+  },
+  "🧑‍🦼‍➡️": {
+    "id": 431,
+    "default_tag": "person_in_motorized_wheelchair_facing_right",
+    "unicode": "U+1F9D1 U+200D U+1F9BC U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "👨‍🦼": {
+    "id": 432,
+    "default_tag": "man_in_motorized_wheelchair",
+    "unicode": "U+1F468 U+200D U+1F9BC",
+    "aliases": []
+  },
+  "👨‍🦼‍➡️": {
+    "id": 433,
+    "default_tag": "man_in_motorized_wheelchair_facing_right",
+    "unicode": "U+1F468 U+200D U+1F9BC U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "👩‍🦼": {
+    "id": 434,
+    "default_tag": "woman_in_motorized_wheelchair",
+    "unicode": "U+1F469 U+200D U+1F9BC",
+    "aliases": []
+  },
+  "👩‍🦼‍➡️": {
+    "id": 435,
+    "default_tag": "woman_in_motorized_wheelchair_facing_right",
+    "unicode": "U+1F469 U+200D U+1F9BC U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🧑‍🦽": {
+    "id": 436,
+    "default_tag": "person_in_manual_wheelchair",
+    "unicode": "U+1F9D1 U+200D U+1F9BD",
+    "aliases": []
+  },
+  "🧑‍🦽‍➡️": {
+    "id": 437,
+    "default_tag": "person_in_manual_wheelchair_facing_right",
+    "unicode": "U+1F9D1 U+200D U+1F9BD U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "👨‍🦽": {
+    "id": 438,
+    "default_tag": "man_in_manual_wheelchair",
+    "unicode": "U+1F468 U+200D U+1F9BD",
+    "aliases": []
+  },
+  "👨‍🦽‍➡️": {
+    "id": 439,
+    "default_tag": "man_in_manual_wheelchair_facing_right",
+    "unicode": "U+1F468 U+200D U+1F9BD U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "👩‍🦽": {
+    "id": 440,
+    "default_tag": "woman_in_manual_wheelchair",
+    "unicode": "U+1F469 U+200D U+1F9BD",
+    "aliases": []
+  },
+  "👩‍🦽‍➡️": {
+    "id": 441,
+    "default_tag": "woman_in_manual_wheelchair_facing_right",
+    "unicode": "U+1F469 U+200D U+1F9BD U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🏃️": {
+    "id": 442,
+    "default_tag": "person_running",
+    "unicode": "U+1F3C3",
+    "aliases": []
+  },
+  "🏃‍♂️": {
+    "id": 443,
+    "default_tag": "man_running",
+    "unicode": "U+1F3C3 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🏃‍♀️": {
+    "id": 444,
+    "default_tag": "woman_running",
+    "unicode": "U+1F3C3 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🏃‍➡️": {
+    "id": 445,
+    "default_tag": "person_running_facing_right",
+    "unicode": "U+1F3C3 U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🏃‍♀️‍➡️": {
+    "id": 446,
+    "default_tag": "woman_running_facing_right",
+    "unicode": "U+1F3C3 U+200D U+2640 U+FE0F U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "🏃‍♂️‍➡️": {
+    "id": 447,
+    "default_tag": "man_running_facing_right",
+    "unicode": "U+1F3C3 U+200D U+2642 U+FE0F U+200D U+27A1 U+FE0F",
+    "aliases": []
+  },
+  "💃️": {
+    "id": 448,
+    "default_tag": "woman_dancing",
+    "unicode": "U+1F483",
+    "aliases": []
+  },
+  "🕺️": {
+    "id": 449,
+    "default_tag": "man_dancing",
+    "unicode": "U+1F57A",
+    "aliases": []
+  },
+  "🕴️": {
+    "id": 450,
+    "default_tag": "person_in_suit_levitating",
+    "unicode": "U+1F574",
+    "aliases": []
+  },
+  "🧖️": {
+    "id": 454,
+    "default_tag": "person_in_steamy_room",
+    "unicode": "U+1F9D6",
+    "aliases": []
+  },
+  "🧖‍♂️": {
+    "id": 455,
+    "default_tag": "man_in_steamy_room",
+    "unicode": "U+1F9D6 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧖‍♀️": {
+    "id": 456,
+    "default_tag": "woman_in_steamy_room",
+    "unicode": "U+1F9D6 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧗️": {
+    "id": 457,
+    "default_tag": "person_climbing",
+    "unicode": "U+1F9D7",
+    "aliases": []
+  },
+  "🧗‍♂️": {
+    "id": 458,
+    "default_tag": "man_climbing",
+    "unicode": "U+1F9D7 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧗‍♀️": {
+    "id": 459,
+    "default_tag": "woman_climbing",
+    "unicode": "U+1F9D7 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🏇️": {
+    "id": 461,
+    "default_tag": "horse_racing",
+    "unicode": "U+1F3C7",
+    "aliases": []
+  },
+  "🏂️": {
+    "id": 463,
+    "default_tag": "snowboarder",
+    "unicode": "U+1F3C2",
+    "aliases": []
+  },
+  "🏌️": {
+    "id": 464,
+    "default_tag": "person_golfing",
+    "unicode": "U+1F3CC",
+    "aliases": []
+  },
+  "🏌️‍♂️": {
+    "id": 465,
+    "default_tag": "man_golfing",
+    "unicode": "U+1F3CC U+FE0F U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🏌️‍♀️": {
+    "id": 466,
+    "default_tag": "woman_golfing",
+    "unicode": "U+1F3CC U+FE0F U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🏄️": {
+    "id": 467,
+    "default_tag": "person_surfing",
+    "unicode": "U+1F3C4",
+    "aliases": []
+  },
+  "🏄‍♂️": {
+    "id": 468,
+    "default_tag": "man_surfing",
+    "unicode": "U+1F3C4 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🏄‍♀️": {
+    "id": 469,
+    "default_tag": "woman_surfing",
+    "unicode": "U+1F3C4 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🚣️": {
+    "id": 470,
+    "default_tag": "person_rowing_boat",
+    "unicode": "U+1F6A3",
+    "aliases": []
+  },
+  "🚣‍♂️": {
+    "id": 471,
+    "default_tag": "man_rowing_boat",
+    "unicode": "U+1F6A3 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🚣‍♀️": {
+    "id": 472,
+    "default_tag": "woman_rowing_boat",
+    "unicode": "U+1F6A3 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🏊️": {
+    "id": 473,
+    "default_tag": "person_swimming",
+    "unicode": "U+1F3CA",
+    "aliases": []
+  },
+  "🏊‍♂️": {
+    "id": 474,
+    "default_tag": "man_swimming",
+    "unicode": "U+1F3CA U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🏊‍♀️": {
+    "id": 475,
+    "default_tag": "woman_swimming",
+    "unicode": "U+1F3CA U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "⛹️": {
+    "id": 476,
+    "default_tag": "person_bouncing_ball",
+    "unicode": "U+26F9",
+    "aliases": []
+  },
+  "⛹️‍♂️": {
+    "id": 477,
+    "default_tag": "man_bouncing_ball",
+    "unicode": "U+26F9 U+FE0F U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "⛹️‍♀️": {
+    "id": 478,
+    "default_tag": "woman_bouncing_ball",
+    "unicode": "U+26F9 U+FE0F U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🏋️": {
+    "id": 479,
+    "default_tag": "person_lifting_weights",
+    "unicode": "U+1F3CB",
+    "aliases": []
+  },
+  "🏋️‍♂️": {
+    "id": 480,
+    "default_tag": "man_lifting_weights",
+    "unicode": "U+1F3CB U+FE0F U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🏋️‍♀️": {
+    "id": 481,
+    "default_tag": "woman_lifting_weights",
+    "unicode": "U+1F3CB U+FE0F U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🚴️": {
+    "id": 482,
+    "default_tag": "person_biking",
+    "unicode": "U+1F6B4",
+    "aliases": []
+  },
+  "🚴‍♂️": {
+    "id": 483,
+    "default_tag": "man_biking",
+    "unicode": "U+1F6B4 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🚴‍♀️": {
+    "id": 484,
+    "default_tag": "woman_biking",
+    "unicode": "U+1F6B4 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🚵️": {
+    "id": 485,
+    "default_tag": "person_mountain_biking",
+    "unicode": "U+1F6B5",
+    "aliases": []
+  },
+  "🚵‍♂️": {
+    "id": 486,
+    "default_tag": "man_mountain_biking",
+    "unicode": "U+1F6B5 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🚵‍♀️": {
+    "id": 487,
+    "default_tag": "woman_mountain_biking",
+    "unicode": "U+1F6B5 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🤸️": {
+    "id": 488,
+    "default_tag": "person_cartwheeling",
+    "unicode": "U+1F938",
+    "aliases": []
+  },
+  "🤸‍♂️": {
+    "id": 489,
+    "default_tag": "man_cartwheeling",
+    "unicode": "U+1F938 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🤸‍♀️": {
+    "id": 490,
+    "default_tag": "woman_cartwheeling",
+    "unicode": "U+1F938 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🤽️": {
+    "id": 494,
+    "default_tag": "person_playing_water_polo",
+    "unicode": "U+1F93D",
+    "aliases": []
+  },
+  "🤽‍♂️": {
+    "id": 495,
+    "default_tag": "man_playing_water_polo",
+    "unicode": "U+1F93D U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🤽‍♀️": {
+    "id": 496,
+    "default_tag": "woman_playing_water_polo",
+    "unicode": "U+1F93D U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🤾️": {
+    "id": 497,
+    "default_tag": "person_playing_handball",
+    "unicode": "U+1F93E",
+    "aliases": []
+  },
+  "🤾‍♂️": {
+    "id": 498,
+    "default_tag": "man_playing_handball",
+    "unicode": "U+1F93E U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🤾‍♀️": {
+    "id": 499,
+    "default_tag": "woman_playing_handball",
+    "unicode": "U+1F93E U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🤹️": {
+    "id": 500,
+    "default_tag": "person_juggling",
+    "unicode": "U+1F939",
+    "aliases": []
+  },
+  "🤹‍♂️": {
+    "id": 501,
+    "default_tag": "man_juggling",
+    "unicode": "U+1F939 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🤹‍♀️": {
+    "id": 502,
+    "default_tag": "woman_juggling",
+    "unicode": "U+1F939 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🧘️": {
+    "id": 503,
+    "default_tag": "person_in_lotus_position",
+    "unicode": "U+1F9D8",
+    "aliases": []
+  },
+  "🧘‍♂️": {
+    "id": 504,
+    "default_tag": "man_in_lotus_position",
+    "unicode": "U+1F9D8 U+200D U+2642 U+FE0F",
+    "aliases": []
+  },
+  "🧘‍♀️": {
+    "id": 505,
+    "default_tag": "woman_in_lotus_position",
+    "unicode": "U+1F9D8 U+200D U+2640 U+FE0F",
+    "aliases": []
+  },
+  "🛀️": {
+    "id": 506,
+    "default_tag": "person_taking_bath",
+    "unicode": "U+1F6C0",
+    "aliases": []
+  },
+  "🛌️": {
+    "id": 507,
+    "default_tag": "person_in_bed",
+    "unicode": "U+1F6CC",
+    "aliases": []
+  },
+  "🧑‍🤝‍🧑": {
+    "id": 508,
+    "default_tag": "people_holding_hands",
+    "unicode": "U+1F9D1 U+200D U+1F91D U+200D U+1F9D1",
+    "aliases": []
+  },
+  "👭️": {
+    "id": 509,
+    "default_tag": "women_holding_hands",
+    "unicode": "U+1F46D",
+    "aliases": []
+  },
+  "👫️": {
+    "id": 510,
+    "default_tag": "woman_and_man_holding_hands",
+    "unicode": "U+1F46B",
+    "aliases": []
+  },
+  "👬️": {
+    "id": 511,
+    "default_tag": "men_holding_hands",
+    "unicode": "U+1F46C",
+    "aliases": []
+  },
+  "💏️": {
+    "id": 512,
+    "default_tag": "kiss",
+    "unicode": "U+1F48F",
+    "aliases": []
+  },
+  "👩‍❤️‍💋‍👨": {
+    "id": 513,
+    "default_tag": "kiss:_woman,_man",
+    "unicode": "U+1F469 U+200D U+2764 U+FE0F U+200D U+1F48B U+200D U+1F468",
+    "aliases": []
+  },
+  "👨‍❤️‍💋‍👨": {
+    "id": 514,
+    "default_tag": "kiss:_man,_man",
+    "unicode": "U+1F468 U+200D U+2764 U+FE0F U+200D U+1F48B U+200D U+1F468",
+    "aliases": []
+  },
+  "👩‍❤️‍💋‍👩": {
+    "id": 515,
+    "default_tag": "kiss:_woman,_woman",
+    "unicode": "U+1F469 U+200D U+2764 U+FE0F U+200D U+1F48B U+200D U+1F469",
+    "aliases": []
+  },
+  "💑️": {
+    "id": 516,
+    "default_tag": "couple_with_heart",
+    "unicode": "U+1F491",
+    "aliases": []
+  },
+  "👩‍❤️‍👨": {
+    "id": 517,
+    "default_tag": "couple_with_heart:_woman,_man",
+    "unicode": "U+1F469 U+200D U+2764 U+FE0F U+200D U+1F468",
+    "aliases": []
+  },
+  "👨‍❤️‍👨": {
+    "id": 518,
+    "default_tag": "couple_with_heart:_man,_man",
+    "unicode": "U+1F468 U+200D U+2764 U+FE0F U+200D U+1F468",
+    "aliases": []
+  },
+  "👩‍❤️‍👩": {
+    "id": 519,
+    "default_tag": "couple_with_heart:_woman,_woman",
+    "unicode": "U+1F469 U+200D U+2764 U+FE0F U+200D U+1F469",
+    "aliases": []
+  }
+}

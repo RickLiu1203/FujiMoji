@@ -15,6 +15,7 @@ struct EmojiEditorView: View {
     var isEmptyState: Bool = false
     @State private var aliasesInput: String = ""
     @FocusState private var isAliasesFocused: Bool
+    @ObservedObject private var fujiMojiState = FujiMojiState.shared
     var body: some View {
         Group {
             if isEmptyState {
@@ -22,7 +23,7 @@ struct EmojiEditorView: View {
             } else {
                 VStack(alignment: .center, spacing: 12) {
                 ZStack(alignment: .bottomTrailing) {
-                    Text(selected?.emoji ?? "")
+                    Text(selected.map { fujiMojiState.applySkinTone($0.emoji) } ?? "")
                     .font(.system(size: 110))
                     .padding(8)
                     .frame(width: 220, height: 220, alignment: .center)

@@ -18,7 +18,7 @@ struct DetectedTextView: View {
                 .foregroundStyle(.primary)
                 .lineLimit(1)
             Spacer()
-            Image(systemName: "pencil.line")
+            Image(systemName: "face.smiling.inverse")
                 .font(.system(size: 14, weight: .black))
                 .foregroundStyle(.secondary)
         }

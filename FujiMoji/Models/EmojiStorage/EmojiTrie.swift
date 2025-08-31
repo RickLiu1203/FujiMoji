@@ -1,3 +1,9 @@
+// EmojiTrie.swift
+// FujiMoji
+//
+// Created by Rick Liu on 2025-08-20.
+//
+
 class TrieNode {
     var children: [Character: TrieNode] = [:]
     var emoji: String?

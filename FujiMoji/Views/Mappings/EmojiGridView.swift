@@ -1,3 +1,10 @@
+//
+//  EmojiGridView.swift
+//  FujiMoji
+//
+//  Created by Rick Liu on 2025-08-25.
+//
+
 import SwiftUI
 
 struct EmojiCell: View {
@@ -5,10 +12,11 @@ struct EmojiCell: View {
     let isSelected: Bool
     let onSelect: () -> Void
     @State private var isHovered = false
+    @ObservedObject private var fujiMojiState = FujiMojiState.shared
     
     var body: some View {
         VStack(alignment: .center) {
-            Text(emoji)
+            Text(fujiMojiState.applySkinTone(emoji))
                 .font(.system(size: 36))
         }
         .frame(width: 48, height: 48)
@@ -36,6 +44,7 @@ struct EmojiGridView: View {
     let emojis: [String]
     @Binding var selectedEmoji: String?
     let columns = Array(repeating: GridItem(.fixed(40), spacing: 12), count: 7)
+    @ObservedObject private var fujiMojiState = FujiMojiState.shared
     
     var body: some View {
         VStack(alignment: .center) {
@@ -48,7 +57,7 @@ struct EmojiGridView: View {
                 LazyVGrid(columns: columns, spacing: 8) {
                     ForEach(emojis, id: \.self) { emoji in
                         EmojiCell(
-                            emoji: emoji,
+                            emoji: fujiMojiState.applySkinTone(emoji),
                             isSelected: selectedEmoji == emoji,
                             onSelect: { selectedEmoji = emoji }
                         )
