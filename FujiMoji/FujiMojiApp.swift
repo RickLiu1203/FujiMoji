@@ -24,6 +24,9 @@ struct FujiMojiApp: App {
         MenuBarExtra("🍎") {
             MenuView(fujiMojiState: fujiMojiState)
             .background(.ultraThinMaterial)
+            .onAppear {
+                fujiMojiState.checkInputMonitoringAuthorization()
+            }
         }
         .menuBarExtraStyle(.window)
     }

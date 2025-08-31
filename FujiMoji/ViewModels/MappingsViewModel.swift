@@ -168,7 +168,8 @@ final class CustomMappingsViewModel: ObservableObject {
 
     func update(tag: String, text: String) {
         CustomStorage.shared.set(text: text, forTag: tag)
-        reload()
+        items.removeAll { $0.tag.lowercased() == tag.lowercased() }
+        items.insert((tag: tag, text: text), at: 0)
         selectedTag = tag
     }
 
@@ -177,7 +178,9 @@ final class CustomMappingsViewModel: ObservableObject {
             CustomStorage.shared.remove(tag: oldTag)
         }
         CustomStorage.shared.set(text: text, forTag: newTag)
-        reload()
+        items.removeAll { $0.tag.lowercased() == oldTag.lowercased() }
+        items.removeAll { $0.tag.lowercased() == newTag.lowercased() }
+        items.insert((tag: newTag, text: text), at: 0)
         selectedTag = newTag
         let oldKey = oldTag.lowercased()
         let newKey = newTag.lowercased()

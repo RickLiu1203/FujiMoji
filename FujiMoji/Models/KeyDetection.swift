@@ -68,6 +68,7 @@ class KeyDetection: ObservableObject {
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .navigateRight, object: nil)
                     }
+                    return nil 
                 } else if keyCode == 126 { // Up arrow
                     DispatchQueue.main.async {
                         NotificationCenter.default.post(name: .navigateDown, object: nil)
@@ -164,13 +165,18 @@ class KeyDetection: ObservableObject {
         )
         
         guard let eventTap = eventTap else {
-            _ = AXIsProcessTrusted()
+            DispatchQueue.main.async {
+                FujiMojiState.shared.needsInputMonitoring = true
+            }
             return
         }
                 
         let runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
         CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, .commonModes)
         CGEvent.tapEnable(tap: eventTap, enable: true)
+        DispatchQueue.main.async {
+            FujiMojiState.shared.needsInputMonitoring = false
+        }
         
         setupLocalEventMonitor()
         
@@ -243,10 +249,8 @@ class KeyDetection: ObservableObject {
             }
         }
         
-        // Global mouse click monitor to decide popup anchor (top vs bottom)
         if globalMouseMonitor == nil {
             globalMouseMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown]) { _ in
-                // If capturing, treat click like Escape: cancel immediately
                 if KeyDetection.shared.isCapturing {
                     DispatchQueue.main.async {
                         KeyDetection.shared.cancelCapture()
@@ -254,19 +258,16 @@ class KeyDetection: ObservableObject {
                     return
                 }
 
-                // Do not re-anchor if popup windows are currently visible
                 let isPopupVisible = (DetectedTextWindowController.shared.window?.isVisible == true) || (PredictionResultsWindowController.shared.window?.isVisible == true)
                 if isPopupVisible { return }
 
                 let mousePoint = NSEvent.mouseLocation
-                // Determine which screen the mouse is on
                 let targetScreen = NSScreen.screens.first { screen in
                     NSMouseInRect(mousePoint, screen.frame, false)
                 } ?? NSScreen.main
                 guard let screen = targetScreen else { return }
                 let visible = screen.visibleFrame
                 let quarterY = visible.minY + (visible.height * 0.3)
-                // If clicked in bottom quarter, anchor at top. Otherwise (top 3/4), anchor at bottom.
                 if mousePoint.y <= quarterY {
                     FujiMojiState.shared.popupAnchor = .top
                 } else {

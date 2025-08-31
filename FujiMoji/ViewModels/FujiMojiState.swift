@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 enum SkinTone: String, CaseIterable, Codable, Hashable {
     case yellow
@@ -44,6 +45,7 @@ class FujiMojiState: ObservableObject {
     @Published var isEnabled: Bool = true
     @Published var isCool: Bool = true
     @Published var showSuggestionPopup: Bool = true
+    @Published var needsInputMonitoring: Bool = false
     enum PopupAnchor { case bottom, top }
     @Published var popupAnchor: PopupAnchor = .bottom
     @Published var startCaptureKey: String = "/"
@@ -62,6 +64,45 @@ class FujiMojiState: ObservableObject {
         ensureCacheForCurrentTone()
         updateKeyDetection()
         keyDetection.updateDelimiters(start: startCaptureKey, end: endCaptureKey)
+    }
+    
+    // MARK: - Input Monitoring
+    func checkInputMonitoringAuthorization() {
+        let accessibilityTrusted = AXIsProcessTrusted()
+        if !accessibilityTrusted {
+            DispatchQueue.main.async {
+                self.needsInputMonitoring = true
+            }
+        }
+        // If Accessibility is trusted, do not clear the flag here.
+        // We'll clear it only after successfully starting the event tap.
+    }
+
+    func openInputMonitoringSettings() {
+        let urls: [String] = [
+            "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent", // legacy anchor name
+            "x-apple.systempreferences:com.apple.preference.security?Privacy_InputMonitoring",
+            "x-apple.systempreferences:com.apple.preference.security"
+        ]
+        for urlString in urls {
+            if let url = URL(string: urlString) {
+                if NSWorkspace.shared.open(url) {
+                    break
+                }
+            }
+        }
+    }
+
+    func relaunchApp() {
+        let task = Process()
+        task.launchPath = "/usr/bin/open"
+        task.arguments = [Bundle.main.bundlePath]
+        do {
+            try task.run()
+        } catch {
+            print("Failed to schedule relaunch: \(error)")
+        }
+        NSApp.terminate(nil)
     }
     
     private func loadCaptureKeys() {

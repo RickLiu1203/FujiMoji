@@ -57,6 +57,13 @@ final class CustomMap {
         order = entries.keys.map { $0.lowercased() }
     }
 
+    func replaceAll(_ entries: [String: String], withOrder orderedKeys: [String]) {
+        storage = entries.reduce(into: [:]) { acc, pair in
+            acc[pair.key.lowercased()] = pair.value
+        }
+        setOrder(orderedKeys)
+    }
+
     func getOrder() -> [String] { order }
     func setOrder(_ newOrder: [String]) {
         let normalized = newOrder.map { $0.lowercased() }
