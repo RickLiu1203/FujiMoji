@@ -53,6 +53,7 @@ class FujiMojiState: ObservableObject {
     @Published var selectedSkinTone: SkinTone = .yellow
     @Published var skinToneModifier: String = ""
     private var variantEmojiKeys: Set<String> = []
+    private var requiresVS16Keys: Set<String> = []
     private var toneCacheByTone: [SkinTone: [String: String]] = [:]
     
     private let keyDetection = KeyDetection.shared
@@ -186,10 +187,18 @@ class FujiMojiState: ObservableObject {
             if let dict = try JSONSerialization.jsonObject(with: data) as? [String: Any] {
                 var keys: Set<String> = []
                 keys.reserveCapacity(dict.keys.count)
+                var vs16Set: Set<String> = []
+                vs16Set.reserveCapacity(dict.keys.count)
                 for key in dict.keys {
-                    keys.insert(normalizeForCache(key))
+                    let hadVS16 = key.unicodeScalars.contains { $0.value == 0xFE0F }
+                    let normalized = normalizeForCache(key)
+                    keys.insert(normalized)
+                    if hadVS16 {
+                        vs16Set.insert(normalized)
+                    }
                 }
                 variantEmojiKeys = keys
+                requiresVS16Keys = vs16Set
             }
         } catch {
             print("Failed to load variant_emojis.json: \(error)")
@@ -210,7 +219,14 @@ class FujiMojiState: ObservableObject {
     }
 
     private func buildTonedEmoji(fromNormalizedKey normalizedKey: String, tone: SkinTone) -> String {
-        if tone == .yellow { return normalizedKey }
+        if tone == .yellow {
+            if requiresVS16Keys.contains(normalizedKey) {
+                var scalars = Array(normalizedKey.unicodeScalars)
+                scalars.append(UnicodeScalar(0xFE0F)!)
+                return String(String.UnicodeScalarView(scalars))
+            }
+            return normalizedKey
+        }
         guard let mod = modifier(for: tone).unicodeScalars.first else { return normalizedKey }
         let humanBases: Set<UnicodeScalar> = [
             UnicodeScalar(0x1F9D1)!, // person
