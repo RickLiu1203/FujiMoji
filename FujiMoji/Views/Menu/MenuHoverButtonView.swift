@@ -2,7 +2,7 @@
 //  MenuButtonStyles.swift
 //  FujiMoji
 //
-//  Created by AI on 2025-08-31.
+//  Created by Rick Liu on 2025-08-31.
 //
 
 import SwiftUI
