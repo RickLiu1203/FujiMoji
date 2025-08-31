@@ -109,7 +109,7 @@ struct MappingContentView: View {
         }
         .frame(width: 900, height: 500)
         .background(.ultraThinMaterial)
-        .onChange(of: mappingViewModel.selection) { newValue in
+        .onChange(of: mappingViewModel.selection) { _, newValue in
             if case let .emojiCategory(category) = newValue, let row = categoryRowAnchors[category] {
                 if nsScrollView != nil {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
@@ -120,7 +120,7 @@ struct MappingContentView: View {
                 }
             }
         }
-        .onChange(of: mappingViewModel.selectedEmoji) { newEmoji in
+        .onChange(of: mappingViewModel.selectedEmoji) { _, newEmoji in
             if let symbol = newEmoji {
                 mappingViewModel.didSelectEmoji(symbol)
             }

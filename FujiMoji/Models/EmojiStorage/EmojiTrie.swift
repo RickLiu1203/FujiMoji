@@ -126,7 +126,6 @@ class EmojiTrie {
         for (key, path) in pathCache {
             let components = key.split(separator: ":")
             guard components.count == 2 else { continue }
-            let tag = String(components[0])
             let emoji = String(components[1])
             
             var current = newRoot

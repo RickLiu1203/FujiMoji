@@ -101,7 +101,7 @@ struct EmojiEditorView: View {
         .onTapGesture {
             isAliasesFocused = false
         }
-        .onChange(of: isAliasesFocused) { focused in
+        .onChange(of: isAliasesFocused) { _, focused in
             guard !focused, let symbol = selected?.emoji else { return }
             let aliases = aliasesInput
                 .split(separator: ",")

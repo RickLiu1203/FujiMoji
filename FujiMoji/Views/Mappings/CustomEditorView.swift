@@ -32,13 +32,13 @@ struct CustomEditorView: View {
         .frame(alignment: .top)
         .contentShape(Rectangle())
         .onTapGesture { focusedField = nil }
-        .onChange(of: focusedField) { _ in
+        .onChange(of: focusedField) { _, _ in
             if focusedField == nil { submitIfPossible() }
         }
         .onAppear {
             syncInputsFromSelection()
         }
-        .onChange(of: vm.selectedTag) { _ in
+        .onChange(of: vm.selectedTag) { _, _ in
             syncInputsFromSelection()
         }
     }

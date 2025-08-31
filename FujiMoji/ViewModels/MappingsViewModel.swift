@@ -38,13 +38,17 @@ final class MappingsViewModel: ObservableObject {
     // MARK: - Public actions
     func setAliases(_ aliases: [String], for emoji: String) {
         EmojiStorage.shared.setAliases(aliases, forEmoji: emoji)
-        if emoji == selectedEmoji { updateSelectedDetail() }
+        if emoji == selectedEmoji {
+            // Defer publication to next run loop to avoid publishing during view updates
+            DispatchQueue.main.async { [weak self] in
+                self?.updateSelectedDetail()
+            }
+        }
     }
 
     func toggleFavorite(_ emoji: String, isOn: Bool) {
         if isOn { favoriteEmojis.insert(emoji) } else { favoriteEmojis.remove(emoji) }
         saveFavorites()
-        objectWillChange.send()
     }
 
     func didSelectEmoji(_ emoji: String) {

@@ -48,23 +48,23 @@ struct PredictionResultsView<T: Hashable>: View {
                 .onAppear {
                     // Keep initial content left-aligned; don't scroll if highlighting first item
                     guard highlightedIndex > 0, !items.isEmpty, highlightedIndex < items.count else { return }
-                    var transaction = Transaction(animation: nil)
+                    let transaction = Transaction(animation: nil)
                     withTransaction(transaction) {
                         proxy.scrollTo("pill_\(highlightedIndex)", anchor: .leading)
                     }
                     didPerformInitialScroll = true
                 }
-                .onChange(of: items) { _ in
+                .onChange(of: items) { _, _ in
                     // Avoid any jump when data swaps; only align if highlight not at start
                     didPerformInitialScroll = false
                     guard highlightedIndex > 0, !items.isEmpty, highlightedIndex < items.count else { return }
-                    var transaction = Transaction(animation: nil)
+                    let transaction = Transaction(animation: nil)
                     withTransaction(transaction) {
                         proxy.scrollTo("pill_\(highlightedIndex)", anchor: .leading)
                     }
                     didPerformInitialScroll = true
                 }
-                .onChange(of: highlightedIndex) { newIndex in
+                .onChange(of: highlightedIndex) { _, newIndex in
                     guard !items.isEmpty, newIndex >= 0, newIndex < items.count else { return }
                     withAnimation(.easeInOut(duration: 0.18)) {
                         proxy.scrollTo("pill_\(newIndex)", anchor: .leading)

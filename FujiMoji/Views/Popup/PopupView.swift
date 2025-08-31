@@ -83,8 +83,8 @@ struct PredictionResultsPopupView: View {
             viewModel.selectHighlightedItem()
         }
         .onAppear { renderedMode = desiredMode; postMode(renderedMode) }
-        .onChange(of: viewModel.customMatches) { _ in applyImmediateModeChange() }
-        .onChange(of: viewModel.emojiMatches) { _ in applyImmediateModeChange() }
+        .onChange(of: viewModel.customMatches) { _, _ in applyImmediateModeChange() }
+        .onChange(of: viewModel.emojiMatches) { _, _ in applyImmediateModeChange() }
     }
 }
 
