@@ -35,7 +35,14 @@ struct MenuView: View {
             MenuFifthSectionView(fujiMojiState: fujiMojiState)
 
             Divider()
-                .padding(.vertical, 8)
+                .padding(.top, 8)
+                .padding(.bottom, 4)
+
+            MenuSixthSectionView()
+
+            Divider()
+                .padding(.top, 4)
+                .padding(.bottom, 8)
 
             MenuLastSectionView(fujiMojiState: fujiMojiState)
 

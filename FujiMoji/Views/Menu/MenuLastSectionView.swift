@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MenuLastSectionView: View {
     @ObservedObject var fujiMojiState: FujiMojiState
+    
 
     var body: some View{
         VStack(alignment: .leading, spacing: 2) {
@@ -30,6 +31,7 @@ struct MenuLastSectionView: View {
             .keyboardShortcut("d")
             .buttonStyle(MenuHoverButtonStyle())
             .frame(maxWidth: .infinity)
+            
             
             Button(action: {
                 NSApplication.shared.terminate(nil)
