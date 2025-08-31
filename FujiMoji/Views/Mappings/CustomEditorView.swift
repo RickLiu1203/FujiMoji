@@ -133,10 +133,12 @@ struct CustomEditorView: View {
         let newTag = tagInput.trimmingCharacters(in: .whitespacesAndNewlines)
         let newText = textInput.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !newTag.isEmpty, !newText.isEmpty else { return }
-        if let current = vm.selectedTag {
-            vm.rename(oldTag: current, newTag: newTag, text: newText)
-        } else {
-            vm.update(tag: newTag, text: newText)
+        DispatchQueue.main.async {
+            if let current = vm.selectedTag {
+                vm.rename(oldTag: current, newTag: newTag, text: newText)
+            } else {
+                vm.update(tag: newTag, text: newText)
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ struct MenuSecondSectionView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 2) {
             Button(action: {
                 dismiss()
                 openMappingsWindow(initialSelection: .emojiCategory(.smileysPeople))
@@ -25,11 +25,12 @@ struct MenuSecondSectionView: View {
                     Text("⌘M")
                         .foregroundColor(.secondary)
                 }
+                .padding(.vertical, 4)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }
             .keyboardShortcut("m")
-            .buttonStyle(.plain)
+            .buttonStyle(MenuHoverButtonStyle())
             .frame(maxWidth: .infinity)
             
             Button(action: {
@@ -44,11 +45,12 @@ struct MenuSecondSectionView: View {
                     Text("⌘T")
                         .foregroundColor(.secondary)
                 }
+                .padding(.vertical, 4)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }
             .keyboardShortcut("t")
-            .buttonStyle(.plain)
+            .buttonStyle(MenuHoverButtonStyle())
             .frame(maxWidth: .infinity)
         }
         .background(.clear)

@@ -12,7 +12,13 @@ import AppKit
 
 final class MappingsViewModel: ObservableObject {
     @Published var allEmojis: [String] = []
-    @Published var selectedEmoji: String?
+    @Published var selectedEmoji: String? {
+        didSet {
+            if oldValue != selectedEmoji {
+                updateSelectedDetail()
+            }
+        }
+    }
     @Published var selectedDetail: EmojiDetail?
     @Published var favoriteEmojis: Set<String> = []
     @Published var selection: MappingSidebarItem? = .emojiCategory(.smileysPeople)
@@ -50,8 +56,9 @@ final class MappingsViewModel: ObservableObject {
     }
 
     func didSelectEmoji(_ emoji: String) {
-        selectedEmoji = emoji
-        updateSelectedDetail()
+        if selectedEmoji != emoji {
+            selectedEmoji = emoji
+        }
     }
 
     // MARK: - Loading
@@ -220,7 +227,9 @@ final class MappingsWindowCoordinator: NSWindowController {
             if mappingsViewModel == nil {
                 mappingsViewModel = MappingsViewModel(initialSelection: initialSelection)
             }
-            mappingsViewModel?.selection = initialSelection
+            DispatchQueue.main.async { [weak self] in
+                self?.mappingsViewModel?.selection = initialSelection
+            }
         }
 
         guard let window = self.window else { return }

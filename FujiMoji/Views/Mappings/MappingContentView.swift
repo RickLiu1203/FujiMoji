@@ -19,6 +19,7 @@ struct EmojiDetail: Identifiable {
 
 struct MappingContentView: View {
     @StateObject private var mappingViewModel: MappingsViewModel
+    @State private var sidebarSelection: MappingSidebarItem? = .emojiCategory(.smileysPeople)
     
     init(mappingViewModel: MappingsViewModel? = nil) {
         self._mappingViewModel = StateObject(wrappedValue: mappingViewModel ?? MappingsViewModel())
@@ -47,7 +48,7 @@ struct MappingContentView: View {
 
     var body: some View {
         HStack(spacing: 0) {
-            SideBarView(selection: $mappingViewModel.selection)
+            SideBarView(selection: $sidebarSelection)
                 .frame(width: sidebarWidth)
             if case .customMappings? = mappingViewModel.selection {
                 CustomListView(vm: customVM, onSelect: { tag in
@@ -109,7 +110,12 @@ struct MappingContentView: View {
         }
         .frame(width: 900, height: 500)
         .background(.ultraThinMaterial)
+        .onAppear {
+            sidebarSelection = mappingViewModel.selection
+        }
         .onChange(of: mappingViewModel.selection) { _, newValue in
+            // keep sidebar selection in sync when selection changes programmatically
+            if sidebarSelection != newValue { sidebarSelection = newValue }
             if case let .emojiCategory(category) = newValue, let row = categoryRowAnchors[category] {
                 if nsScrollView != nil {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
@@ -120,11 +126,13 @@ struct MappingContentView: View {
                 }
             }
         }
-        .onChange(of: mappingViewModel.selectedEmoji) { _, newEmoji in
-            if let symbol = newEmoji {
-                mappingViewModel.didSelectEmoji(symbol)
+        .onChange(of: sidebarSelection) { _, newValue in
+            guard mappingViewModel.selection != newValue else { return }
+            DispatchQueue.main.async {
+                mappingViewModel.selection = newValue
             }
         }
+        
 
     }
 }

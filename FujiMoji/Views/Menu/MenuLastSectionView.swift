@@ -11,7 +11,7 @@ struct MenuLastSectionView: View {
     @ObservedObject var fujiMojiState: FujiMojiState
 
     var body: some View{
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 2) {
             Button(action: {
                 fujiMojiState.isEnabled.toggle()
             }){
@@ -23,11 +23,12 @@ struct MenuLastSectionView: View {
                     Text("⌘D")
                         .foregroundColor(.secondary)
                 }
+                .padding(.vertical, 4)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }
             .keyboardShortcut("d")
-            .buttonStyle(.plain)
+            .buttonStyle(MenuHoverButtonStyle())
             .frame(maxWidth: .infinity)
             
             Button(action: {
@@ -41,11 +42,12 @@ struct MenuLastSectionView: View {
                     Text("⌘Q")
                         .foregroundColor(.secondary)
                 }
+                .padding(.vertical, 4)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }
             .keyboardShortcut("q")
-            .buttonStyle(.plain)
+            .buttonStyle(MenuHoverButtonStyle())
             .frame(maxWidth: .infinity)
         }
         .background(.clear)
