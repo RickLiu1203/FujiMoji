@@ -112,7 +112,6 @@ struct CustomEditorView: View {
         .onKeyPress(phases: .down) { keyPress in
             if keyPress.key == .return {
                 if keyPress.modifiers.contains(.shift) {
-                    // Allow Shift+Enter to insert a newline in custom text input
                     return .ignored
                 } else {
                     submitIfPossible()

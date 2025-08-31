@@ -47,11 +47,8 @@ class FujiMojiState: ObservableObject {
     @Published var startCaptureKey: String = "/"
     @Published var endCaptureKey: String = "/"
     @Published var selectedSkinTone: SkinTone = .yellow
-    // Stores the current modifier scalar for supported emojis ("" when yellow/default)
     @Published var skinToneModifier: String = ""
-    // Keys (normalized) of emojis that support skin tone variants (loaded from variant_emojis.json)
     private var variantEmojiKeys: Set<String> = []
-    // Cache of toned outputs per tone, keyed by normalized emoji
     private var toneCacheByTone: [SkinTone: [String: String]] = [:]
     
     private let keyDetection = KeyDetection.shared
@@ -62,7 +59,6 @@ class FujiMojiState: ObservableObject {
         loadVariantEmojiKeys()
         ensureCacheForCurrentTone()
         updateKeyDetection()
-        // Ensure KeyDetection uses the loaded capture keys
         keyDetection.updateDelimiters(start: startCaptureKey, end: endCaptureKey)
     }
     
@@ -121,7 +117,7 @@ class FujiMojiState: ObservableObject {
     // MARK: - Skin tone helpers
     private func modifier(for tone: SkinTone) -> String {
         switch tone {
-        case .yellow:      return "" // default, no modifier
+        case .yellow:      return ""
         case .light:       return "\u{1F3FB}"
         case .mediumLight: return "\u{1F3FC}"
         case .medium:      return "\u{1F3FD}"
@@ -131,7 +127,6 @@ class FujiMojiState: ObservableObject {
     }
 
     func applySkinTone(_ emoji: String) -> String {
-        // Generalized: apply to any emoji present in variant_emojis.json once, using cached mapping
         let normalized = normalizeForCache(emoji)
         if let cached = toneCacheByTone[selectedSkinTone]?[normalized] {
             return cached
@@ -195,9 +190,7 @@ class FujiMojiState: ObservableObject {
             }
         }
 
-        // If we didn't find any person base, handle simple single-codepoint bases (e.g., hands)
         if !insertedAny {
-            // If there is a ZWJ sequence without human base (rare), insert before first ZWJ; otherwise append at end
             if let firstZWJIndex = output.firstIndex(of: zwj) {
                 output.insert(mod, at: firstZWJIndex)
             } else {
@@ -209,7 +202,6 @@ class FujiMojiState: ObservableObject {
     }
 
     private func normalizeForCache(_ s: String) -> String {
-        // Remove any Fitzpatrick tones and variation selectors; keep other code points (ZWJ sequences intact)
         let toneRange = 0x1F3FB...0x1F3FF
         let toneSet: Set<UnicodeScalar> = Set(toneRange.compactMap { UnicodeScalar($0) })
         let vs15 = UnicodeScalar(0xFE0E)!

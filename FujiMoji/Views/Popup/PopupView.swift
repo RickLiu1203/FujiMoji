@@ -66,7 +66,7 @@ struct PredictionResultsPopupView: View {
     }
     
     var body: some View {
-        ZStack { // Floating layers so one does not affect the other
+        ZStack {
             DoubleResultsPopupView(viewModel: viewModel)
                 .opacity(renderedMode == .double ? 1 : 0)
                 .allowsHitTesting(renderedMode == .double)
@@ -277,7 +277,6 @@ final class DetectedTextWindowController: NSWindowController {
             return NSRect(x: 0, y: 0, width: popupWidth, height: detectedTextWindowHeight)
         }
         
-        // Use a fixed width to keep X position stable and aligned
         let contentSize = window.contentView?.fittingSize ?? NSSize(width: popupWidth, height: detectedTextWindowHeight)
         let screenFrame = screen.visibleFrame
         let x = screenFrame.midX - popupWidth / 2
@@ -290,7 +289,6 @@ final class DetectedTextWindowController: NSWindowController {
         KeyDetection.shared.$isCapturing
             .receive(on: RunLoop.main)
             .sink { [weak self] isCapturing in
-                // Only show detected text popup if suggestion popup is enabled
                 if isCapturing && FujiMojiState.shared.showSuggestionPopup {
                     self?.show()
                 } else {
@@ -299,7 +297,6 @@ final class DetectedTextWindowController: NSWindowController {
             }
             .store(in: &cancellables)
         
-        // Also listen for changes to the popup setting
         FujiMojiState.shared.$showSuggestionPopup
             .receive(on: RunLoop.main)
             .sink { [weak self] showPopup in
@@ -350,7 +347,7 @@ final class PredictionResultsWindowController: NSWindowController {
         panel.isOpaque = false
         panel.backgroundColor = .clear
         panel.level = .floating
-        panel.hasShadow = false // No shadow to blend with detected text
+        panel.hasShadow = false
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.ignoresMouseEvents = false
         panel.becomesKeyOnlyIfNeeded = true
@@ -395,18 +392,15 @@ final class PredictionResultsWindowController: NSWindowController {
             return NSRect(x: 0, y: 0, width: popupWidth, height: predictionResultsDefaultHeight)
         }
         
-        // Use a fixed width to keep X position stable and aligned with detected text
         let contentSize = window.contentView?.fittingSize ?? NSSize(width: popupWidth, height: predictionResultsDefaultHeight)
         let screenFrame = screen.visibleFrame
         let x = screenFrame.midX - popupWidth / 2
-        // Single unified vertical offset for all modes
         let yOffset = resultsYOffset
         let y = screenFrame.minY + screenBottomMargin + detectedTextWindowHeight + yOffset
         return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)
     }
 
     private func setupObservers() {
-        // Show/hide based on whether there are any matches with aggressive debouncing
         KeyDetection.shared.$currentString
             .removeDuplicates()
             .debounce(for: .milliseconds(debounceDelayMs), scheduler: RunLoop.main)
@@ -415,7 +409,6 @@ final class PredictionResultsWindowController: NSWindowController {
             }
             .store(in: &cancellables)
         
-        // Also listen for changes to the popup setting
         FujiMojiState.shared.$showSuggestionPopup
             .receive(on: RunLoop.main)
             .sink { [weak self] showPopup in
@@ -425,7 +418,6 @@ final class PredictionResultsWindowController: NSWindowController {
             }
             .store(in: &cancellables)
         
-        // Immediate SHOW when there are matches (no debounce)
         KeyDetection.shared.$currentString
             .removeDuplicates()
             .receive(on: RunLoop.main)
@@ -434,7 +426,6 @@ final class PredictionResultsWindowController: NSWindowController {
             }
             .store(in: &cancellables)
         
-        // Immediate window frame updates (no debounce)
         KeyDetection.shared.$currentString
             .removeDuplicates()
             .receive(on: RunLoop.main)
@@ -443,7 +434,6 @@ final class PredictionResultsWindowController: NSWindowController {
             }
             .store(in: &cancellables)
         
-        // Track actual rendered mode to compute Y offset correctly
         NotificationCenter.default.publisher(for: .resultsRenderModeChanged)
             .receive(on: RunLoop.main)
             .sink { [weak self] notification in
@@ -456,20 +446,17 @@ final class PredictionResultsWindowController: NSWindowController {
     }
     
     private func handleStringChange(_ currentString: String) {
-        // Cancel any pending update
         updateWorkItem?.cancel()
         
         let workItem = DispatchWorkItem { [weak self] in
             guard let self = self else { return }
             
             if KeyDetection.shared.isCapturing && currentString.count >= 2 {
-                // Only show popup if suggestion popup is enabled
                 guard FujiMojiState.shared.showSuggestionPopup else {
                     self.hide()
                     return
                 }
                 
-                // Check if we have any matches
                 let hasMatches = !CustomStorage.shared.collectTags(withPrefix: currentString.lowercased(), limit: 1).isEmpty ||
                                 !EmojiStorage.shared.collectPairs(withPrefix: currentString.lowercased(), limit: 1).isEmpty
                 
@@ -477,7 +464,6 @@ final class PredictionResultsWindowController: NSWindowController {
                     if self.window?.isVisible != true {
                         self.show()
                     }
-                    // Frame updates are now handled by the immediate observer
                 } else {
                     self.hide()
                 }
@@ -496,7 +482,6 @@ final class PredictionResultsWindowController: NSWindowController {
               FujiMojiState.shared.showSuggestionPopup else { return }
         
         let prefix = currentString.lowercased()
-        // Quick existence check only (limit: 1) to keep it cheap
         let hasMatches = !CustomStorage.shared.collectTags(withPrefix: prefix, limit: 1).isEmpty ||
                          !EmojiStorage.shared.collectPairs(withPrefix: prefix, limit: 1).isEmpty
         
@@ -506,7 +491,6 @@ final class PredictionResultsWindowController: NSWindowController {
     }
     
     private func updateWindowFrameIfVisible() {
-        // Only update frame if window is visible, avoiding unnecessary work
         guard let window = self.window, window.isVisible else { return }
         self.updateWindowFrame()
     }
@@ -524,8 +508,7 @@ final class PredictionResultsWindowController: NSWindowController {
     }
 }
 
-// MARK: - UI Components moved to separate files
-// TagPill, HorizontalMouseScrollView, and related components are now in PredictionResultsView.swift
+
 
 
 

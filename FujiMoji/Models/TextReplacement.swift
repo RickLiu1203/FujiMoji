@@ -17,46 +17,39 @@ class TextReplacement {
     
     func replaceWithEmoji(_ capturedText: String, startDelimiter: String, multiplier: Int, digitsCountBeforeStart: Int, triggerKeyConsumed: Bool) -> Bool {
         let normalizedTag = capturedText.lowercased()
-        // Prefer custom mapping if present
         let customText = CustomStorage.shared.getText(forTag: normalizedTag)
         let emoji = customText ?? emojiStorage.findEmoji(forTag: normalizedTag)
         
         guard let replacementUnit = emoji else {
-            print("No mapping found for tag '\(capturedText)'; leaving text unchanged")
-            return false // Return false to indicate no replacement occurred
+            return false
         }
 
-        // Calculate total characters to delete: digits + start delimiter + captured text + trigger key (if it was typed)
-        let triggerKeyCount = triggerKeyConsumed ? 0 : 1 // If trigger was consumed (tab/enter), don't count it
+        let triggerKeyCount = triggerKeyConsumed ? 0 : 1
         let totalCharactersToDelete = max(0, digitsCountBeforeStart) + startDelimiter.count + capturedText.count + triggerKeyCount
 
         deleteCharacters(count: totalCharactersToDelete)
 
         let repeatCount = max(1, multiplier)
-        let replacement = String(repeating: replacementUnit, count: repeatCount) // No additional delimiter
+        let replacement = String(repeating: replacementUnit, count: repeatCount)
         pasteInsert(replacement)
 
-        print("Replaced '\(String(repeating: "#", count: digitsCountBeforeStart))\(startDelimiter)\(capturedText)' with \(repeatCount)x \(replacementUnit) (deleted \(totalCharactersToDelete) chars)")
-        return true // Return true to indicate replacement occurred
+        return true
     }
 
-    // Direct replacement with a provided unit (emoji or custom string)
+
     func replaceWithUnit(_ replacementUnit: String, forCapturedText capturedText: String, startDelimiter: String, multiplier: Int, digitsCountBeforeStart: Int, triggerKeyConsumed: Bool) -> Bool {
         guard !replacementUnit.isEmpty else {
-            print("No replacement unit provided for '\(capturedText)'; leaving text unchanged")
-            return false // Return false to indicate no replacement occurred
+            return false
         }
         
-        // Calculate total characters to delete: digits + start delimiter + captured text + trigger key (if it was typed)
-        let triggerKeyCount = triggerKeyConsumed ? 0 : 1 // If trigger was consumed (tab/enter), don't count it
+        let triggerKeyCount = triggerKeyConsumed ? 0 : 1
         let totalCharactersToDelete = max(0, digitsCountBeforeStart) + startDelimiter.count + capturedText.count + triggerKeyCount
         deleteCharacters(count: totalCharactersToDelete)
 
         let repeatCount = max(1, multiplier)
-        let replacement = String(repeating: replacementUnit, count: repeatCount) // No additional delimiter
+        let replacement = String(repeating: replacementUnit, count: repeatCount)
         pasteInsert(replacement)
-        print("Direct replace of captured '\(capturedText)' with \(repeatCount)x '\(replacementUnit)' (deleted \(totalCharactersToDelete) chars)")
-        return true // Return true to indicate replacement occurred
+        return true
     }
     
     private func deleteCharacters(count: Int) {

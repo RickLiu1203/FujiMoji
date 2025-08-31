@@ -8,8 +8,8 @@
 import Foundation
 
 final class CustomMap {
-    private var storage: [String: String] = [:] // { tag: text }
-    private var order: [String] = [] // insertion order of normalized tags
+    private var storage: [String: String] = [:] 
+    private var order: [String] = [] 
 
     init() {}
 
@@ -59,10 +59,8 @@ final class CustomMap {
 
     func getOrder() -> [String] { order }
     func setOrder(_ newOrder: [String]) {
-        // Keep only keys that still exist
         let normalized = newOrder.map { $0.lowercased() }
         let filtered = normalized.filter { storage[$0] != nil }
-        // Add any missing keys at the end to avoid losing data
         let missing = storage.keys.filter { !filtered.contains($0) }
         order = filtered + missing
     }

@@ -23,7 +23,6 @@ class EmojiStorage {
     
     private init() {
         let templateURL = Bundle.main.url(forResource: "default", withExtension: "json")
-        // Compute the path locally to avoid accessing self before initialization
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         let userURL = docs.appendingPathComponent("user_emoji_mappings.json")
         do {
@@ -52,7 +51,6 @@ class EmojiStorage {
                                          withIntermediateDirectories: true)
             
             try data.write(to: userMappingsURL)
-            print("Successfully saved \(mappings.count) emoji mappings to user data")
         } catch {
             print("Error saving user mappings: \(error)")
         }
@@ -62,11 +60,9 @@ class EmojiStorage {
         do {
             if fileManager.fileExists(atPath: userMappingsURL.path) {
                 try fileManager.removeItem(at: userMappingsURL)
-                print("Removed user modifications file")
             }
             emojiMap.resetToTemplate()
             rebuildTrie()
-            print("Reset to template mappings")
         } catch {
             print("Error resetting to defaults: \(error)")
         }
@@ -113,7 +109,6 @@ class EmojiStorage {
         saveUserMappings()
     }
     
-    // MARK: - Prefix search facade
     func collectTags(withPrefix prefix: String, limit: Int = 25) -> [String] {
         return searchTrie.collectTags(withPrefix: prefix, limit: limit)
     }

@@ -88,18 +88,15 @@ struct MenuFourthSectionView: View {
     }
     
     private func filterAndLimitInput(_ input: String) -> String {
-        // Allow typing "Space" for the end key
         if input.lowercased().hasPrefix("space") && input.count <= 5 {
             return input
         }
         
-        // Filter to only allow printable ASCII characters (excluding control characters)
         let filtered = input.filter { char in
             let ascii = char.asciiValue ?? 0
-            return ascii >= 32 && ascii <= 126 // Printable ASCII range
+            return ascii >= 32 && ascii <= 126
         }
         
-        // Limit to 1 character unless it's "Space"
         if filtered.lowercased() != "space" && filtered.count > 1 {
             return String(filtered.prefix(1))
         }
@@ -110,7 +107,6 @@ struct MenuFourthSectionView: View {
     private func submitStartKey() {
         let trimmed = tempStartKey.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty || !isValidCaptureKey(trimmed) {
-            // Revert to previous state
             tempStartKey = fujiMojiState.startCaptureKey
         } else {
             fujiMojiState.startCaptureKey = trimmed
@@ -122,7 +118,6 @@ struct MenuFourthSectionView: View {
     private func submitEndKey() {
         let trimmed = tempEndKey.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.isEmpty {
-            // Revert to previous state
             tempEndKey = displayEndKey(fujiMojiState.endCaptureKey)
         } else {
             let actualKey = trimmed.lowercased() == "space" ? " " : trimmed
@@ -130,7 +125,6 @@ struct MenuFourthSectionView: View {
                 fujiMojiState.endCaptureKey = actualKey
                 fujiMojiState.updateCaptureKeys()
             } else {
-                // Revert to previous state
                 tempEndKey = displayEndKey(fujiMojiState.endCaptureKey)
             }
         }
@@ -138,13 +132,11 @@ struct MenuFourthSectionView: View {
     }
     
     private func isValidCaptureKey(_ key: String) -> Bool {
-        // Must be exactly 1 character
         guard key.count == 1 else { return false }
         
         let char = key.first!
         let ascii = char.asciiValue ?? 0
         
-        // Must be printable ASCII (space to tilde)
         return ascii >= 32 && ascii <= 126
     }
 }

@@ -73,7 +73,6 @@ class EmojiMap {
                 storage = templateStorage
             }
             
-            print("Loaded \(templateStorage.count) emoji mappings from template")
         } catch {
             print("Error loading template: \(error)")
         }
@@ -81,7 +80,6 @@ class EmojiMap {
     
     private func loadUserData() {
         if !FileManager.default.fileExists(atPath: userDataURL.path) {
-            print("No user modifications found (first run) - using template data")
             if storage.isEmpty {
                 storage = templateStorage
             }
@@ -98,7 +96,6 @@ class EmojiMap {
             }
             storage = merged
             
-            print("Loaded \(mappings.count) emoji mappings from user data; merged total: \(storage.count)")
         } catch {
             print("Error loading user data: \(error)")
             if storage.isEmpty {
@@ -141,9 +138,7 @@ class EmojiMap {
         storage = templateStorage
     }
     
-    private func setupDefaultMappings() {
-        print("Setting up hardcoded default mappings...")
-        
+    private func setupDefaultMappings() {        
         let defaults: [(emoji: String, defaultTag: String, aliases: [String])] = [
 
         ]
@@ -158,6 +153,5 @@ class EmojiMap {
         
         templateStorage = storage
         
-        print("Added \(defaults.count) default emoji mappings")
     }
 } 

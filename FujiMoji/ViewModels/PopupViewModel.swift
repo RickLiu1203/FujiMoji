@@ -33,11 +33,9 @@ class PopupViewModel: ObservableObject {
     private let minCharsForSuggestions = 2
     private var cancellables = Set<AnyCancellable>()
     
-    // Favorites data cached for O(1) lookup
     private var favoriteEmojis: Set<String> = []
     private var favoriteCustomTags: Set<String> = []
     
-    // Reference to FujiMojiState for controlling popup behavior
     weak var fujiMojiState: FujiMojiState?
     
     init(fujiMojiState: FujiMojiState? = nil) {
@@ -54,36 +52,30 @@ class PopupViewModel: ObservableObject {
             }
             .store(in: &cancellables)
         
-        // Listen for left/right arrow navigation
         NotificationCenter.default.publisher(for: .navigateLeft)
             .sink { [weak self] _ in
-                print("🔍 DEBUG: PopupViewModel received navigateLeft notification")
                 self?.navigateLeft()
             }
             .store(in: &cancellables)
         
         NotificationCenter.default.publisher(for: .navigateRight)
             .sink { [weak self] _ in
-                print("🔍 DEBUG: PopupViewModel received navigateRight notification")
                 self?.navigateRight()
             }
             .store(in: &cancellables)
         
         NotificationCenter.default.publisher(for: .navigateUp)
             .sink { [weak self] _ in
-                print("🔍 DEBUG: PopupViewModel received navigateUp notification")
                 self?.navigateUp()
             }
             .store(in: &cancellables)
         
         NotificationCenter.default.publisher(for: .navigateDown)
             .sink { [weak self] _ in
-                print("🔍 DEBUG: PopupViewModel received navigateDown notification")
                 self?.navigateDown()
             }
             .store(in: &cancellables)
         
-        // Listen for favorites changes
         NotificationCenter.default.publisher(for: UserDefaults.didChangeNotification)
             .sink { [weak self] _ in
                 self?.loadFavorites()
@@ -107,14 +99,11 @@ class PopupViewModel: ObservableObject {
     func updateMatches(for current: String) {
         let prefix = current.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         
-        // If popup is disabled, only show exact matches
         guard fujiMojiState?.showSuggestionPopup != false else {
-            // Only show if there's an exact match
             let hasExactCustom = CustomStorage.shared.getText(forTag: prefix) != nil
             let hasExactEmoji = EmojiStorage.shared.findEmoji(forTag: prefix) != nil
             
             if hasExactCustom || hasExactEmoji {
-                // Show exact matches only
                 let customTags = hasExactCustom ? [prefix] : []
                 let emojiPairs = hasExactEmoji ? EmojiStorage.shared.collectPairs(withPrefix: prefix, limit: 1).filter { $0.tag.lowercased() == prefix } : []
                 
@@ -131,7 +120,6 @@ class PopupViewModel: ObservableObject {
             return
         }
         
-        // Normal popup behavior - show suggestions with prefix matching
         guard prefix.count >= minCharsForSuggestions else {
             customMatches = []
             emojiMatches = []
@@ -159,12 +147,10 @@ class PopupViewModel: ObservableObject {
                     let priority1 = self.getEmojiMatchPriority(for: match1, inputPrefix: fetchPrefix)
                     let priority2 = self.getEmojiMatchPriority(for: match2, inputPrefix: fetchPrefix)
                     
-                    // Primary sort by priority (exact match > exact favorite > favorites > aliases > defaults)
                     if priority1 != priority2 {
                         return priority1 < priority2
                     }
                     
-                    // Secondary sort alphabetically within same priority
                     return match1.tag < match2.tag
                 }
             
@@ -193,39 +179,29 @@ class PopupViewModel: ObservableObject {
     func findFirstExactMatchIndex(for input: String) -> Int {
         let lowercaseInput = input.lowercased()
 
-        // Check for exact matches in custom first
         if let exactCustomIndex = customMatches.firstIndex(where: { $0.lowercased() == lowercaseInput }) {
-            print("🔍 DEBUG: Found exact custom match '\(customMatches[exactCustomIndex])' at index \(exactCustomIndex)")
             return exactCustomIndex
         }
 
-        // Then check for exact matches in emoji
         if let exactEmojiIndex = emojiMatches.firstIndex(where: { $0.tag.lowercased() == lowercaseInput }) {
             let adjustedIndex = customMatches.count + exactEmojiIndex
-            print("🔍 DEBUG: Found exact emoji match '\(emojiMatches[exactEmojiIndex].tag)' at adjusted index \(adjustedIndex)")
             return adjustedIndex
         }
 
-        // No exact match, highlight first item
-        print("🔍 DEBUG: No exact match found, highlighting first item (index 0)")
         return 0
     }
     
     func selectHighlightedItem() {
-        // First try to select from popup suggestions
         if !customMatches.isEmpty && highlightedIndex < customMatches.count {
             let tag = customMatches[highlightedIndex]
             performCustomSelection(tag: tag)
-            print("🔍 DEBUG: Selected highlighted custom item: \(tag) at index \(highlightedIndex)")
         } else if !emojiMatches.isEmpty {
             let adjustedIndex = highlightedIndex - customMatches.count
             if adjustedIndex >= 0 && adjustedIndex < emojiMatches.count {
                 let pair = emojiMatches[adjustedIndex]
                 performEmojiSelection(tag: pair.tag, emoji: pair.emoji)
-                print("🔍 DEBUG: Selected highlighted emoji item: \(pair.tag) at adjusted index \(adjustedIndex)")
             }
         } else {
-            // No popup matches - try exact match replacement
             performExactMatchReplacement()
         }
     }
@@ -237,22 +213,16 @@ class PopupViewModel: ObservableObject {
             return 
         }
         
-        // Try custom mapping first
         if let customText = CustomStorage.shared.getText(forTag: currentText) {
             performCustomSelection(tag: currentText)
-            print("🔍 DEBUG: Exact match custom replacement: \(currentText) -> \(customText)")
             return
         }
         
-        // Try emoji mapping
         if let emoji = EmojiStorage.shared.findEmoji(forTag: currentText) {
             performEmojiSelection(tag: currentText, emoji: emoji)
-            print("🔍 DEBUG: Exact match emoji replacement: \(currentText) -> \(emoji)")
             return
         }
         
-        // No match found - still use finishCapture to get proper logging and state cleanup
-        print("🔍 DEBUG: No exact match found for: \(currentText), calling finishCapture")
         KeyDetection.shared.finishCapture(triggerKeyConsumed: true)
     }
     
@@ -271,12 +241,10 @@ class PopupViewModel: ObservableObject {
         if isExactMatch {
             return isFav ? .exactFavorite : .exactMatch
         } else if isFav {
-            // For prefix matches, favorites come before non-favorites regardless of alias vs default
             return .favorite
         } else if isDefaultTag {
             return .defaultTag
         } else {
-            // It's an alias
             return .alias
         }
     }
@@ -292,12 +260,8 @@ class PopupViewModel: ObservableObject {
         guard totalItems > 0 else { return }
         
         let oldIndex = highlightedIndex
-        // Non-circular: stop at beginning
         if highlightedIndex > 0 {
             highlightedIndex -= 1
-            print("🔍 DEBUG: Navigation left: \(oldIndex) -> \(highlightedIndex)")
-        } else {
-            print("🔍 DEBUG: Already at beginning, cannot navigate left")
         }
     }
     
@@ -306,12 +270,8 @@ class PopupViewModel: ObservableObject {
         guard totalItems > 0 else { return }
         
         let oldIndex = highlightedIndex
-        // Non-circular: stop at end
         if highlightedIndex < totalItems - 1 {
             highlightedIndex += 1
-            print("🔍 DEBUG: Navigation right: \(oldIndex) -> \(highlightedIndex)")
-        } else {
-            print("🔍 DEBUG: Already at end, cannot navigate right")
         }
     }
     
@@ -320,13 +280,9 @@ class PopupViewModel: ObservableObject {
         guard totalItems > 0 else { return }
         
         let oldIndex = highlightedIndex
-        
-        // If currently in Emoji list (index >= customMatches.count), move to first Custom item
+
         if highlightedIndex >= customMatches.count && !customMatches.isEmpty {
-            highlightedIndex = 0 // First custom item
-            print("🔍 DEBUG: Navigation up: \(oldIndex) -> \(highlightedIndex) (Emoji -> Custom)")
-        } else {
-            print("🔍 DEBUG: Cannot navigate up - already in Custom list or Custom list is empty")
+            highlightedIndex = 0 
         }
     }
     
@@ -336,12 +292,8 @@ class PopupViewModel: ObservableObject {
         
         let oldIndex = highlightedIndex
         
-        // If currently in Custom list (index < customMatches.count), move to first Emoji item
         if highlightedIndex < customMatches.count && !emojiMatches.isEmpty {
-            highlightedIndex = customMatches.count // First emoji item
-            print("🔍 DEBUG: Navigation down: \(oldIndex) -> \(highlightedIndex) (Custom -> Emoji)")
-        } else {
-            print("🔍 DEBUG: Cannot navigate down - already in Emoji list or Emoji list is empty")
+            highlightedIndex = customMatches.count 
         }
     }
 }

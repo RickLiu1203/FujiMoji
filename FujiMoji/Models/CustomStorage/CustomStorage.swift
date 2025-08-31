@@ -30,7 +30,6 @@ final class CustomStorage {
     private func loadFromDisk() {
         if !fileManager.fileExists(atPath: userCustomURL.path) {
             trie.rebuild(from: map.getAllMappings())
-            print("No custom mappings found; starting fresh")
             return
         }
         do {
@@ -38,9 +37,7 @@ final class CustomStorage {
             let decoded = try JSONDecoder().decode([String: String].self, from: data)
             map.replaceAll(decoded)
             trie.rebuild(from: map.getAllMappings())
-            print("Loaded custom mappings: \(decoded.count)")
         } catch {
-            print("Error loading custom mappings: \(error)")
             trie.rebuild(from: map.getAllMappings())
         }
     }
@@ -52,7 +49,6 @@ final class CustomStorage {
             let data = try encoder.encode(map.getAll())
             try fileManager.createDirectory(at: userCustomURL.deletingLastPathComponent(), withIntermediateDirectories: true)
             try data.write(to: userCustomURL)
-            print("Saved custom mappings: \(map.getAll().count)")
         } catch {
             print("Error saving custom mappings: \(error)")
         }
@@ -94,7 +90,6 @@ final class CustomStorage {
         return Array(entries.reversed())
     }
 
-    // MARK: - Prefix search facade
     func collectTags(withPrefix prefix: String, limit: Int = 25) -> [String] {
         return trie.collectTags(withPrefix: prefix, limit: limit)
     }

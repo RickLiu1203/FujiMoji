@@ -181,9 +181,6 @@ struct CustomListView: View {
                                 onToggleFavorite: { tag in
                                     withAnimation {
                                         vm.toggleFavorite(tag: tag)
-                                        if showOnlyFavorites {
-                                            // If toggled off while in favorites list, it will drop from view
-                                        }
                                     }
                                 },
                                 isFavorite: vm.favoriteTags.contains(pair.tag.lowercased())

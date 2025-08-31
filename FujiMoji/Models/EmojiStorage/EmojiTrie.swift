@@ -162,7 +162,6 @@ class EmojiTrie {
         }
     }
 
-    // MARK: - Prefix search
     func collectTags(withPrefix prefix: String, limit: Int = 25) -> [String] {
         let normalized = prefix.lowercased()
         var current = root
@@ -190,7 +189,6 @@ class EmojiTrie {
         }
     }
 
-    // Collect tag and emoji pairs for suggestions
     func collectPairs(withPrefix prefix: String, limit: Int = 25) -> [(tag: String, emoji: String)] {
         let normalized = prefix.lowercased()
         var current = root

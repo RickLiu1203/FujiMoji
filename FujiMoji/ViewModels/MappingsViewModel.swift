@@ -27,7 +27,6 @@ final class MappingsViewModel: ObservableObject {
         updateSelectedDetail()
     }
 
-    // MARK: - Derived
     var currentEmojis: [String] {
         if case .favorites? = selection {
             return allEmojis.filter { favoriteEmojis.contains($0) }
@@ -39,7 +38,6 @@ final class MappingsViewModel: ObservableObject {
     func setAliases(_ aliases: [String], for emoji: String) {
         EmojiStorage.shared.setAliases(aliases, forEmoji: emoji)
         if emoji == selectedEmoji {
-            // Defer publication to next run loop to avoid publishing during view updates
             DispatchQueue.main.async { [weak self] in
                 self?.updateSelectedDetail()
             }
@@ -121,7 +119,6 @@ final class CustomMappingsViewModel: ObservableObject {
     func reload() {
         items = CustomStorage.shared.getAllNewestFirst()
         if selectedTag == nil { selectedTag = items.first?.tag }
-        // Newest-first ordering is provided by storage; no extra sorting here
     }
 
     // MARK: - Favorites
@@ -146,7 +143,6 @@ final class CustomMappingsViewModel: ObservableObject {
         objectWillChange.send()
     }
 
-    // Removed global sorting to preserve main list order
 
     func addNew() {
         let base = "new_tag"
@@ -157,7 +153,6 @@ final class CustomMappingsViewModel: ObservableObject {
             candidate = "\(base)_\(index)"
         }
         CustomStorage.shared.set(text: "custom string", forTag: candidate)
-        // Prepend new item to the top (newest-first)
         let newItem = (tag: candidate, text: "custom string")
         items.removeAll { $0.tag.lowercased() == candidate.lowercased() }
         items.insert(newItem, at: 0)
@@ -177,7 +172,6 @@ final class CustomMappingsViewModel: ObservableObject {
         CustomStorage.shared.set(text: text, forTag: newTag)
         reload()
         selectedTag = newTag
-        // Migrate favorite flag if present
         let oldKey = oldTag.lowercased()
         let newKey = newTag.lowercased()
         if favoriteTags.contains(oldKey) {
@@ -194,7 +188,6 @@ final class CustomMappingsViewModel: ObservableObject {
             selectedTag = items.first?.tag
         }
         objectWillChange.send()
-        // Remove from favorites if present
         let key = tag.lowercased()
         if favoriteTags.contains(key) {
             favoriteTags.remove(key)
