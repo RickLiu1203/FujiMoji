@@ -19,7 +19,7 @@ struct DetectedTextView: View {
                 .lineLimit(1)
             Spacer()
             Image(systemName: "face.smiling.inverse")
-                .font(.system(size: 14, weight: .black))
+                .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

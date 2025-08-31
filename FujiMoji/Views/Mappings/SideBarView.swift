@@ -35,7 +35,7 @@ enum EmojiCategory: String, CaseIterable, Identifiable, Hashable {
     var iconName: String {
         switch self {
         case .smileysPeople: return "face.smiling"
-        case .peopleBody: return "person.2"
+        case .peopleBody: return "hand.raised"
         case .animalsNature: return "pawprint"
         case .foodDrink: return "fork.knife"
         case .travelPlaces: return "tram.fill"
@@ -81,10 +81,10 @@ struct SideBarView: View {
                     .font(.system(size: 14, weight: .medium))
             }
             Section("Favourites") {
-                Label("Favourite Emojis", systemImage: "star")
+                Label("Favourite Emojis", systemImage: "star.circle")
                     .tag(MappingSidebarItem.favorites)
                     .font(.system(size: 14, weight: .medium))
-                Label("Favourite Texts", systemImage: "star")
+                Label("Favourite Texts", systemImage: "text.badge.star")
                     .tag(MappingSidebarItem.customFavorites)
                     .font(.system(size: 14, weight: .medium))
             }

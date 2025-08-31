@@ -213,7 +213,7 @@ class PopupViewModel: ObservableObject {
             return 
         }
         
-        if let customText = CustomStorage.shared.getText(forTag: currentText) {
+        if let _ = CustomStorage.shared.getText(forTag: currentText) {
             performCustomSelection(tag: currentText)
             return
         }
@@ -259,7 +259,7 @@ class PopupViewModel: ObservableObject {
         let totalItems = customMatches.count + emojiMatches.count
         guard totalItems > 0 else { return }
         
-        let oldIndex = highlightedIndex
+        // previously stored oldIndex was unused; remove to silence warning
         if highlightedIndex > 0 {
             highlightedIndex -= 1
         }
@@ -269,7 +269,7 @@ class PopupViewModel: ObservableObject {
         let totalItems = customMatches.count + emojiMatches.count
         guard totalItems > 0 else { return }
         
-        let oldIndex = highlightedIndex
+        // previously stored oldIndex was unused; remove to silence warning
         if highlightedIndex < totalItems - 1 {
             highlightedIndex += 1
         }
@@ -279,7 +279,7 @@ class PopupViewModel: ObservableObject {
         let totalItems = customMatches.count + emojiMatches.count
         guard totalItems > 0 else { return }
         
-        let oldIndex = highlightedIndex
+        // previously stored oldIndex was unused; remove to silence warning
 
         if highlightedIndex >= customMatches.count && !customMatches.isEmpty {
             highlightedIndex = 0 
@@ -290,7 +290,7 @@ class PopupViewModel: ObservableObject {
         let totalItems = customMatches.count + emojiMatches.count
         guard totalItems > 0 else { return }
         
-        let oldIndex = highlightedIndex
+        // previously stored oldIndex was unused; remove to silence warning
         
         if highlightedIndex < customMatches.count && !emojiMatches.isEmpty {
             highlightedIndex = customMatches.count 

@@ -28,7 +28,7 @@ struct MenuFifthSectionView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Default Skin Tone")
+            Text("Skin Tone")
                 .font(.system(size: 13, weight: .medium))
             
             HStack(spacing: 8) {

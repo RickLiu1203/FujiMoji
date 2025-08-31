@@ -44,6 +44,8 @@ class FujiMojiState: ObservableObject {
     @Published var isEnabled: Bool = true
     @Published var isCool: Bool = true
     @Published var showSuggestionPopup: Bool = true
+    enum PopupAnchor { case bottom, top }
+    @Published var popupAnchor: PopupAnchor = .bottom
     @Published var startCaptureKey: String = "/"
     @Published var endCaptureKey: String = "/"
     @Published var selectedSkinTone: SkinTone = .yellow
