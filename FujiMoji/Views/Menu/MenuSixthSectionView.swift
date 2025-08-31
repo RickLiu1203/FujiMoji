@@ -17,7 +17,7 @@ struct MenuSixthSectionView: View {
                 openURL(url)
             }){
                 HStack {
-                    Text("How to Use")
+                    Text("How to Use  ↗")
                         .padding(.vertical, 4)
 
                     Spacer()
