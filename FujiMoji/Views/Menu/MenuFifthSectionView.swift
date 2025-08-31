@@ -41,6 +41,7 @@ struct MenuFifthSectionView: View {
                 }
             }
         }
+        .padding(.horizontal, 16)
     }
 }
 

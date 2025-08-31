@@ -25,6 +25,7 @@ struct MenuLastSectionView: View {
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
+                .padding(.horizontal, 16)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }
@@ -45,6 +46,7 @@ struct MenuLastSectionView: View {
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
+                .padding(.horizontal, 16)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }

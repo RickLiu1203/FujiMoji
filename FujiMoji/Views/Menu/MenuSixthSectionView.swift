@@ -25,6 +25,7 @@ struct MenuSixthSectionView: View {
                     Text("⌘H")
                         .foregroundColor(.secondary)
                 }
+                .padding(.horizontal, 16)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }

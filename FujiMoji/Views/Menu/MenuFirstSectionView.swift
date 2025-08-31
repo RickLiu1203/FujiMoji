@@ -17,10 +17,10 @@ struct MenuFirstSectionView: View {
             Text(fujiMojiState.isEnabled ? "On" : "Off")
                 .foregroundColor(.secondary)
             if fujiMojiState.needsInputMonitoring {
-                VStack(alignment: .leading, spacing: 6) {
+                VStack(alignment: .leading, spacing: 8) {
                     Text("Enable Input Monitoring")
                         .font(.system(size: 12, weight: .semibold))
-                    Text("Go to System Settings → Privacy & Security → Input Monitoring, enable FujiMoji, then relaunch.")
+                    Text("Go to System Settings → Privacy & Security → Input Monitoring, enable FujiMoji, then relaunch")
                         .font(.system(size: 11))
                         .foregroundColor(.secondary)
                         .multilineTextAlignment(.leading)
@@ -39,13 +39,14 @@ struct MenuFirstSectionView: View {
                     }
                     .font(.system(size: 12, weight: .medium))
                 }
-                .padding(8)
+                .padding(12)
                 .background(
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
                         .fill(Color.yellow.opacity(0.15))
                 )
             }
         }
+        .padding(.horizontal, 16)
         .background(.clear)
     }
 }

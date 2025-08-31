@@ -29,7 +29,7 @@ struct FujiMojiApp: App {
                 fujiMojiState.checkInputMonitoringAuthorization()
             }
         } label: {
-            let size = NSStatusBar.system.thickness - 5
+            let size = NSStatusBar.system.thickness - 4
             menuBarIcon(size: size)
         }
         .menuBarExtraStyle(.window)

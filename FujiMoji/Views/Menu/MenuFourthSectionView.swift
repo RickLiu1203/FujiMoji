@@ -76,6 +76,7 @@ struct MenuFourthSectionView: View {
                     }
             }
         }
+        .padding(.horizontal, 16)
         .font(.system(size: 13, weight: .medium))
         .onAppear {
             tempStartKey = fujiMojiState.startCaptureKey

@@ -16,38 +16,44 @@ struct MenuView: View {
 
             Divider()
                 .padding(.vertical, 8)
+                .padding(.horizontal, 16)
 
             MenuSecondSectionView()
 
             Divider()
                 .padding(.vertical, 8)
+                .padding(.horizontal, 16)
 
             MenuThirdSectionView(fujiMojiState: fujiMojiState)
 
             Divider()
                 .padding(.vertical, 8)
+                .padding(.horizontal, 16)
 
             MenuFourthSectionView(fujiMojiState: fujiMojiState)
 
             Divider()
                 .padding(.vertical, 8)
+                .padding(.horizontal, 16)
 
             MenuFifthSectionView(fujiMojiState: fujiMojiState)
 
             Divider()
                 .padding(.top, 8)
                 .padding(.bottom, 4)
+                .padding(.horizontal, 16)
 
             MenuSixthSectionView()
 
             Divider()
                 .padding(.top, 4)
                 .padding(.bottom, 8)
+                .padding(.horizontal, 16)
 
             MenuLastSectionView(fujiMojiState: fujiMojiState)
 
         }
-        .padding(16)
+        .padding(.vertical, 16)
         .frame(width: 200)
         .background(.ultraThinMaterial)
         .onChange(of: fujiMojiState.isEnabled) {

@@ -51,6 +51,7 @@ struct MenuThirdSectionView: View {
             .toggleStyle(FrostedToggleStyle())
             .frame(maxWidth: .infinity)
         }
+        .padding(.horizontal, 16)
         .font(.system(size: 13, weight: .medium))
     }
 }
