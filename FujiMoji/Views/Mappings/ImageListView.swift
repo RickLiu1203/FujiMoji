@@ -1,53 +1,47 @@
 //
-//  CustomListView.swift
+//  ImageListView.swift
 //  FujiMoji
 //
-//  Created by Rick Liu on 2025-08-26.
+//  Created by Rick Liu on 2025-09-01.
 //
 
 import SwiftUI
 
-struct CustomListView: View {
-    private struct CustomItem: Identifiable, Hashable {
+struct ImageTagListView: View {
+    private struct ImageItem: Identifiable, Hashable {
         let id = UUID()
         var tag: String
-        var value: String
     }
 
-    private let tagWidth: CGFloat = 120
+    @ObservedObject var vm: ImageTagMappingsViewModel
+    @State private var isHoveringAdd = false
+    var onSelect: (String) -> Void = { _ in }
+    var showOnlyFavorites: Bool = false
 
-    private struct CustomRowView: View {
-        let item: CustomItem
+    private struct RowView: View {
+        let tag: String
         let isSelected: Bool
-        let tagWidth: CGFloat
+        let isFavorite: Bool
         let onDelete: (String) -> Void
         let onToggleFavorite: (String) -> Void
-        let isFavorite: Bool
         @State private var isHovered = false
 
         var body: some View {
             HStack(spacing: 12) {
-                Text(item.tag)
-                    .lineLimit(1)
-                    .truncationMode(.tail)
-                    .frame(width: tagWidth, alignment: .leading)
-                    .padding(.leading, 8)
-                Divider()
-                    .opacity(0)
-                Text(item.value)
+                Text(tag)
                     .lineLimit(1)
                     .truncationMode(.tail)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 4)
+                    .padding(.leading, 8)
 
                 HStack(spacing: 8) {
-                    Button(action: { onToggleFavorite(item.tag) }) {
+                    Button(action: { onToggleFavorite(tag) }) {
                         Image(systemName: isFavorite ? "star.fill" : "star")
                             .font(.system(size: 13, weight: .regular))
                     }
                     .buttonStyle(.plain)
 
-                    Button(action: { onDelete(item.tag) }) {
+                    Button(action: { onDelete(tag) }) {
                         Image(systemName: "trash")
                             .font(.system(size: 13, weight: .regular))
                     }
@@ -79,22 +73,13 @@ struct CustomListView: View {
             }
             .contentShape(Rectangle())
             .onHover { hovering in
-                withAnimation(.easeInOut(duration: 0.15)) {
-                    isHovered = hovering
-                }
+                withAnimation(.easeInOut(duration: 0.15)) { isHovered = hovering }
             }
         }
     }
 
-    @ObservedObject var vm: CustomMappingsViewModel
-    @State private var isHoveringAdd = false
-
-    var showOnlyFavorites: Bool = false
-    var onSelect: (String) -> Void = { _ in }
-
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-
             Button {
                 withAnimation {
                     vm.addNew()
@@ -104,7 +89,7 @@ struct CustomListView: View {
                     }
                 }
             } label: {
-                Label("Add Custom Text", systemImage: "plus")
+                Label("Add Media", systemImage: "plus")
                     .font(.system(size: 14))
                     .padding(.horizontal, 10)
                     .padding(.vertical, 6)
@@ -117,27 +102,25 @@ struct CustomListView: View {
                             .stroke(Color.white.opacity(0.35), lineWidth: 1)
                     )
             }
-            .onHover { isHovering in
-                isHoveringAdd = isHovering
-            }
+            .onHover { isHovering in isHoveringAdd = isHovering }
             .padding(.bottom, 24)
             .buttonStyle(.plain)
 
             Divider()
 
             ScrollView {
-                if (showOnlyFavorites && vm.items.filter { vm.favoriteTags.contains($0.tag.lowercased()) }.isEmpty) {
+                if (showOnlyFavorites && vm.items.filter { vm.favoriteImageTags.contains($0.tag.lowercased()) }.isEmpty) {
                     VStack(spacing: 8) {
-                        Text("No Favourite Custom Texts Yet!")
+                        Text("No Favourite Media Yet!")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(.secondary)
-                            .padding(.bottom, 16)
                             .padding(.top, 64)
+                            .padding(.bottom, 16)
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                 } else if vm.items.isEmpty {
                     VStack(spacing: 8) {
-                        Text("No Custom Text Yet!")
+                        Text("No Custom Media Yet!")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(.secondary)
                             .padding(.top, 64)
@@ -146,35 +129,37 @@ struct CustomListView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     LazyVStack(spacing: 4) {
-                        ForEach((showOnlyFavorites ? vm.items.filter { vm.favoriteTags.contains($0.tag.lowercased()) } : vm.items), id: \.tag) { pair in
-                            CustomRowView(
-                                item: CustomItem(tag: pair.tag, value: pair.text),
+                        ForEach((showOnlyFavorites ? vm.items.filter { vm.favoriteImageTags.contains($0.tag.lowercased()) } : vm.items), id: \.tag) { pair in
+                            RowView(
+                                tag: pair.tag,
                                 isSelected: vm.selectedTag?.lowercased() == pair.tag.lowercased(),
-                                tagWidth: tagWidth,
+                                isFavorite: vm.favoriteImageTags.contains(pair.tag.lowercased()),
                                 onDelete: { tag in
-                                    withAnimation {
-                                        vm.delete(tag: tag)
-                                    }
+                                    withAnimation(.easeInOut(duration: 0.2)) { vm.delete(tag: tag) }
                                 },
                                 onToggleFavorite: { tag in
-                                    withAnimation {
-                                        vm.toggleFavorite(tag: tag)
-                                    }
-                                },
-                                isFavorite: vm.favoriteTags.contains(pair.tag.lowercased())
+                                    withAnimation(.easeInOut(duration: 0.2)) { vm.toggleFavorite(tag: tag) }
+                                }
                             )
                             .contentShape(Rectangle())
                             .onTapGesture {
-                                vm.selectedTag = pair.tag
-                                onSelect(pair.tag)
+                                withAnimation(.easeInOut(duration: 0.15)) {
+                                    vm.selectedTag = pair.tag
+                                    onSelect(pair.tag)
+                                }
+                            }
+                            .contextMenu {
+                                Button("Delete") { vm.delete(tag: pair.tag) }
                             }
                         }
                     }
                 }
             }
             .onAppear { vm.reload() }
+            .animation(.easeInOut(duration: 0.2), value: vm.items.map { $0.tag })
         }
         .padding(.leading, 16)
         .padding(.trailing, vm.items.count < 10 ? 8 : 4)
     }
 }
+

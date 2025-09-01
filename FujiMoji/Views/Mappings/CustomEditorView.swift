@@ -45,7 +45,7 @@ struct CustomEditorView: View {
 
     private var tagInputView: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Unique Custom Tag")
+            Text("Unique Tag")
                 .font(.system(size: 14))
                 .foregroundColor(.secondary)
             tagEditorView

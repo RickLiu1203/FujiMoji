@@ -17,6 +17,17 @@ class TextReplacement {
     
     func replaceWithEmoji(_ capturedText: String, startDelimiter: String, multiplier: Int, digitsCountBeforeStart: Int, triggerKeyConsumed: Bool) -> Bool {
         let normalizedTag = capturedText.lowercased()
+        // First, try image replacement if an image tag exists
+        if let imageURL = CustomStorage.shared.getImageURL(forTag: normalizedTag) {
+            let triggerKeyCount = triggerKeyConsumed ? 0 : 1
+            let totalCharactersToDelete = max(0, digitsCountBeforeStart) + startDelimiter.count + capturedText.count + triggerKeyCount
+            deleteCharacters(count: totalCharactersToDelete)
+
+            let repeatCount = max(1, multiplier)
+            pasteInsertImage(from: imageURL, times: repeatCount)
+            return true
+        }
+
         let customText = CustomStorage.shared.getText(forTag: normalizedTag)
         let emoji = customText ?? emojiStorage.findEmoji(forTag: normalizedTag)
         
@@ -49,6 +60,17 @@ class TextReplacement {
         let repeatCount = max(1, multiplier)
         let replacement = String(repeating: replacementUnit, count: repeatCount)
         pasteInsert(replacement)
+        return true
+    }
+    
+    func replaceWithImageTag(_ tag: String, forCapturedText capturedText: String, startDelimiter: String, multiplier: Int, digitsCountBeforeStart: Int, triggerKeyConsumed: Bool) -> Bool {
+        let normalizedTag = tag.lowercased()
+        guard let imageURL = CustomStorage.shared.getImageURL(forTag: normalizedTag) else { return false }
+        let triggerKeyCount = triggerKeyConsumed ? 0 : 1
+        let totalCharactersToDelete = max(0, digitsCountBeforeStart) + startDelimiter.count + capturedText.count + triggerKeyCount
+        deleteCharacters(count: totalCharactersToDelete)
+        let repeatCount = max(1, multiplier)
+        pasteInsertImage(from: imageURL, times: repeatCount)
         return true
     }
     
@@ -116,6 +138,76 @@ class TextReplacement {
         
         if let previous = savedString {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                self.pasteboard.clearContents()
+                self.pasteboard.setString(previous, forType: .string)
+            }
+        }
+    }
+
+    private func pasteInsertImage(from url: URL, times: Int) {
+        let savedString = pasteboard.string(forType: .string)
+
+        pasteboard.clearContents()
+        if let data = try? Data(contentsOf: url) {
+            let ext = url.pathExtension.lowercased()
+            if ext == "gif" {
+                let gifType = NSPasteboard.PasteboardType("com.compuserve.gif")
+                let item = NSPasteboardItem()
+                item.setData(data, forType: gifType)
+                item.setString(url.absoluteString, forType: .fileURL)
+                pasteboard.clearContents()
+                pasteboard.writeObjects([item])
+            } else {
+                var typeToSet: NSPasteboard.PasteboardType? = nil
+                switch ext {
+                case "png": typeToSet = .png
+                case "jpg", "jpeg": typeToSet = NSPasteboard.PasteboardType("public.jpeg")
+                case "tif", "tiff": typeToSet = .tiff
+                case "heic": typeToSet = NSPasteboard.PasteboardType("public.heic")
+                case "heif": typeToSet = NSPasteboard.PasteboardType("public.heif")
+                case "bmp": typeToSet = NSPasteboard.PasteboardType("com.microsoft.bmp")
+                case "webp": typeToSet = NSPasteboard.PasteboardType("org.webmproject.webp")
+                default: typeToSet = nil
+                }
+                if let type = typeToSet {
+                    _ = pasteboard.setData(data, forType: type)
+                } else if let img = NSImage(data: data) {
+                    _ = pasteboard.writeObjects([img])
+                } else {
+                    _ = pasteboard.writeObjects([url as NSURL])
+                }
+            }
+        } else if let img = NSImage(contentsOf: url) {
+            _ = pasteboard.writeObjects([img])
+        } else {
+            _ = pasteboard.writeObjects([url as NSURL])
+        }
+
+        let vKey: CGKeyCode = 9
+        let cmdKey: CGKeyCode = 55
+
+        for i in 0..<max(1, times) {
+            let baseDelay = 0.01 + (0.1 * Double(i))
+            let cmdDown = CGEvent(keyboardEventSource: nil, virtualKey: cmdKey, keyDown: true)
+            let vDown = CGEvent(keyboardEventSource: nil, virtualKey: vKey, keyDown: true)
+            let vUp = CGEvent(keyboardEventSource: nil, virtualKey: vKey, keyDown: false)
+            let cmdUp = CGEvent(keyboardEventSource: nil, virtualKey: cmdKey, keyDown: false)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + baseDelay) {
+                cmdDown?.flags = .maskCommand
+                cmdDown?.post(tap: .cghidEventTap)
+                vDown?.flags = .maskCommand
+                vDown?.post(tap: .cghidEventTap)
+                vUp?.flags = .maskCommand
+                vUp?.post(tap: .cghidEventTap)
+                cmdUp?.flags = .maskCommand
+                cmdUp?.post(tap: .cghidEventTap)
+            }
+        }
+
+        if let previous = savedString {
+            let restoreDelay = 0.25 + (0.1 * Double(max(0, times - 1)))
+            DispatchQueue.main.asyncAfter(deadline: .now() + restoreDelay) {
                 self.pasteboard.clearContents()
                 self.pasteboard.setString(previous, forType: .string)
             }

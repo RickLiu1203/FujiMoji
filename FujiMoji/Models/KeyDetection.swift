@@ -398,6 +398,27 @@ class KeyDetection: ObservableObject {
         stopCapture()
     }
 
+    // Image tag replacement that preserves correct deletion semantics
+    func finishCaptureWithImageTag(_ tag: String) {
+        let capturedString = currentString
+
+        if !capturedString.isEmpty {
+            DispatchQueue.main.async {
+                self.detectedStrings.append(capturedString)
+                _ = TextReplacement.shared.replaceWithImageTag(
+                    tag,
+                    forCapturedText: capturedString,
+                    startDelimiter: self.startDelimiter,
+                    multiplier: self.multiplier,
+                    digitsCountBeforeStart: self.digitsCountBeforeStart,
+                    triggerKeyConsumed: true
+                )
+            }
+        }
+
+        stopCapture()
+    }
+
     func cancelCapture() {
         stopCapture()
     }

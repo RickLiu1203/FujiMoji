@@ -8,6 +8,7 @@
 import SwiftUI
 import AppKit
 import QuartzCore
+import UniformTypeIdentifiers
 
 struct EmojiDetail: Identifiable {
     let id: Int?
@@ -41,6 +42,7 @@ struct MappingContentView: View {
     private let topPadding: CGFloat = 2
 
     @StateObject private var customVM = CustomMappingsViewModel()
+    @StateObject private var imageTagVM = ImageTagMappingsViewModel()
 
     private let sidebarWidth: CGFloat = 200
     private let editorWidth: CGFloat = 280
@@ -75,6 +77,37 @@ struct MappingContentView: View {
                     isEmptyState: (customVM.favoriteTags.isEmpty || customVM.selectedTag == nil)
                 )
                 .frame(width: editorWidth)
+            } else if case .imageTags? = mappingViewModel.selection {
+                HStack(spacing: 0) {
+                    ImageTagListView(vm: imageTagVM) { tag in
+                        imageTagVM.selectedTag = tag
+                    }
+                    .padding(.top, topPadding)
+                    .padding(.bottom, 20)
+                    .frame(width: midSectionWidth)
+                    Divider()
+                        .padding(.bottom, 20)
+                    ImageTagEditorView(vm: imageTagVM)
+                        .frame(width: editorWidth)
+                }
+            } else if case .imageFavorites? = mappingViewModel.selection {
+                HStack(spacing: 0) {
+                    ImageTagListView(
+                        vm: imageTagVM,
+                        onSelect: { tag in imageTagVM.selectedTag = tag },
+                        showOnlyFavorites: true
+                    )
+                    .padding(.top, topPadding)
+                    .padding(.bottom, 20)
+                    .frame(width: midSectionWidth)
+                    Divider()
+                        .padding(.bottom, 20)
+                    ImageTagEditorView(
+                        vm: imageTagVM,
+                        isEmptyState: (imageTagVM.favoriteImageTags.isEmpty || imageTagVM.selectedTag == nil)
+                    )
+                    .frame(width: editorWidth)
+                }
             } else {
                 ScrollView(.vertical, showsIndicators: true) {
                     EmojiGridView(emojis: mappingViewModel.currentEmojis, selectedEmoji: $mappingViewModel.selectedEmoji)
@@ -132,11 +165,25 @@ struct MappingContentView: View {
                 mappingViewModel.selection = newValue
             }
         }
+        .onKeyPress(phases: .down) { keyPress in
+            if keyPress.key == KeyEquivalent("v") && keyPress.modifiers.contains(.command) {
+                // Only handle paste in image views
+                if case .imageTags? = mappingViewModel.selection {
+                    imageTagVM.pasteImageFromPasteboard()
+                    return .handled
+                } else if case .imageFavorites? = mappingViewModel.selection {
+                    imageTagVM.pasteImageFromPasteboard()
+                    return .handled
+                }
+            }
+            return .ignored
+        }
         
 
     }
 }
 
+// Image tagging views moved to ImageListView.swift and ImageEditorView.swift
 
 private struct EnclosingScrollViewFinder: NSViewRepresentable {
     let onFound: (NSScrollView) -> Void

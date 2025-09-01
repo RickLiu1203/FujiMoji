@@ -89,11 +89,23 @@ class PopupViewModel: ObservableObject {
         } else {
             favoriteEmojis = []
         }
+
+        let customTagsLower: Set<String>
         if let savedTags = UserDefaults.standard.array(forKey: "favoriteCustomTags") as? [String] {
-            favoriteCustomTags = Set(savedTags.map { $0.lowercased() })
+            customTagsLower = Set(savedTags.map { $0.lowercased() })
         } else {
-            favoriteCustomTags = []
+            customTagsLower = []
         }
+
+        let imageTagsLower: Set<String>
+        if let savedImageTags = UserDefaults.standard.array(forKey: "favoriteImageTags") as? [String] {
+            imageTagsLower = Set(savedImageTags.map { $0.lowercased() })
+        } else {
+            imageTagsLower = []
+        }
+
+        // Combine favorites from both custom text and image tags so popup sorts/stars them identically
+        favoriteCustomTags = customTagsLower.union(imageTagsLower)
     }
     
     func updateMatches(for current: String) {
@@ -171,9 +183,15 @@ class PopupViewModel: ObservableObject {
     }
 
     func performCustomSelection(tag: String) {
-        let replacement = CustomStorage.shared.getText(forTag: tag) ?? ""
-        guard !replacement.isEmpty else { return }
-        KeyDetection.shared.finishCaptureWithDirectReplacement(replacement, endWithSpace: false)
+        let lower = tag.lowercased()
+        if let text = CustomStorage.shared.getText(forTag: lower), !text.isEmpty {
+            KeyDetection.shared.finishCaptureWithDirectReplacement(text, endWithSpace: false)
+            return
+        }
+        if let _ = CustomStorage.shared.getImageURL(forTag: lower) {
+            KeyDetection.shared.finishCaptureWithImageTag(lower)
+            return
+        }
     }
     
     func findFirstExactMatchIndex(for input: String) -> Int {

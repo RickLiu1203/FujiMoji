@@ -51,6 +51,8 @@ enum MappingSidebarItem: Identifiable, Hashable {
     case customMappings
     case customFavorites
     case favorites
+    case imageTags
+    case imageFavorites
 
     var id: String {
         switch self {
@@ -58,6 +60,8 @@ enum MappingSidebarItem: Identifiable, Hashable {
         case .customMappings: return "custom"
         case .customFavorites: return "custom-favorites"
         case .favorites: return "favorites"
+        case .imageTags: return "image-tags"
+        case .imageFavorites: return "image-favorites"
         }
     }
 }
@@ -79,13 +83,19 @@ struct SideBarView: View {
                 Label("Custom Text", systemImage: "slider.horizontal.3")
                     .tag(MappingSidebarItem.customMappings)
                     .font(.system(size: 14, weight: .medium))
+                Label("Custom Media", systemImage: "photo")
+                    .tag(MappingSidebarItem.imageTags)
+                    .font(.system(size: 14, weight: .medium))
             }
             Section("Favourites") {
-                Label("Favourite Emojis", systemImage: "star.circle")
+                Label("Emojis", systemImage: "star.circle")
                     .tag(MappingSidebarItem.favorites)
                     .font(.system(size: 14, weight: .medium))
-                Label("Favourite Texts", systemImage: "text.badge.star")
+                Label("Texts", systemImage: "text.badge.star")
                     .tag(MappingSidebarItem.customFavorites)
+                    .font(.system(size: 14, weight: .medium))
+                Label("Media", systemImage: "star.square.on.square")
+                    .tag(MappingSidebarItem.imageFavorites)
                     .font(.system(size: 14, weight: .medium))
             }
         }

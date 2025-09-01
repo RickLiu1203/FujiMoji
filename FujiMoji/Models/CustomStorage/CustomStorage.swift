@@ -14,9 +14,15 @@ final class CustomStorage {
     private let trie = CustomTrie()
 
     private let fileManager = FileManager.default
+    private let imageMarker = "__IMAGE__"
 
     private var documentsDirectory: URL {
         fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    }
+    private var appSupportDirectory: URL {
+        let base = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let bundleId = Bundle.main.bundleIdentifier ?? "FujiMoji"
+        return base.appendingPathComponent(bundleId, isDirectory: true)
     }
 
     private var userCustomURL: URL {
@@ -26,8 +32,16 @@ final class CustomStorage {
         documentsDirectory.appendingPathComponent("user_custom_order.json")
     }
 
+    // Image tags persistence
+    private var imageTagsDBURL: URL { appSupportDirectory.appendingPathComponent("user_image_tags.json") }
+    private var imageTagsOrderURL: URL { appSupportDirectory.appendingPathComponent("user_image_tags_order.json") }
+    private var imageMediaDir: URL { appSupportDirectory.appendingPathComponent("user_image_tags_media", isDirectory: true) }
+    private var imageTagMap: [String: String] = [:] // lowercased tag -> filename
+    private var imageTagOrder: [String] = [] // insertion order (lowercased tags)
+
     private init() {
         loadFromDisk()
+        loadImageTagsFromDisk()
     }
 
     private func loadFromDisk() {
@@ -53,6 +67,29 @@ final class CustomStorage {
         trie.rebuild(from: map.getAllMappings())
     }
 
+    private func loadImageTagsFromDisk() {
+        try? fileManager.createDirectory(at: appSupportDirectory, withIntermediateDirectories: true)
+        if let data = try? Data(contentsOf: imageTagsDBURL),
+           let dict = try? JSONDecoder().decode([String: String].self, from: data) {
+            imageTagMap = dict
+        }
+        if let orderData = try? Data(contentsOf: imageTagsOrderURL),
+           let savedOrder = try? JSONDecoder().decode([String].self, from: orderData) {
+            let setKeys = Set(imageTagMap.keys)
+            imageTagOrder = savedOrder.filter { setKeys.contains($0) }
+            // append any missing keys at the end
+            for key in imageTagMap.keys where !imageTagOrder.contains(key) {
+                imageTagOrder.append(key)
+            }
+        } else {
+            imageTagOrder = Array(imageTagMap.keys)
+        }
+        // Ensure image tags are present in trie for prefix lookup
+        for key in imageTagMap.keys {
+            trie.insert(tag: key, text: imageMarker)
+        }
+    }
+
     private func saveToDisk() {
         do {
             let encoder = JSONEncoder()
@@ -64,6 +101,18 @@ final class CustomStorage {
             try orderData.write(to: userCustomOrderURL)
         } catch {
             print("Error saving custom mappings: \(error)")
+        }
+    }
+
+    private func saveImageTagsToDisk() {
+        do {
+            try fileManager.createDirectory(at: appSupportDirectory, withIntermediateDirectories: true)
+            let data = try JSONEncoder().encode(imageTagMap)
+            try data.write(to: imageTagsDBURL)
+            let orderData = try JSONEncoder().encode(imageTagOrder)
+            try orderData.write(to: imageTagsOrderURL)
+        } catch {
+            print("Error saving image tag db: \(error)")
         }
     }
 
@@ -85,12 +134,18 @@ final class CustomStorage {
         if let text = map.get(forTag: normalizedTag) {
             trie.remove(tag: normalizedTag, text: text)
         }
+        // If an image tag existed, remove its trie entry as well
+        if imageTagMap[normalizedTag.lowercased()] != nil {
+            trie.remove(tag: normalizedTag, text: imageMarker)
+        }
         map.remove(tag: normalizedTag)
         saveToDisk()
     }
 
     func getText(forTag tag: String) -> String? {
-        return trie.find(tag: tag)
+        let found = trie.find(tag: tag)
+        if found == imageMarker { return nil }
+        return found
     }
 
     func getAllMappings() -> [String: String] {
@@ -108,6 +163,88 @@ final class CustomStorage {
 
     func collectTags(withPrefix prefix: String, limit: Int = 25) -> [String] {
         return trie.collectTags(withPrefix: prefix, limit: limit)
+    }
+
+    // MARK: - Image Tag APIs
+    func setImage(data: Data, fileExtension: String, forTag tag: String) {
+        let normalizedTag = tag.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !normalizedTag.isEmpty else { return }
+        do {
+            try fileManager.createDirectory(at: imageMediaDir, withIntermediateDirectories: true)
+            // Remove previous file if exists
+            if let prev = imageTagMap[normalizedTag] {
+                let prevURL = imageMediaDir.appendingPathComponent(prev)
+                try? fileManager.removeItem(at: prevURL)
+            }
+            let filename = "\(UUID().uuidString).\(fileExtension)"
+            let url = imageMediaDir.appendingPathComponent(filename)
+            try data.write(to: url)
+            imageTagMap[normalizedTag] = filename
+            if !imageTagOrder.contains(normalizedTag) { imageTagOrder.append(normalizedTag) }
+            // Ensure trie has this tag for prefix lookup
+            trie.remove(tag: normalizedTag, text: imageMarker)
+            trie.insert(tag: normalizedTag, text: imageMarker)
+            saveImageTagsToDisk()
+        } catch {
+            print("Error saving image for tag: \(error)")
+        }
+    }
+
+    func removeImage(tag: String) {
+        let key = tag.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if let filename = imageTagMap[key] {
+            let url = imageMediaDir.appendingPathComponent(filename)
+            try? fileManager.removeItem(at: url)
+        }
+        imageTagMap.removeValue(forKey: key)
+        if let idx = imageTagOrder.firstIndex(of: key) { imageTagOrder.remove(at: idx) }
+        trie.remove(tag: key, text: imageMarker)
+        saveImageTagsToDisk()
+    }
+
+    func getImageURL(forTag tag: String) -> URL? {
+        let key = tag.lowercased()
+        guard let filename = imageTagMap[key] else { return nil }
+        return imageMediaDir.appendingPathComponent(filename)
+    }
+
+    func getAllImageTagsNewestFirst() -> [(tag: String, url: URL)] {
+        let ordered = imageTagOrder.reversed()
+        var result: [(tag: String, url: URL)] = []
+        result.reserveCapacity(ordered.count)
+        for key in ordered {
+            if let filename = imageTagMap[key] {
+                result.append((tag: key, url: imageMediaDir.appendingPathComponent(filename)))
+            }
+        }
+        return result
+    }
+
+    func renameImageTag(oldTag: String, newTag: String) {
+        let oldKey = oldTag.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let newKey = newTag.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !oldKey.isEmpty, !newKey.isEmpty, oldKey != newKey else { return }
+        guard let filename = imageTagMap[oldKey] else { return }
+
+        // If destination exists, remove it (keep file from old)
+        if let existing = imageTagMap[newKey] {
+            let existingURL = imageMediaDir.appendingPathComponent(existing)
+            try? fileManager.removeItem(at: existingURL)
+            imageTagMap.removeValue(forKey: newKey)
+            trie.remove(tag: newKey, text: imageMarker)
+            if let idx = imageTagOrder.firstIndex(of: newKey) {
+                imageTagOrder.remove(at: idx)
+            }
+        }
+
+        imageTagMap[newKey] = filename
+        imageTagMap.removeValue(forKey: oldKey)
+        if let idx = imageTagOrder.firstIndex(of: oldKey) {
+            imageTagOrder[idx] = newKey
+        }
+        trie.remove(tag: oldKey, text: imageMarker)
+        trie.insert(tag: newKey, text: imageMarker)
+        saveImageTagsToDisk()
     }
 }
 
