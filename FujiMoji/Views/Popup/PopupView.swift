@@ -210,7 +210,7 @@ final class DetectedTextWindowController: NSWindowController {
         self.hostingController = hosting
 
         let panel = NSPanel(
-            contentRect: NSRect(x: 0, y: 0, width: popupWidth, height: detectedTextWindowHeight), // Base height: 40 + 32 padding
+            contentRect: NSRect(x: 0, y: 0, width: popupWidth, height: detectedTextWindowHeight),
             styleMask: [.nonactivatingPanel, .fullSizeContentView],
             backing: .buffered,
             defer: false
@@ -282,7 +282,7 @@ final class DetectedTextWindowController: NSWindowController {
         let contentSize = window.contentView?.fittingSize ?? NSSize(width: popupWidth, height: detectedTextWindowHeight)
         let screenFrame = screen.visibleFrame
         let x = screenFrame.midX - popupWidth / 2
-        let y = screenFrame.minY + screenBottomMargin // Fixed bottom position
+        let y = screenFrame.minY + screenBottomMargin
         
         return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)
     }
@@ -432,7 +432,6 @@ final class PredictionResultsWindowController: NSWindowController {
         let contentSize = window.contentView?.fittingSize ?? NSSize(width: popupWidth, height: predictionResultsDefaultHeight)
         let screenFrame = screen.visibleFrame
         let x = screenFrame.midX - popupWidth / 2
-        // place just below the detected text when detected text is anchored at top
         let yOffset: CGFloat = 28
         let y = screenFrame.maxY - detectedTextWindowHeight - contentSize.height - screenTopMargin + yOffset
         return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)

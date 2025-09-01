@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct PredictionResultsView<T: Hashable>: View {
     let title: String
@@ -89,10 +90,22 @@ struct TagPill: View {
     }
     
     var body: some View {
-        Text(text)
-            .font(.system(size: 14, weight: .medium))
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
+        HStack(spacing: 6) {
+            if let imageURL = CustomStorage.shared.getImageURL(forTag: text),
+               let nsImage = NSImage(contentsOf: imageURL) {
+                Image(nsImage: nsImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 16, height: 16)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                    .padding(.trailing, 2)
+            }
+            
+            Text(text)
+                .font(.system(size: 14, weight: .medium))
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(isHighlighted ? .accentColor.opacity(0.2) : isHovering ? Color.primary.opacity(0.12) : Color.primary.opacity(0.08))

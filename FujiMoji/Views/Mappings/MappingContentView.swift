@@ -147,7 +147,6 @@ struct MappingContentView: View {
             sidebarSelection = mappingViewModel.selection
         }
         .onChange(of: mappingViewModel.selection) { _, newValue in
-            // keep sidebar selection in sync when selection changes programmatically
             if sidebarSelection != newValue { sidebarSelection = newValue }
             if case let .emojiCategory(category) = newValue, let row = categoryRowAnchors[category] {
                 if nsScrollView != nil {
@@ -165,15 +164,20 @@ struct MappingContentView: View {
                 mappingViewModel.selection = newValue
             }
         }
+        .focusable()
+        .focusEffectDisabled()
         .onKeyPress(phases: .down) { keyPress in
-            if keyPress.key == KeyEquivalent("v") && keyPress.modifiers.contains(.command) {
-                // Only handle paste in image views
-                if case .imageTags? = mappingViewModel.selection {
-                    imageTagVM.pasteImageFromPasteboard()
+            let isV = keyPress.key == KeyEquivalent("v")
+            let hasCommand = keyPress.modifiers.contains(.command)
+            let hasControl = keyPress.modifiers.contains(.control)
+            
+            if isV && (hasCommand || hasControl) {
+                switch mappingViewModel.selection {
+                case .imageTags, .imageFavorites:
+                    DispatchQueue.main.async { imageTagVM.pasteImageFromPasteboard() }
                     return .handled
-                } else if case .imageFavorites? = mappingViewModel.selection {
-                    imageTagVM.pasteImageFromPasteboard()
-                    return .handled
+                default:
+                    break
                 }
             }
             return .ignored
@@ -182,8 +186,6 @@ struct MappingContentView: View {
 
     }
 }
-
-// Image tagging views moved to ImageListView.swift and ImageEditorView.swift
 
 private struct EnclosingScrollViewFinder: NSViewRepresentable {
     let onFound: (NSScrollView) -> Void

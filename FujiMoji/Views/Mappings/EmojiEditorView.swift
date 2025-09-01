@@ -58,7 +58,7 @@ struct EmojiEditorView: View {
                         .padding(.top, 8)
                     Spacer()
                     VStack(alignment: .leading, spacing: 12) {
-                        Text("Comma Separated Keywords")
+                        Text("Comma Separated Tags")
                             .font(.system(size: 14))
                             .foregroundColor(.secondary)
                             .padding(.leading, 2)

@@ -108,7 +108,7 @@ final class ImageTagMappingsViewModel: ObservableObject {
             return
         }
         guard data.count <= maxFileSizeBytes else {
-            errorMessage = "File too large (\(formatBytes(data.count))). Max 10 MB."
+            errorMessage = "File too large (\(formatBytes(data.count))) Max 10 MB"
             return
         }
         selectedImageData = data
@@ -134,7 +134,6 @@ final class ImageTagMappingsViewModel: ObservableObject {
             selectedTag = tag
             currentTagInput = ""
             errorMessage = nil
-            // Clear transient in-memory image so UI loads from disk for current selection
             selectedImage = nil
             selectedImageData = nil
             selectedImageFileExtension = nil
@@ -195,7 +194,6 @@ final class ImageTagMappingsViewModel: ObservableObject {
         guard !newTag.isEmpty else { return }
         if let old = selectedTag {
             if old.lowercased() != newTag.lowercased() {
-                // If a tag is renamed and it was favorited, carry the favorite to the new key
                 let wasFavorite = favoriteImageTags.contains(old.lowercased())
                 CustomStorage.shared.renameImageTag(oldTag: old, newTag: newTag)
                 if wasFavorite {
@@ -230,7 +228,6 @@ final class ImageTagMappingsViewModel: ObservableObject {
             favoriteImageTags.insert(key)
         }
         saveFavorites()
-        objectWillChange.send()
     }
 }
 

@@ -45,7 +45,9 @@ struct ImageTagEditorView: View {
                 }
                 .onKeyPress(phases: .down) { keyPress in
                     if keyPress.key == .return {
-                        vm.submitIfPossible()
+                        DispatchQueue.main.async {
+                            vm.submitIfPossible()
+                        }
                         tagFocused = false
                         return .handled
                     }
@@ -57,12 +59,19 @@ struct ImageTagEditorView: View {
                 tagInput = vm.selectedTag ?? vm.currentTagInput
             }
             .onChange(of: tagInput) { _, newVal in
-                vm.currentTagInput = newVal
+                DispatchQueue.main.async {
+                    vm.currentTagInput = newVal
+                }
             }
             .onChange(of: vm.selectedTag) { _, newVal in
                 if let sel = newVal { tagInput = sel }
             }
-            .onTapGesture { tagFocused = false; vm.submitIfPossible() }
+            .onTapGesture { 
+                tagFocused = false
+                DispatchQueue.main.async {
+                    vm.submitIfPossible()
+                }
+            }
 
             ZStack {
                 RoundedRectangle(cornerRadius: 10).fill(Color.gray.opacity(0.1)).frame(width: 220, height: 200)
@@ -89,7 +98,10 @@ struct ImageTagEditorView: View {
 
             VStack(alignment: .leading, spacing: 12) {
                 Button {
-                    vm.chooseImageFromDisk()
+                    // Defer to next runloop to avoid publishing during view update
+                    DispatchQueue.main.async {
+                        vm.chooseImageFromDisk()
+                    }
                 } label: {
                     HStack(alignment: .center, spacing: 6) {
                         Text("Upload Media")
@@ -111,11 +123,15 @@ struct ImageTagEditorView: View {
                 .buttonStyle(.plain)
 
                 Button {
-                    vm.pasteImageFromPasteboard()
+                    // Defer to next runloop to avoid publishing during view update
+                    DispatchQueue.main.async {
+                        vm.pasteImageFromPasteboard()
+                    }
                 } label: {
                     HStack(alignment: .center, spacing: 6) {
                         Text("Paste Media")
-                        Image(systemName: "document.on.clipboard")
+                        Text("⌘V")
+                            .foregroundColor(.secondary)
                     }
                         .font(.system(size: 13))
                         .padding(.horizontal, 10)
@@ -135,7 +151,7 @@ struct ImageTagEditorView: View {
             .frame(width: 220, alignment: .leading)
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Allowed Files: PNG, JPEG, GIF, HEIC, HEIF, TIFF, BMP, WebP")
+                Text("Accepted Formats: PNG, JPEG, GIF, HEIC, HEIF, TIFF, BMP, WebP")
                 if let err = vm.errorMessage {
                   Text(err).foregroundStyle(.red.opacity(0.9))
                 } else {
@@ -144,7 +160,7 @@ struct ImageTagEditorView: View {
             }
             .foregroundStyle(.secondary)
             .font(.system(size: 12, weight: .medium))
-            .frame(width: 220)
+            .frame(width: 220, alignment: .leading)
 
                 Spacer()
                 }
@@ -154,7 +170,11 @@ struct ImageTagEditorView: View {
         .contentShape(Rectangle())
         .onTapGesture { tagFocused = false }
         .onChange(of: tagFocused) { _, isFocused in
-            if !isFocused { vm.submitIfPossible() }
+            if !isFocused { 
+                DispatchQueue.main.async {
+                    vm.submitIfPossible()
+                }
+            }
         }
     }
 }

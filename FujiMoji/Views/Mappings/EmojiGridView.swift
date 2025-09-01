@@ -43,7 +43,7 @@ struct EmojiCell: View {
 struct EmojiGridView: View {
     let emojis: [String]
     @Binding var selectedEmoji: String?
-    let columns = Array(repeating: GridItem(.fixed(40), spacing: 12), count: 7)
+    let columns = Array(repeating: GridItem(.fixed(48), spacing: 2), count: 7)
     @ObservedObject private var fujiMojiState = FujiMojiState.shared
     
     var body: some View {
@@ -66,6 +66,5 @@ struct EmojiGridView: View {
             }
         }
         .frame(alignment: .center)
-        .padding(.leading, 16)
     }
 }

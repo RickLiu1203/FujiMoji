@@ -147,7 +147,6 @@ final class CustomMappingsViewModel: ObservableObject {
             favoriteTags.insert(key)
         }
         saveFavorites()
-        objectWillChange.send()
     }
 
 
@@ -159,8 +158,8 @@ final class CustomMappingsViewModel: ObservableObject {
             index += 1
             candidate = "\(base)_\(index)"
         }
-        CustomStorage.shared.set(text: "custom string", forTag: candidate)
-        let newItem = (tag: candidate, text: "custom string")
+        CustomStorage.shared.set(text: "custom text", forTag: candidate)
+        let newItem = (tag: candidate, text: "custom text")
         items.removeAll { $0.tag.lowercased() == candidate.lowercased() }
         items.insert(newItem, at: 0)
         selectedTag = candidate

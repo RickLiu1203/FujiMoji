@@ -146,10 +146,10 @@ struct CustomListView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     LazyVStack(spacing: 4) {
-                        ForEach((showOnlyFavorites ? vm.items.filter { vm.favoriteTags.contains($0.tag.lowercased()) } : vm.items), id: \.tag) { pair in
+                        ForEach((showOnlyFavorites ? vm.items.filter { vm.favoriteTags.contains($0.tag) } : vm.items), id: \.tag) { pair in
                             CustomRowView(
                                 item: CustomItem(tag: pair.tag, value: pair.text),
-                                isSelected: vm.selectedTag?.lowercased() == pair.tag.lowercased(),
+                                isSelected: (vm.selectedTag?.caseInsensitiveCompare(pair.tag) == .orderedSame),
                                 tagWidth: tagWidth,
                                 onDelete: { tag in
                                     withAnimation {
@@ -157,11 +157,9 @@ struct CustomListView: View {
                                     }
                                 },
                                 onToggleFavorite: { tag in
-                                    withAnimation {
-                                        vm.toggleFavorite(tag: tag)
-                                    }
+                                    vm.toggleFavorite(tag: tag)
                                 },
-                                isFavorite: vm.favoriteTags.contains(pair.tag.lowercased())
+                                isFavorite: vm.favoriteTags.contains(pair.tag)
                             )
                             .contentShape(Rectangle())
                             .onTapGesture {

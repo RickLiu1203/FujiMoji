@@ -22,7 +22,7 @@ struct MenuSecondSectionView: View {
                     
                     Spacer()
                     
-                    Text("⌘M")
+                    Text("⌘E")
                         .foregroundColor(.secondary)
                 }
                 .padding(.vertical, 4)
@@ -30,7 +30,7 @@ struct MenuSecondSectionView: View {
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }
-            .keyboardShortcut("m")
+            .keyboardShortcut("E")
             .buttonStyle(MenuHoverButtonStyle())
             .frame(maxWidth: .infinity)
             
@@ -52,6 +52,27 @@ struct MenuSecondSectionView: View {
                 .contentShape(Rectangle())
             }
             .keyboardShortcut("t")
+            .buttonStyle(MenuHoverButtonStyle())
+            .frame(maxWidth: .infinity)
+            
+            Button(action: {
+                dismiss()
+                openMappingsWindow(initialSelection: .imageTags)
+            }) {
+                HStack {
+                    Text("Set Custom Media")
+                    
+                    Spacer()
+                    
+                    Text("⌘M")
+                        .foregroundColor(.secondary)
+                }
+                .padding(.vertical, 4)
+                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+            }
+            .keyboardShortcut("m")
             .buttonStyle(MenuHoverButtonStyle())
             .frame(maxWidth: .infinity)
         }

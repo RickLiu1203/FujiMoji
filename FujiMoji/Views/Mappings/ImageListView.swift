@@ -109,7 +109,7 @@ struct ImageTagListView: View {
             Divider()
 
             ScrollView {
-                if (showOnlyFavorites && vm.items.filter { vm.favoriteImageTags.contains($0.tag.lowercased()) }.isEmpty) {
+                if (showOnlyFavorites && vm.items.filter { vm.favoriteImageTags.contains($0.tag) }.isEmpty) {
                     VStack(spacing: 8) {
                         Text("No Favourite Media Yet!")
                             .font(.system(size: 14, weight: .medium))
@@ -129,16 +129,16 @@ struct ImageTagListView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                 } else {
                     LazyVStack(spacing: 4) {
-                        ForEach((showOnlyFavorites ? vm.items.filter { vm.favoriteImageTags.contains($0.tag.lowercased()) } : vm.items), id: \.tag) { pair in
+                        ForEach((showOnlyFavorites ? vm.items.filter { vm.favoriteImageTags.contains($0.tag) } : vm.items), id: \.tag) { pair in
                             RowView(
                                 tag: pair.tag,
-                                isSelected: vm.selectedTag?.lowercased() == pair.tag.lowercased(),
-                                isFavorite: vm.favoriteImageTags.contains(pair.tag.lowercased()),
+                                isSelected: (vm.selectedTag?.caseInsensitiveCompare(pair.tag) == .orderedSame),
+                                isFavorite: vm.favoriteImageTags.contains(pair.tag),
                                 onDelete: { tag in
                                     withAnimation(.easeInOut(duration: 0.2)) { vm.delete(tag: tag) }
                                 },
                                 onToggleFavorite: { tag in
-                                    withAnimation(.easeInOut(duration: 0.2)) { vm.toggleFavorite(tag: tag) }
+                                    vm.toggleFavorite(tag: tag)
                                 }
                             )
                             .contentShape(Rectangle())
@@ -155,8 +155,7 @@ struct ImageTagListView: View {
                     }
                 }
             }
-            .onAppear { vm.reload() }
-            .animation(.easeInOut(duration: 0.2), value: vm.items.map { $0.tag })
+            .onAppear { DispatchQueue.main.async { vm.reload() } }
         }
         .padding(.leading, 16)
         .padding(.trailing, vm.items.count < 10 ? 8 : 4)

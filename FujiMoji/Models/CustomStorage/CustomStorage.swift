@@ -32,12 +32,11 @@ final class CustomStorage {
         documentsDirectory.appendingPathComponent("user_custom_order.json")
     }
 
-    // Image tags persistence
     private var imageTagsDBURL: URL { appSupportDirectory.appendingPathComponent("user_image_tags.json") }
     private var imageTagsOrderURL: URL { appSupportDirectory.appendingPathComponent("user_image_tags_order.json") }
     private var imageMediaDir: URL { appSupportDirectory.appendingPathComponent("user_image_tags_media", isDirectory: true) }
-    private var imageTagMap: [String: String] = [:] // lowercased tag -> filename
-    private var imageTagOrder: [String] = [] // insertion order (lowercased tags)
+    private var imageTagMap: [String: String] = [:] 
+    private var imageTagOrder: [String] = []
 
     private init() {
         loadFromDisk()
@@ -77,14 +76,12 @@ final class CustomStorage {
            let savedOrder = try? JSONDecoder().decode([String].self, from: orderData) {
             let setKeys = Set(imageTagMap.keys)
             imageTagOrder = savedOrder.filter { setKeys.contains($0) }
-            // append any missing keys at the end
             for key in imageTagMap.keys where !imageTagOrder.contains(key) {
                 imageTagOrder.append(key)
             }
         } else {
             imageTagOrder = Array(imageTagMap.keys)
         }
-        // Ensure image tags are present in trie for prefix lookup
         for key in imageTagMap.keys {
             trie.insert(tag: key, text: imageMarker)
         }
@@ -134,7 +131,6 @@ final class CustomStorage {
         if let text = map.get(forTag: normalizedTag) {
             trie.remove(tag: normalizedTag, text: text)
         }
-        // If an image tag existed, remove its trie entry as well
         if imageTagMap[normalizedTag.lowercased()] != nil {
             trie.remove(tag: normalizedTag, text: imageMarker)
         }
@@ -165,13 +161,11 @@ final class CustomStorage {
         return trie.collectTags(withPrefix: prefix, limit: limit)
     }
 
-    // MARK: - Image Tag APIs
     func setImage(data: Data, fileExtension: String, forTag tag: String) {
         let normalizedTag = tag.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard !normalizedTag.isEmpty else { return }
         do {
             try fileManager.createDirectory(at: imageMediaDir, withIntermediateDirectories: true)
-            // Remove previous file if exists
             if let prev = imageTagMap[normalizedTag] {
                 let prevURL = imageMediaDir.appendingPathComponent(prev)
                 try? fileManager.removeItem(at: prevURL)
@@ -181,7 +175,6 @@ final class CustomStorage {
             try data.write(to: url)
             imageTagMap[normalizedTag] = filename
             if !imageTagOrder.contains(normalizedTag) { imageTagOrder.append(normalizedTag) }
-            // Ensure trie has this tag for prefix lookup
             trie.remove(tag: normalizedTag, text: imageMarker)
             trie.insert(tag: normalizedTag, text: imageMarker)
             saveImageTagsToDisk()
@@ -226,7 +219,6 @@ final class CustomStorage {
         guard !oldKey.isEmpty, !newKey.isEmpty, oldKey != newKey else { return }
         guard let filename = imageTagMap[oldKey] else { return }
 
-        // If destination exists, remove it (keep file from old)
         if let existing = imageTagMap[newKey] {
             let existingURL = imageMediaDir.appendingPathComponent(existing)
             try? fileManager.removeItem(at: existingURL)
