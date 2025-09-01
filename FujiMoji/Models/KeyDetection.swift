@@ -36,6 +36,7 @@ class KeyDetection: ObservableObject {
     private var digitsCountBeforeStart: Int = 0
     private var lastDigitTypedAt: Date?
     private let digitValidityWindow: TimeInterval = 2.0
+    private var lastNonCaptureCharWasDigitOrSpace: Bool = true
 
     
     private init() {
@@ -290,6 +291,11 @@ class KeyDetection: ObservableObject {
                     self.currentString += character
                 }
             } else {
+                guard lastNonCaptureCharWasDigitOrSpace else {
+                    preDelimiterDigits = ""
+                    lastDigitTypedAt = nil
+                    return
+                }
                 let withinWindow: Bool
                 if let last = lastDigitTypedAt {
                     withinWindow = Date().timeIntervalSince(last) <= digitValidityWindow
@@ -318,9 +324,11 @@ class KeyDetection: ObservableObject {
                     preDelimiterDigits = String(preDelimiterDigits.suffix(9))
                 }
                 lastDigitTypedAt = Date()
+                lastNonCaptureCharWasDigitOrSpace = true
             } else {
                 preDelimiterDigits = ""
                 lastDigitTypedAt = nil
+                lastNonCaptureCharWasDigitOrSpace = (character == " ")
             }
         }
     }
@@ -340,6 +348,7 @@ class KeyDetection: ObservableObject {
             if !preDelimiterDigits.isEmpty {
                 preDelimiterDigits.removeLast()
             }
+            lastNonCaptureCharWasDigitOrSpace = true
         }
     }
     
@@ -398,7 +407,6 @@ class KeyDetection: ObservableObject {
         stopCapture()
     }
 
-    // Image tag replacement that preserves correct deletion semantics
     func finishCaptureWithImageTag(_ tag: String) {
         let capturedString = currentString
 
@@ -430,6 +438,7 @@ class KeyDetection: ObservableObject {
             self.currentString = ""
             self.multiplier = 1
             self.digitsCountBeforeStart = 0
+            self.lastNonCaptureCharWasDigitOrSpace = true
         }
     }
     

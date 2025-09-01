@@ -75,13 +75,11 @@ class FujiMojiState: ObservableObject {
                 self.needsInputMonitoring = true
             }
         }
-        // If Accessibility is trusted, do not clear the flag here.
-        // We'll clear it only after successfully starting the event tap.
     }
 
     func openInputMonitoringSettings() {
         let urls: [String] = [
-            "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent", // legacy anchor name
+            "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent", 
             "x-apple.systempreferences:com.apple.preference.security?Privacy_InputMonitoring",
             "x-apple.systempreferences:com.apple.preference.security"
         ]
