@@ -111,6 +111,9 @@ class KeyDetection: ObservableObject {
                         }
                         return nil
                     } else {
+                        DispatchQueue.main.async {
+                            KeyDetection.shared.lastNonCaptureCharWasDigitOrSpace = true
+                        }
                         return Unmanaged.passUnretained(event)
                     }
                 } else if keyCode == 36 { // Enter key
@@ -125,6 +128,9 @@ class KeyDetection: ObservableObject {
                         }
                         return nil
                     } else {
+                        DispatchQueue.main.async {
+                            KeyDetection.shared.lastNonCaptureCharWasDigitOrSpace = true
+                        }
                         return Unmanaged.passUnretained(event)
                     }
                 } else if keyCode == 53 { // Escape key
@@ -132,6 +138,9 @@ class KeyDetection: ObservableObject {
                         KeyDetection.shared.cancelCapture()
                         return nil
                     } else {
+                        DispatchQueue.main.async {
+                            KeyDetection.shared.lastNonCaptureCharWasDigitOrSpace = true
+                        }
                         return Unmanaged.passUnretained(event)
                     }
                 } else {

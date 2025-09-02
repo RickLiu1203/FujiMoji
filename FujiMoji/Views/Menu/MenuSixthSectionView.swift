@@ -17,19 +17,19 @@ struct MenuSixthSectionView: View {
                 openURL(url)
             }){
                 HStack {
-                    Text("How to Use  ↗")
+                    Text("GitHub  ↗")
                         .padding(.vertical, 4)
 
                     Spacer()
 
-                    Text("⌘H")
+                    Text("⌘G")
                         .foregroundColor(.secondary)
                 }
                 .padding(.horizontal, 16)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }
-            .keyboardShortcut("h")
+            .keyboardShortcut("G")
             .buttonStyle(MenuHoverButtonStyle())
             .frame(maxWidth: .infinity)
         }

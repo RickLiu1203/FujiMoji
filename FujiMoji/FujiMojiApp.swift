@@ -11,6 +11,7 @@ import AppKit
 final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+        NSApp.appearance = NSAppearance(named: .darkAqua)
         _ = DetectedTextWindowController.shared
         _ = PredictionResultsWindowController.shared
     }

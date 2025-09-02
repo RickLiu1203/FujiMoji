@@ -39,7 +39,7 @@ struct MenuFirstSectionView: View {
                     }
                     .font(.system(size: 12, weight: .medium))
                 }
-                .padding(12)
+                .padding(8)
                 .background(
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
                         .fill(Color.yellow.opacity(0.15))
