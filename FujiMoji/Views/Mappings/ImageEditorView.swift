@@ -105,9 +105,10 @@ struct ImageTagEditorView: View {
                 } label: {
                     HStack(alignment: .center, spacing: 6) {
                         Text("Upload Media")
+                            .foregroundColor(.primary)
                         Image(systemName: "folder")
                     }
-                        .font(.system(size: 13))
+                        .font(.system(size: 13, weight: .medium))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
                         .background(
@@ -130,10 +131,11 @@ struct ImageTagEditorView: View {
                 } label: {
                     HStack(alignment: .center, spacing: 6) {
                         Text("Paste Media")
+                            .foregroundColor(.primary)
                         Text("⌘V")
                             .foregroundColor(.secondary)
                     }
-                        .font(.system(size: 13))
+                        .font(.system(size: 13, weight: .medium))
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
                         .background(
