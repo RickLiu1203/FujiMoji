@@ -142,7 +142,8 @@ struct MappingContentView: View {
             }
         }
         .frame(width: 900, height: 500)
-        .background(.ultraThinMaterial)
+        .background(.thinMaterial)
+        .preferredColorScheme(.dark)
         .onAppear {
             sidebarSelection = mappingViewModel.selection
         }
