@@ -17,6 +17,7 @@ Type any emoji, text snippet, or media by name from anywhere on your Mac. FujiMo
 - **Privacy-first**: Runs fully locally. Requires macOS Input Monitoring to observe keystrokes.
 
 ### 🖱️ How It Works
+- Configure and customize everything in the menu bar!
 - Start typing in any app. Enter your chosen start key, the tag, then your end key (or tab/enter).
   - Example: `/pizza/`, `2/fire/`, `/smile/`
 - After 2+ characters, a suggestion popup appears. Navigate with arrow keys, confirm with Tab or Enter, or finish by typing your end key. Esc and Space cancels.
