@@ -267,22 +267,6 @@ class KeyDetection: ObservableObject {
                     }
                     return
                 }
-
-                let isPopupVisible = (DetectedTextWindowController.shared.window?.isVisible == true) || (PredictionResultsWindowController.shared.window?.isVisible == true)
-                if isPopupVisible { return }
-
-                let mousePoint = NSEvent.mouseLocation
-                let targetScreen = NSScreen.screens.first { screen in
-                    NSMouseInRect(mousePoint, screen.frame, false)
-                } ?? NSScreen.main
-                guard let screen = targetScreen else { return }
-                let visible = screen.visibleFrame
-                let quarterY = visible.minY + (visible.height * 0.3)
-                if mousePoint.y <= quarterY {
-                    FujiMojiState.shared.popupAnchor = .top
-                } else {
-                    FujiMojiState.shared.popupAnchor = .bottom
-                }
             }
         }
     }

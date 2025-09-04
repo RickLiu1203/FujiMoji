@@ -14,7 +14,7 @@ extension Notification.Name {
 }
 private let popupWidth: CGFloat = 300
 private let screenBottomMargin: CGFloat = 0
-private let screenTopMargin: CGFloat = 0
+ 
 private let detectedTextWindowHeight: CGFloat = 72
 private let predictionResultsDefaultHeight: CGFloat = 100
 private let resultsYOffset: CGFloat = -12
@@ -243,7 +243,7 @@ final class DetectedTextWindowController: NSWindowController {
                 }
                 guard let window = self.window, let screen = NSScreen.main else { return }
                 
-                let targetFrame = FujiMojiState.shared.popupAnchor == .bottom ? self.frameForBottomCenter(on: screen) : self.frameForTopCenter(on: screen)
+                let targetFrame = self.frameForBottomCenter(on: screen)
                 window.setFrame(targetFrame, display: true)
                 window.alphaValue = 1
                 window.orderFrontRegardless()
@@ -268,7 +268,7 @@ final class DetectedTextWindowController: NSWindowController {
             
             DispatchQueue.main.async {
                 guard let screen = NSScreen.main, let window = self.window else { return }
-                let frame = FujiMojiState.shared.popupAnchor == .bottom ? self.frameForBottomCenter(on: screen) : self.frameForTopCenter(on: screen)
+                let frame = self.frameForBottomCenter(on: screen)
                 window.setFrame(frame, display: true)
             }
         }
@@ -287,18 +287,7 @@ final class DetectedTextWindowController: NSWindowController {
         return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)
     }
 
-    private func frameForTopCenter(on screen: NSScreen) -> NSRect {
-        guard let window = self.window else {
-            return NSRect(x: 0, y: 0, width: popupWidth, height: detectedTextWindowHeight)
-        }
-        
-        let contentSize = window.contentView?.fittingSize ?? NSSize(width: popupWidth, height: detectedTextWindowHeight)
-        let screenFrame = screen.visibleFrame
-        let x = screenFrame.midX - popupWidth / 2
-        let y = screenFrame.maxY - contentSize.height - screenTopMargin
-        
-        return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)
-    }
+    
 
     private func setupObservers() {
         KeyDetection.shared.$isCapturing
@@ -321,14 +310,7 @@ final class DetectedTextWindowController: NSWindowController {
             }
             .store(in: &cancellables)
         
-        FujiMojiState.shared.$popupAnchor
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                guard let self = self, let window = self.window, window.isVisible, let screen = NSScreen.main else { return }
-                let frame = FujiMojiState.shared.popupAnchor == .bottom ? self.frameForBottomCenter(on: screen) : self.frameForTopCenter(on: screen)
-                window.setFrame(frame, display: true)
-            }
-            .store(in: &cancellables)
+        
     }
 }
 
@@ -392,7 +374,7 @@ final class PredictionResultsWindowController: NSWindowController {
                 }
                 guard let window = self.window, let screen = NSScreen.main else { return }
                 
-                let frame = FujiMojiState.shared.popupAnchor == .bottom ? self.frameAboveDetectedText(on: screen) : self.frameBelowTopAnchor(on: screen)
+                let frame = self.frameAboveDetectedText(on: screen)
                 window.setFrame(frame, display: true)
                 window.alphaValue = 1
                 window.orderFrontRegardless()
@@ -424,18 +406,7 @@ final class PredictionResultsWindowController: NSWindowController {
         return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)
     }
 
-    private func frameBelowTopAnchor(on screen: NSScreen) -> NSRect {
-        guard let window = self.window else {
-            return NSRect(x: 0, y: 0, width: popupWidth, height: predictionResultsDefaultHeight)
-        }
-        
-        let contentSize = window.contentView?.fittingSize ?? NSSize(width: popupWidth, height: predictionResultsDefaultHeight)
-        let screenFrame = screen.visibleFrame
-        let x = screenFrame.midX - popupWidth / 2
-        let yOffset: CGFloat = 28
-        let y = screenFrame.maxY - detectedTextWindowHeight - contentSize.height - screenTopMargin + yOffset
-        return NSRect(x: x, y: y, width: popupWidth, height: contentSize.height)
-    }
+    
 
     private func setupObservers() {
         KeyDetection.shared.$currentString
@@ -481,12 +452,7 @@ final class PredictionResultsWindowController: NSWindowController {
             }
             .store(in: &cancellables)
 
-        FujiMojiState.shared.$popupAnchor
-            .receive(on: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.updateWindowFrameIfVisible()
-            }
-            .store(in: &cancellables)
+        
     }
     
     private func handleStringChange(_ currentString: String) {
@@ -545,7 +511,7 @@ final class PredictionResultsWindowController: NSWindowController {
             
             DispatchQueue.main.async {
                 guard let window = self.window, let screen = NSScreen.main else { return }
-                let newFrame = FujiMojiState.shared.popupAnchor == .bottom ? self.frameAboveDetectedText(on: screen) : self.frameBelowTopAnchor(on: screen)
+                let newFrame = self.frameAboveDetectedText(on: screen)
                 window.setFrame(newFrame, display: true)
             }
         }
