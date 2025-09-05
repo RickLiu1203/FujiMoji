@@ -12,7 +12,7 @@ import Combine
 extension Notification.Name {
     static let resultsRenderModeChanged = Notification.Name("resultsRenderModeChanged")
 }
-private let popupWidth: CGFloat = 350
+private let popupWidth: CGFloat = 400
 private let screenBottomMargin: CGFloat = 0
  
 private let detectedTextWindowHeight: CGFloat = 72

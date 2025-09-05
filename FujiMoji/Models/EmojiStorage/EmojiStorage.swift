@@ -54,9 +54,8 @@ class EmojiStorage {
             let decoder = JSONDecoder()
             let dict = try decoder.decode([String: [String]].self, from: data)
             for (emoji, keywords) in dict {
-                let canonical = canonicalEmoji(emoji)
                 for keyword in keywords {
-                    keywordTrie.insert(keyword: keyword, emoji: canonical)
+                    keywordTrie.insert(keyword: keyword, emoji: emoji)
                 }
             }
         } catch {
