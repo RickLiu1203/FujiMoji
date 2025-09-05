@@ -12,6 +12,8 @@ class EmojiStorage {
     private let fileManager = FileManager.default
     private let emojiMap: EmojiMap
     private let searchTrie = EmojiTrie()
+    private let keywordTrie = KeywordTrie()
+    private var canonicalDefaultMap: [String: String] = [:]
     
     private var documentsDirectory: URL {
         fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -34,10 +36,53 @@ class EmojiStorage {
         emojiMap = EmojiMap(templateURL: templateURL,
                            userDataURL: userURL)
         rebuildTrie()
+        buildKeywordTrie()
+        rebuildCanonicalMap()
     }
     
     private func rebuildTrie() {
         searchTrie.rebuild(from: emojiMap.getAllMappings())
+        rebuildCanonicalMap()
+    }
+
+    private func buildKeywordTrie() {
+        guard let url = Bundle.main.url(forResource: "emoji_keywords", withExtension: "json") else {
+            return
+        }
+        do {
+            let data = try Data(contentsOf: url)
+            let decoder = JSONDecoder()
+            let dict = try decoder.decode([String: [String]].self, from: data)
+            for (emoji, keywords) in dict {
+                let canonical = canonicalEmoji(emoji)
+                for keyword in keywords {
+                    keywordTrie.insert(keyword: keyword, emoji: canonical)
+                }
+            }
+        } catch {
+            print("Error building keyword trie: \(error)")
+        }
+    }
+
+    private func canonicalEmoji(_ emoji: String) -> String {
+        let filtered = emoji.unicodeScalars.filter { scalar in
+            scalar.value != 0xFE0F && 
+            scalar.value != 0xFE0E 
+        }
+        return String(String.UnicodeScalarView(filtered))
+    }
+
+    private func rebuildCanonicalMap() {
+        var map: [String: String] = [:]
+        for record in emojiMap.getAllEmojisWithTags() {
+            let key = canonicalEmoji(record.emoji)
+            map[key] = record.defaultTag
+        }
+        canonicalDefaultMap = map
+    }
+
+    func getDefaultTagCanonical(forEmoji emoji: String) -> String? {
+        return canonicalDefaultMap[canonicalEmoji(emoji)]
     }
     
     private func saveUserMappings() {
@@ -114,6 +159,27 @@ class EmojiStorage {
     }
 
     func collectPairs(withPrefix prefix: String, limit: Int = 25) -> [(tag: String, emoji: String)] {
-        return searchTrie.collectPairs(withPrefix: prefix, limit: limit)
+        let aliasAndDefault = searchTrie.collectPairs(withPrefix: prefix, limit: limit)
+
+        if aliasAndDefault.count >= limit {
+            return aliasAndDefault
+        }
+
+        let used = Set(aliasAndDefault.map { canonicalEmoji($0.emoji) })
+        let remaining = max(0, limit - aliasAndDefault.count)
+
+        let keywordPairs = keywordTrie.collectPairs(withPrefix: prefix, limit: limit)
+        var appended: [(tag: String, emoji: String)] = []
+        appended.reserveCapacity(min(remaining, keywordPairs.count))
+
+        for pair in keywordPairs {
+            if appended.count >= remaining { break }
+            if !used.contains(canonicalEmoji(pair.emoji)) {
+                let displayTag = getDefaultTagCanonical(forEmoji: pair.emoji) ?? pair.tag
+                appended.append((tag: displayTag, emoji: pair.emoji))
+            }
+        }
+
+        return aliasAndDefault + appended
     }
 } 

@@ -24,6 +24,12 @@ final class MappingsViewModel: ObservableObject {
     @Published var selection: MappingSidebarItem? = .emojiCategory(.smileysPeople)
 
     private var defaultMap: [String: DefaultEmojiRecord] = [:]
+    private func canonical(_ s: String) -> String {
+        let filtered = s.unicodeScalars.filter { scalar in
+            scalar.value != 0xFE0F && scalar.value != 0xFE0E
+        }
+        return String(String.UnicodeScalarView(filtered))
+    }
 
     init(initialSelection: MappingSidebarItem? = .emojiCategory(.smileysPeople)) {
         self.selection = initialSelection
@@ -35,7 +41,7 @@ final class MappingsViewModel: ObservableObject {
 
     var currentEmojis: [String] {
         if case .favorites? = selection {
-            return allEmojis.filter { favoriteEmojis.contains($0) }
+            return allEmojis.filter { isFavoriteEmoji($0) }
         }
         return allEmojis
     }
@@ -51,7 +57,8 @@ final class MappingsViewModel: ObservableObject {
     }
 
     func toggleFavorite(_ emoji: String, isOn: Bool) {
-        if isOn { favoriteEmojis.insert(emoji) } else { favoriteEmojis.remove(emoji) }
+        let key = canonical(emoji)
+        if isOn { favoriteEmojis.insert(key) } else { favoriteEmojis.remove(key) }
         saveFavorites()
     }
 
@@ -103,12 +110,16 @@ final class MappingsViewModel: ObservableObject {
 
     private func loadFavorites() {
         if let saved = UserDefaults.standard.array(forKey: "favoriteEmojis") as? [String] {
-            favoriteEmojis = Set(saved)
+            favoriteEmojis = Set(saved.map { canonical($0) })
         }
     }
 
     private func saveFavorites() {
         UserDefaults.standard.set(Array(favoriteEmojis), forKey: "favoriteEmojis")
+    }
+
+    func isFavoriteEmoji(_ emoji: String) -> Bool {
+        return favoriteEmojis.contains(canonical(emoji))
     }
 }
 

@@ -128,7 +128,7 @@ struct MappingContentView: View {
                     .padding(.bottom, 20)
                 EmojiEditorView(
                     selected: mappingViewModel.selectedDetail,
-                    isFavorite: mappingViewModel.selectedEmoji.map { mappingViewModel.favoriteEmojis.contains($0) } ?? false,
+                    isFavorite: mappingViewModel.selectedEmoji.map { mappingViewModel.isFavoriteEmoji($0) } ?? false,
                     onSaveAliases: { emoji, aliases in mappingViewModel.setAliases(aliases, for: emoji) },
                     onToggleFavorite: { emoji, newValue in mappingViewModel.toggleFavorite(emoji, isOn: newValue) },
                     isEmptyState: ({ () -> Bool in

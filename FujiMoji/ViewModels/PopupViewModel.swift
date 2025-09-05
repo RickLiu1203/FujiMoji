@@ -43,6 +43,13 @@ class PopupViewModel: ObservableObject {
         loadFavorites()
         setupObservers()
     }
+
+    private func canonicalEmoji(_ emoji: String) -> String {
+        let filtered = emoji.unicodeScalars.filter { scalar in
+            scalar.value != 0xFE0F && scalar.value != 0xFE0E
+        }
+        return String(String.UnicodeScalarView(filtered))
+    }
     
     private func setupObservers() {
         KeyDetection.shared.$currentString
@@ -85,7 +92,7 @@ class PopupViewModel: ObservableObject {
     
     private func loadFavorites() {
         if let saved = UserDefaults.standard.array(forKey: "favoriteEmojis") as? [String] {
-            favoriteEmojis = Set(saved)
+            favoriteEmojis = Set(saved.map { canonicalEmoji($0) })
         } else {
             favoriteEmojis = []
         }
@@ -139,9 +146,26 @@ class PopupViewModel: ObservableObject {
             return
         }
         let fetchPrefix = prefix
+        // Per-prefix soft cache to speed up narrowing (e.g., "jo" -> "joy")
+        struct Cache {
+            static var lastPrefix: String = ""
+            static var lastPairs: [(tag: String, emoji: String)] = []
+        }
+
         DispatchQueue.global(qos: .userInitiated).async {
             let customTags = CustomStorage.shared.collectTags(withPrefix: fetchPrefix, limit: 25)
-            let emojiPairs = EmojiStorage.shared.collectPairs(withPrefix: fetchPrefix, limit: 25)
+
+            let baseLimit = 200
+            var emojiPairs: [(tag: String, emoji: String)]
+
+            if !Cache.lastPrefix.isEmpty && fetchPrefix.hasPrefix(Cache.lastPrefix) {
+                emojiPairs = Cache.lastPairs.filter { $0.tag.hasPrefix(fetchPrefix) }
+                if emojiPairs.count < 25 {
+                    emojiPairs = EmojiStorage.shared.collectPairs(withPrefix: fetchPrefix, limit: baseLimit)
+                }
+            } else {
+                emojiPairs = EmojiStorage.shared.collectPairs(withPrefix: fetchPrefix, limit: baseLimit)
+            }
             
             let sortedCustom = customTags.sorted { tag1, tag2 in
                 let exact1 = tag1.lowercased() == fetchPrefix
@@ -154,24 +178,41 @@ class PopupViewModel: ObservableObject {
                 return tag1 < tag2 
             }
             
-            let sortedEmoji = emojiPairs.map { EmojiMatch(tag: $0.tag, emoji: $0.emoji) }
-                .sorted { match1, match2 in
-                    let priority1 = self.getEmojiMatchPriority(for: match1, inputPrefix: fetchPrefix)
-                    let priority2 = self.getEmojiMatchPriority(for: match2, inputPrefix: fetchPrefix)
-                    
-                    if priority1 != priority2 {
-                        return priority1 < priority2
-                    }
-                    
-                    return match1.tag < match2.tag
+            var exactFav: [EmojiMatch] = []
+            var exact: [EmojiMatch] = []
+            var fav: [EmojiMatch] = []
+            var def: [EmojiMatch] = []
+            var alias: [EmojiMatch] = []
+
+            for pair in emojiPairs {
+                let match = EmojiMatch(tag: pair.tag, emoji: pair.emoji)
+                let pr = self.getEmojiMatchPriority(for: match, inputPrefix: fetchPrefix)
+                switch pr {
+                case .exactFavorite: exactFav.append(match)
+                case .exactMatch: exact.append(match)
+                case .favorite: fav.append(match)
+                case .defaultTag: def.append(match)
+                case .alias: alias.append(match)
                 }
+            }
+            let ranked = exactFav + exact + fav + def + alias
+            var seenEmojis = Set<String>()
+            let dedupedEmoji = ranked.filter { match in
+                let key = self.canonicalEmoji(match.emoji)
+                if seenEmojis.contains(key) { return false }
+                seenEmojis.insert(key)
+                return true
+            }
+            let limitedEmoji = Array(dedupedEmoji.prefix(25))
             
             DispatchQueue.main.async {
                 if KeyDetection.shared.currentString.lowercased() == fetchPrefix {
                     self.customMatches = sortedCustom
-                    self.emojiMatches = sortedEmoji
+                    self.emojiMatches = limitedEmoji
                     
                     self.highlightedIndex = self.findFirstExactMatchIndex(for: fetchPrefix)
+                    Cache.lastPrefix = fetchPrefix
+                    Cache.lastPairs = emojiPairs
                 }
             }
         }
@@ -245,7 +286,7 @@ class PopupViewModel: ObservableObject {
     }
     
     func isFavorite(emoji: String) -> Bool {
-        return favoriteEmojis.contains(emoji)
+        return favoriteEmojis.contains(canonicalEmoji(emoji))
     }
     func isFavoriteCustom(tag: String) -> Bool {
         return favoriteCustomTags.contains(tag.lowercased())
@@ -253,7 +294,7 @@ class PopupViewModel: ObservableObject {
     
     private func getEmojiMatchPriority(for match: EmojiMatch, inputPrefix: String) -> EmojiMatchPriority {
         let isExactMatch = match.tag.lowercased() == inputPrefix.lowercased()
-        let isFav = favoriteEmojis.contains(match.emoji)
+        let isFav = favoriteEmojis.contains(canonicalEmoji(match.emoji))
         let isDefaultTag = EmojiStorage.shared.getDefaultTag(forEmoji: match.emoji)?.lowercased() == match.tag.lowercased()
         
         if isExactMatch {

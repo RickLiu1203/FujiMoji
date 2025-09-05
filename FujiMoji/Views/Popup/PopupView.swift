@@ -12,7 +12,7 @@ import Combine
 extension Notification.Name {
     static let resultsRenderModeChanged = Notification.Name("resultsRenderModeChanged")
 }
-private let popupWidth: CGFloat = 300
+private let popupWidth: CGFloat = 350
 private let screenBottomMargin: CGFloat = 0
  
 private let detectedTextWindowHeight: CGFloat = 72
@@ -220,7 +220,7 @@ final class DetectedTextWindowController: NSWindowController {
         panel.hidesOnDeactivate = false
         panel.isOpaque = false
         panel.backgroundColor = .clear
-        panel.level = .statusBar
+        panel.level = .floating
         panel.hasShadow = false
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.ignoresMouseEvents = false
