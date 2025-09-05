@@ -113,8 +113,28 @@ class EmojiMap {
     }
     
     func setAliases(_ aliases: [String], forEmoji emoji: String) {
+        let normalized = aliases.map { $0.lowercased() }
+        var seen: Set<String> = []
+        var deduped: [String] = []
+        for alias in normalized {
+            if !alias.isEmpty, seen.insert(alias).inserted {
+                deduped.append(alias)
+            }
+        }
+
+        if !deduped.isEmpty {
+            for (key, var tags) in storage {
+                if key == emoji { continue }
+                let originalCount = tags.aliases.count
+                tags.aliases.removeAll { deduped.contains($0) }
+                if tags.aliases.count != originalCount {
+                    storage[key] = tags
+                }
+            }
+        }
+
         if var emojiTags = storage[emoji] {
-            emojiTags.aliases = aliases.map { $0.lowercased() }
+            emojiTags.aliases = deduped
             storage[emoji] = emojiTags
         }
     }
