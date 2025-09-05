@@ -180,7 +180,8 @@ class PopupViewModel: ObservableObject {
             
             var exactFav: [EmojiMatch] = []
             var exact: [EmojiMatch] = []
-            var fav: [EmojiMatch] = []
+            var favAlias: [EmojiMatch] = []
+            var favDefault: [EmojiMatch] = []
             var def: [EmojiMatch] = []
             var alias: [EmojiMatch] = []
 
@@ -190,12 +191,14 @@ class PopupViewModel: ObservableObject {
                 switch pr {
                 case .exactFavorite: exactFav.append(match)
                 case .exactMatch: exact.append(match)
-                case .favorite: fav.append(match)
+                case .favorite:
+                    let isDefault = (EmojiStorage.shared.getDefaultTag(forEmoji: match.emoji)?.lowercased() == match.tag.lowercased())
+                    if isDefault { favDefault.append(match) } else { favAlias.append(match) }
                 case .defaultTag: def.append(match)
                 case .alias: alias.append(match)
                 }
             }
-            let ranked = exactFav + exact + fav + def + alias
+            let ranked = exactFav + exact + favAlias + favDefault + alias + def
             var seenEmojis = Set<String>()
             let dedupedEmoji = ranked.filter { match in
                 let key = self.canonicalEmoji(match.emoji)
