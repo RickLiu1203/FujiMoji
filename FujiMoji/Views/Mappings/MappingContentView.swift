@@ -144,6 +144,7 @@ struct MappingContentView: View {
         .frame(width: 900, height: 500)
         .background(.thinMaterial)
         .preferredColorScheme(.dark)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         .onAppear {
             sidebarSelection = mappingViewModel.selection
         }

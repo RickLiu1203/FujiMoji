@@ -246,8 +246,7 @@ final class MappingsWindowCoordinator: NSWindowController {
         }
 
         guard let window = self.window else { return }
-
-        window.center()
+        centerOnActiveScreen(window)
         NSApp.activate(ignoringOtherApps: true)
         window.makeKeyAndOrderFront(nil)
     }
@@ -276,6 +275,21 @@ final class MappingsWindowCoordinator: NSWindowController {
         window.collectionBehavior = [.moveToActiveSpace]
 
         self.window = window
+    }
+
+    private func centerOnActiveScreen(_ window: NSWindow) {
+        let mouseLocation = NSEvent.mouseLocation
+        let screens = NSScreen.screens
+        let targetScreen = screens.first(where: { NSMouseInRect(mouseLocation, $0.frame, false) }) ?? window.screen ?? NSScreen.main
+        if let screen = targetScreen {
+            let size = window.frame.size
+            let visible = screen.visibleFrame
+            let newX = visible.origin.x + (visible.size.width - size.width) / 2
+            let newY = visible.origin.y + (visible.size.height - size.height) / 2
+            window.setFrameOrigin(NSPoint(x: newX, y: newY))
+        } else {
+            window.center()
+        }
     }
 }
 

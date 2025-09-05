@@ -92,6 +92,7 @@ struct LandingView: View {
         )
         .frame(width: 550)
         .preferredColorScheme(.dark)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 }
 
