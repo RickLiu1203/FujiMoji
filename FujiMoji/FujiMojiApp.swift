@@ -13,6 +13,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.setActivationPolicy(.accessory)
         _ = DetectedTextWindowController.shared
         _ = PredictionResultsWindowController.shared
+        let hasShown = UserDefaults.standard.bool(forKey: "hasShownLanding")
+        if !hasShown {
+            LandingWindowController.shared.showFloating()
+            UserDefaults.standard.set(true, forKey: "hasShownLanding")
+        }
     }
 }
 

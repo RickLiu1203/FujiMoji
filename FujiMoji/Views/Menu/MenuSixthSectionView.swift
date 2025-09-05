@@ -13,6 +13,26 @@ struct MenuSixthSectionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
             Button(action: {
+                LandingWindowController.shared.toggle()
+            }){
+                HStack {
+                    Text("Show Landing Page")
+                        .padding(.vertical, 4)
+
+                    Spacer()
+
+                    Text("⌘L")
+                        .foregroundColor(.secondary)
+                }
+                .padding(.horizontal, 16)
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+            }
+            .keyboardShortcut("l")
+            .buttonStyle(MenuHoverButtonStyle())
+            .frame(maxWidth: .infinity)
+
+            Button(action: {
                 guard let url = URL(string: "https://github.com/RickLiu1203/FujiMoji#readme") else { return }
                 openURL(url)
             }){
