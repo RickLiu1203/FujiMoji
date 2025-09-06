@@ -33,7 +33,7 @@ struct MenuSixthSectionView: View {
             .frame(maxWidth: .infinity)
 
             Button(action: {
-                guard let url = URL(string: "https://github.com/RickLiu1203/FujiMoji#readme") else { return }
+                guard let url = URL(string: "https://github.com/RickLiu1203/FujiMoji") else { return }
                 openURL(url)
             }){
                 HStack {

@@ -9,6 +9,7 @@ import SwiftUI
 import AppKit
 
 struct LandingView: View {
+    @State private var isHoveringAmazing: Bool = false
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             VStack(alignment: .leading, spacing: 12) {
@@ -75,13 +76,14 @@ struct LandingView: View {
                         .padding(.vertical, 6)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.white.opacity(0.12))
+                                .fill(isHoveringAmazing ? Color.white.opacity(0.2) : Color.white.opacity(0.12))
                         )
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.white.opacity(0.35), lineWidth: 1)
                         )
                 }
+                .onHover { hovering in isHoveringAmazing = hovering }
                 .buttonStyle(.plain)
             }
         }

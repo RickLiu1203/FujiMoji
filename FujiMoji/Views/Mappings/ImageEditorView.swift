@@ -124,7 +124,6 @@ struct ImageTagEditorView: View {
                 .buttonStyle(.plain)
 
                 Button {
-                    // Defer to next runloop to avoid publishing during view update
                     DispatchQueue.main.async {
                         vm.pasteImageFromPasteboard()
                     }
