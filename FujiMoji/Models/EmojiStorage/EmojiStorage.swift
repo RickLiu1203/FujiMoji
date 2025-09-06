@@ -14,6 +14,8 @@ class EmojiStorage {
     private let searchTrie = EmojiTrie()
     private let keywordTrie = KeywordTrie()
     private var canonicalDefaultMap: [String: String] = [:]
+    private var prefixRecents: [String: [String]] = [:] // lowercased prefix -> MRU emojis
+    private let prefixRecentCapacity: Int = 12
     
     private var documentsDirectory: URL {
         fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
@@ -158,27 +160,85 @@ class EmojiStorage {
     }
 
     func collectPairs(withPrefix prefix: String, limit: Int = 25) -> [(tag: String, emoji: String)] {
-        let aliasAndDefault = searchTrie.collectPairs(withPrefix: prefix, limit: limit)
+        let normalizedPrefix = prefix.lowercased()
+        let aliasAndDefault = searchTrie.collectPairs(withPrefix: normalizedPrefix, limit: limit)
+        let keywordPairs = keywordTrie.collectPairs(withPrefix: normalizedPrefix, limit: limit)
 
-        if aliasAndDefault.count >= limit {
-            return aliasAndDefault
+        // Build lookup maps for quick access
+        var aliasByCanon: [String: (tag: String, emoji: String)] = [:]
+        for pair in aliasAndDefault { aliasByCanon[canonicalEmoji(pair.emoji)] = pair }
+        var keywordByCanon: [String: (tag: String, emoji: String)] = [:]
+        for pair in keywordPairs { keywordByCanon[canonicalEmoji(pair.emoji)] = pair }
+
+        var results: [(tag: String, emoji: String)] = []
+        var usedCanon = Set<String>()
+
+        // Combine recents from both storages to be safe
+        let recentA = prefixRecents[normalizedPrefix] ?? []
+        let recentB = keywordTrie.recentEmojis(forPrefix: normalizedPrefix)
+        var recentCombined: [String] = []
+        for e in recentA + recentB {
+            if !recentCombined.contains(e) { recentCombined.append(e) }
         }
 
-        let used = Set(aliasAndDefault.map { canonicalEmoji($0.emoji) })
-        let remaining = max(0, limit - aliasAndDefault.count)
-
-        let keywordPairs = keywordTrie.collectPairs(withPrefix: prefix, limit: limit)
-        var appended: [(tag: String, emoji: String)] = []
-        appended.reserveCapacity(min(remaining, keywordPairs.count))
-
-        for pair in keywordPairs {
-            if appended.count >= remaining { break }
-            if !used.contains(canonicalEmoji(pair.emoji)) {
-                let displayTag = getDefaultTagCanonical(forEmoji: pair.emoji) ?? pair.tag
-                appended.append((tag: displayTag, emoji: pair.emoji))
+        // 1) Place MRU first, preferring alias/default pairing if available
+        for emoji in recentCombined {
+            let canon = canonicalEmoji(emoji)
+            if usedCanon.contains(canon) { continue }
+            if let pair = aliasByCanon[canon] {
+                results.append(pair)
+                usedCanon.insert(canon)
+                continue
             }
+            if let pair = keywordByCanon[canon] {
+                results.append((tag: getDefaultTagCanonical(forEmoji: pair.emoji) ?? pair.tag, emoji: pair.emoji))
+                usedCanon.insert(canon)
+                continue
+            }
+            // Fallback: synthesize a pair using default tag or prefix
+            results.append((tag: getDefaultTagCanonical(forEmoji: emoji) ?? normalizedPrefix, emoji: emoji))
+            usedCanon.insert(canon)
         }
 
-        return aliasAndDefault + appended
+        if results.count >= limit { return Array(results.prefix(limit)) }
+
+        // 2) Fill remaining with alias/default (stable order), skipping ones already used
+        for pair in aliasAndDefault {
+            if results.count >= limit { break }
+            let canon = canonicalEmoji(pair.emoji)
+            if usedCanon.contains(canon) { continue }
+            results.append(pair)
+            usedCanon.insert(canon)
+        }
+
+        if results.count >= limit { return Array(results.prefix(limit)) }
+
+        // 3) Fill remaining with keyword results, normalized tag for display
+        for pair in keywordPairs {
+            if results.count >= limit { break }
+            let canon = canonicalEmoji(pair.emoji)
+            if usedCanon.contains(canon) { continue }
+            let displayTag = getDefaultTagCanonical(forEmoji: pair.emoji) ?? pair.tag
+            results.append((tag: displayTag, emoji: pair.emoji))
+            usedCanon.insert(canon)
+        }
+
+        return Array(results.prefix(limit))
+    }
+
+    // Record a keyword selection to boost it next time for the same prefix
+    func recordKeywordUsage(prefix: String, emoji: String) {
+        let normalized = prefix.lowercased()
+        keywordTrie.recordUsage(prefix: normalized, emoji: emoji)
+        // Track MRU for alias/default ordering as well
+        var list = prefixRecents[normalized] ?? []
+        if let idx = list.firstIndex(of: emoji) {
+            list.remove(at: idx)
+        }
+        list.insert(emoji, at: 0)
+        if list.count > prefixRecentCapacity {
+            list.removeLast(list.count - prefixRecentCapacity)
+        }
+        prefixRecents[normalized] = list
     }
 } 

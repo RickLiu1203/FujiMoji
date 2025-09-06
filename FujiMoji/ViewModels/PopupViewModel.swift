@@ -146,7 +146,8 @@ class PopupViewModel: ObservableObject {
             return
         }
         let fetchPrefix = prefix
-        // Per-prefix soft cache to speed up narrowing (e.g., "jo" -> "joy")
+        // Per-prefix soft cache to speed up narrowing (e.g., "jo" -> "joy").
+        // We will NOT use the cache if the prefix is unchanged to allow MRU resorting.
         struct Cache {
             static var lastPrefix: String = ""
             static var lastPairs: [(tag: String, emoji: String)] = []
@@ -158,7 +159,7 @@ class PopupViewModel: ObservableObject {
             let baseLimit = 200
             var emojiPairs: [(tag: String, emoji: String)]
 
-            if !Cache.lastPrefix.isEmpty && fetchPrefix.hasPrefix(Cache.lastPrefix) {
+            if !Cache.lastPrefix.isEmpty && fetchPrefix.hasPrefix(Cache.lastPrefix) && fetchPrefix != Cache.lastPrefix {
                 emojiPairs = Cache.lastPairs.filter { $0.tag.hasPrefix(fetchPrefix) }
                 if emojiPairs.count < 25 {
                     emojiPairs = EmojiStorage.shared.collectPairs(withPrefix: fetchPrefix, limit: baseLimit)
@@ -178,27 +179,21 @@ class PopupViewModel: ObservableObject {
                 return tag1 < tag2 
             }
             
-            var exactFav: [EmojiMatch] = []
             var exact: [EmojiMatch] = []
-            var favAlias: [EmojiMatch] = []
-            var favDefault: [EmojiMatch] = []
-            var def: [EmojiMatch] = []
-            var alias: [EmojiMatch] = []
-
+            var favs: [EmojiMatch] = []
+            var nonFavs: [EmojiMatch] = []
             for pair in emojiPairs {
                 let match = EmojiMatch(tag: pair.tag, emoji: pair.emoji)
-                let pr = self.getEmojiMatchPriority(for: match, inputPrefix: fetchPrefix)
-                switch pr {
-                case .exactFavorite: exactFav.append(match)
-                case .exactMatch: exact.append(match)
-                case .favorite:
-                    let isDefault = (EmojiStorage.shared.getDefaultTag(forEmoji: match.emoji)?.lowercased() == match.tag.lowercased())
-                    if isDefault { favDefault.append(match) } else { favAlias.append(match) }
-                case .defaultTag: def.append(match)
-                case .alias: alias.append(match)
+                if match.tag.lowercased() == fetchPrefix.lowercased() {
+                    exact.append(match)
+                } else if self.isFavorite(emoji: match.emoji) {
+                    // Keep MRU order among favorites by appending in input order
+                    favs.append(match)
+                } else {
+                    nonFavs.append(match)
                 }
             }
-            let ranked = exactFav + exact + favAlias + favDefault + alias + def
+            let ranked = exact + favs + nonFavs
             var seenEmojis = Set<String>()
             let dedupedEmoji = ranked.filter { match in
                 let key = self.canonicalEmoji(match.emoji)
@@ -222,6 +217,11 @@ class PopupViewModel: ObservableObject {
     }
 
     func performEmojiSelection(tag: String, emoji: String) {
+        // Record usage for the current typed prefix to prioritize in future
+        let currentPrefix = KeyDetection.shared.currentString.lowercased()
+        if !currentPrefix.isEmpty {
+            EmojiStorage.shared.recordKeywordUsage(prefix: currentPrefix, emoji: emoji)
+        }
         let output = FujiMojiState.shared.applySkinTone(emoji)
         KeyDetection.shared.finishCaptureWithDirectReplacement(output, endWithSpace: false)
     }
