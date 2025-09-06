@@ -197,11 +197,9 @@
     "face",
     "hearts",
     "infatuation",
-    "like",
     "love",
     "smiling_face_with_hearts",
-    "three",
-    "valentines"
+    "loving"
   ],
   "😍": [
     "affection",
@@ -210,13 +208,9 @@
     "face",
     "heart",
     "infatuation",
-    "like",
     "love",
-    "shaped",
-    "smile",
     "smiling_face_with_heart_eyes",
-    "smiling_face_with_heart-eyes",
-    "valentines"
+    "heart_eyes"
   ],
   "🤩": [
     "excited",
@@ -758,7 +752,7 @@
     "disgusted",
     "face",
     "green",
-    "green face",
+    "green_face",
     "gross",
     "ill",
     "nauseated_face",
@@ -834,7 +828,7 @@
     "knocked",
     "out",
     "spent",
-    "spiral eyes",
+    "spiral_eyes",
     "unconscious",
     "xox"
   ],
@@ -1005,7 +999,7 @@
   "😲": [
     "amazed",
     "astonished_face",
-    "drunk face",
+    "drunk_face",
     "face",
     "gasp",
     "gasping",
@@ -1084,7 +1078,7 @@
     "anxious_face_with_sweat",
     "blue",
     "cold",
-    "concerned face",
+    "concerned_face",
     "face",
     "mouth",
     "nervous",
@@ -1275,7 +1269,7 @@
     "horns",
     "imp",
     "purple",
-    "red devil",
+    "red_devil",
     "smile",
     "smiling_face_with_horns",
     "tale"
@@ -1483,7 +1477,7 @@
     "heart",
     "like",
     "love",
-    "loving cat",
+    "loving_cat",
     "shaped",
     "smile",
     "smiling_cat_with_heart_eyes",
@@ -1530,7 +1524,7 @@
     "crying_cat",
     "face",
     "sad",
-    "sad cat",
+    "sad_cat",
     "tear",
     "tears",
     "upset",
@@ -1590,7 +1584,7 @@
     "mouth",
     "mute",
     "nature",
-    "no speaking",
+    "no_speaking",
     "not",
     "omg",
     "prohibited",
@@ -1638,7 +1632,7 @@
     "sparkle",
     "sparkling_heart",
     "sparkly",
-    "stars heart",
+    "stars_heart",
     "valentines"
   ],
   "💗": [
@@ -1748,7 +1742,8 @@
     "like",
     "love",
     "red_heart",
-    "valentines"
+    "valentines",
+    "heart"
   ],
   "🩷": [
     "pink heart",
@@ -2159,8 +2154,7 @@
     "hand_with_index_finger_and_thumb_crossed",
     "heart",
     "love",
-    "money",
-    "snap"
+    "finger_heart"
   ],
   "🤟": [
     "body",
@@ -2240,7 +2234,7 @@
     "hand",
     "medio",
     "middle",
-    "middle finger",
+    "middle_finger",
     "middle_finger",
     "reversed",
     "rude"
@@ -2289,6 +2283,7 @@
     "ok",
     "sign",
     "thumb",
+    "thumbs",
     "thumbs_up",
     "thumbsup",
     "yes"
@@ -2351,7 +2346,7 @@
     "bump",
     "fistbump",
     "hand",
-    "right fist",
+    "right_fist",
     "right_facing_fist",
     "right-facing_fist",
     "rightwards"
@@ -3116,7 +3111,7 @@
     "answering",
     "gesture",
     "happy",
-    "one",
+    "raising_hand",
     "person_raising_hand",
     "question",
     "raised",
@@ -3131,7 +3126,8 @@
     "man_raising_hand",
     "men",
     "one",
-    "raised"
+    "raised",
+    "raising_hand"
   ],
   "🙋‍♀️": [
     "female",
@@ -3140,6 +3136,7 @@
     "happy",
     "one",
     "raised",
+    "raising_hand",
     "woman",
     "woman_raising_hand",
     "women"
@@ -4127,7 +4124,7 @@
     "baby",
     "female",
     "pregnancy",
-    "pregnant lady",
+    "pregnant_lady",
     "pregnant_woman",
     "women"
   ],
@@ -7365,7 +7362,7 @@
   ],
   "🌼": [
     "blossom",
-    "blossoming flower",
+    "blossoming_flower",
     "daisy",
     "flower",
     "flowers",
@@ -9024,8 +9021,6 @@
     "accommodation",
     "accomodation",
     "building",
-    "checkin",
-    "h",
     "hotel"
   ],
   "🏩": [
@@ -9192,7 +9187,7 @@
     "bridge",
     "city",
     "fog",
-    "fog bridge",
+    "fog_bridge",
     "foggy",
     "karl",
     "mountain",
@@ -9479,7 +9474,7 @@
   "🚎": [
     "bart",
     "bus",
-    "electric bus",
+    "electric_bus",
     "tram",
     "transportation",
     "trolley",
@@ -9524,10 +9519,10 @@
     "vehicle"
   ],
   "🚔": [
-    "🚓 cop",
+    "🚓_cop",
     "911",
     "enforcement",
-    "front of",
+    "front_of",
     "law",
     "legal",
     "oncoming_police_car",
@@ -9723,7 +9718,7 @@
     "car’s",
     "cars",
     "emergency",
-    "emergency light",
+    "emergency_light",
     "error",
     "flashing",
     "law",
@@ -10434,11 +10429,9 @@
     "new_moon",
     "night",
     "planet",
-    "shadow moon",
-    "sleep",
+    "shadow_moon",
     "solar",
     "space",
-    "symbol",
     "twilight",
     "weather"
   ],
@@ -10447,9 +10440,7 @@
     "nature",
     "night",
     "planet",
-    "sleep",
     "space",
-    "symbol",
     "twilight",
     "waxing_crescent_moon",
     "weather"
@@ -10460,9 +10451,7 @@
     "nature",
     "night",
     "planet",
-    "sleep",
     "space",
-    "symbol",
     "twilight",
     "weather"
   ],
@@ -10473,9 +10462,7 @@
     "night",
     "planet",
     "sky",
-    "sleep",
     "space",
-    "symbol",
     "twilight",
     "waxing_gibbous_moon",
     "weather"
@@ -10486,9 +10473,7 @@
     "nature",
     "night",
     "planet",
-    "sleep",
     "space",
-    "symbol",
     "twilight",
     "weather",
     "yellow"
@@ -10498,9 +10483,7 @@
     "nature",
     "night",
     "planet",
-    "sleep",
     "space",
-    "symbol",
     "twilight",
     "waning_gibbous_moon",
     "waxing_gibbous_moon",
@@ -10512,9 +10495,7 @@
     "nature",
     "night",
     "planet",
-    "sleep",
     "space",
-    "symbol",
     "twilight",
     "weather"
   ],
@@ -10523,9 +10504,7 @@
     "nature",
     "night",
     "planet",
-    "sleep",
     "space",
-    "symbol",
     "twilight",
     "waning_crescent_moon",
     "weather"
@@ -10536,7 +10515,6 @@
     "magic",
     "night",
     "sky",
-    "sleep",
     "space",
     "weather"
   ],
@@ -10549,7 +10527,6 @@
     "new_moon_face",
     "night",
     "planet",
-    "sleep",
     "space",
     "twilight",
     "weather"
@@ -10560,7 +10537,6 @@
     "nature",
     "night",
     "planet",
-    "sleep",
     "space",
     "twilight",
     "weather"
@@ -10571,7 +10547,6 @@
     "nature",
     "night",
     "planet",
-    "sleep",
     "space",
     "twilight",
     "weather"
@@ -10790,7 +10765,7 @@
   "🌂": [
     "closed_umbrella",
     "clothing",
-    "collapsed umbrella",
+    "collapsed_umbrella",
     "drizzle",
     "pink",
     "rain",
@@ -10935,7 +10910,7 @@
     "festival",
     "vacation",
     "xmas",
-    "xmas tree"
+    "xmas_tree"
   ],
   "🎆": [
     "activity",
@@ -10973,7 +10948,6 @@
   ],
   "✨": [
     "awesome",
-    "cool",
     "entertainment",
     "glitter",
     "good",
@@ -11672,7 +11646,7 @@
     "hanafuda",
     "hwatu",
     "japanese",
-    "of cards",
+    "of_cards",
     "red",
     "sunset"
   ],
@@ -11690,7 +11664,7 @@
     "performing_arts",
     "theater",
     "theatre",
-    "theatre masks",
+    "theatre_masks",
     "tragedy"
   ],
   "🖼️": [
@@ -12448,7 +12422,7 @@
     "squeeze"
   ],
   "🎸": [
-    "acoustic guitar",
+    "acoustic_guitar",
     "activity",
     "bass",
     "electric",
@@ -12957,7 +12931,7 @@
   ],
   "📃": [
     "curled",
-    "curly page",
+    "curly_page",
     "document",
     "documents",
     "license",
@@ -13158,7 +13132,7 @@
     "upwards"
   ],
   "✉️": [
-    "✉ letter",
+    "✉_letter",
     "communication",
     "email",
     "envelope",
@@ -13292,7 +13266,7 @@
     "writing"
   ],
   "✒️": [
-    "✒ fountain",
+    "✒_fountain",
     "black_nib",
     "fountain",
     "pen",
@@ -13439,7 +13413,7 @@
     "metrics",
     "money",
     "pointing",
-    "positive chart",
+    "positive_chart",
     "presentation",
     "recovery",
     "sales",
@@ -13455,14 +13429,14 @@
     "business",
     "chart_decreasing",
     "down",
-    "down pointing",
+    "down_pointing",
     "downwards",
     "economics",
     "failure",
     "graph",
     "metrics",
     "money",
-    "negative chart",
+    "negative_chart",
     "presentation",
     "recession",
     "sales",
@@ -13590,7 +13564,7 @@
     "fountain",
     "ink",
     "lock",
-    "lock with",
+    "lock_with",
     "locked_with_pen",
     "nib",
     "privacy",
@@ -14328,7 +14302,7 @@
     "women’s",
     "women’s_room",
     "womens",
-    "womens toilet"
+    "womens_toilet"
   ],
   "🚻": [
     "bathroom",
@@ -14380,7 +14354,7 @@
     "transport"
   ],
   "🛅": [
-    "bag with",
+    "bag_with",
     "baggage",
     "blue-square",
     "key",
@@ -14593,7 +14567,7 @@
     "east",
     "next",
     "pointing",
-    "right arrow",
+    "right_arrow",
     "right_arrow",
     "rightwards"
   ],
@@ -14606,7 +14580,7 @@
     "east",
     "intercardinal",
     "lower",
-    "right arrow",
+    "right_arrow",
     "south",
     "southeast"
   ],
@@ -14616,7 +14590,7 @@
     "bottom",
     "cardinal",
     "direction",
-    "down arrow",
+    "down_arrow",
     "down_arrow",
     "downgrade",
     "downwards",
@@ -14630,7 +14604,7 @@
     "down_left_arrow",
     "down-left_arrow",
     "intercardinal",
-    "left arrow",
+    "left_arrow",
     "lower",
     "south",
     "southwest",
@@ -14642,7 +14616,7 @@
     "blue-square",
     "cardinal",
     "direction",
-    "left arrow",
+    "left_arrow",
     "left_arrow",
     "leftwards",
     "pointing",
@@ -14654,7 +14628,7 @@
     "diagonal",
     "direction",
     "intercardinal",
-    "left arrow",
+    "left_arrow",
     "north",
     "northwest",
     "point",
@@ -14678,7 +14652,7 @@
     "arrows",
     "direction",
     "horizontal",
-    "horizontal arrows",
+    "horizontal_arrows",
     "left_right_arrow",
     "left-right_arrow",
     "shape",
@@ -14705,7 +14679,7 @@
     "hook",
     "left_arrow_curving_right",
     "return",
-    "right curved",
+    "right_curved",
     "rightwards",
     "rotate"
   ],
@@ -15078,7 +15052,7 @@
     "play_button",
     "pointing",
     "right",
-    "right triangle",
+    "right_triangle",
     "triangle"
   ],
   "⏩": [
@@ -15883,7 +15857,7 @@
     "note",
     "percent",
     "symbol",
-    "symbol input"
+    "symbol_input"
   ],
   "🔤": [
     "abc",
@@ -16991,7 +16965,7 @@
   "🇧🇲": [
     "banner",
     "bermuda",
-    "bermudan flag",
+    "bermudan_flag",
     "bm",
     "country",
     "flag",
@@ -17666,7 +17640,7 @@
     "flag",
     "flag_gambia",
     "gambia",
-    "gambian flag",
+    "gambian_flag",
     "gm",
     "nation"
   ],
@@ -17849,7 +17823,7 @@
     "flag_ireland",
     "ie",
     "ireland",
-    "irish flag",
+    "irish_flag",
     "nation"
   ],
   "🇮🇱": [
@@ -17915,7 +17889,7 @@
     "flag",
     "flag_iran",
     "iran",
-    "iranian flag",
+    "iranian_flag",
     "islamic",
     "nation",
     "republic"
@@ -17958,7 +17932,7 @@
     "flag",
     "flag_jamaica",
     "jamaica",
-    "jamaican flag",
+    "jamaican_flag",
     "jm",
     "nation"
   ],
@@ -18323,7 +18297,7 @@
     "for",
     "mm",
     "myanmar",
-    "myanmarese flag",
+    "myanmarese_flag",
     "nation"
   ],
   "🇲🇳": [
@@ -18341,7 +18315,7 @@
     "country",
     "flag",
     "flag_macao_sar_china",
-    "macanese flag",
+    "macanese_flag",
     "macao",
     "macao_sar_china",
     "macau",
@@ -18366,11 +18340,11 @@
     "country",
     "flag",
     "flag_martinique",
-    "martiniquais flag",
+    "martiniquais_flag",
     "martinique",
     "mq",
     "nation",
-    "of martinique",
+    "of_martinique",
     "snake"
   ],
   "🇲🇷": [
@@ -18429,7 +18403,7 @@
     "flag",
     "flag_malawi",
     "malawi",
-    "malawian flag",
+    "malawian_flag",
     "mw",
     "nation"
   ],
@@ -18492,7 +18466,7 @@
     "nation",
     "ne",
     "niger",
-    "nigerien flag"
+    "nigerien_flag"
   ],
   "🇳🇫": [
     "banner",
@@ -18785,7 +18759,7 @@
     "nation",
     "rs",
     "serbia",
-    "serbian flag"
+    "serbian_flag"
   ],
   "🇷🇺": [
     "banner",
@@ -18813,7 +18787,7 @@
     "rwandan"
   ],
   "🇸🇦": [
-    "arabian flag",
+    "arabian_flag",
     "banner",
     "country",
     "flag",
@@ -18827,7 +18801,7 @@
     "flag",
     "flag_solomon_islands",
     "island",
-    "islander flag",
+    "islander_flag",
     "islands",
     "nation",
     "solomon",
@@ -18841,7 +18815,7 @@
     "nation",
     "sc",
     "seychelles",
-    "seychellois flag"
+    "seychellois_flag"
   ],
   "🇸🇩": [
     "banner",
@@ -18909,7 +18883,7 @@
     "flag_slovakia",
     "nation",
     "sk",
-    "slovak flag",
+    "slovak_flag",
     "slovakia",
     "slovakian"
   ],
@@ -18953,7 +18927,7 @@
     "nation",
     "so",
     "somalia",
-    "somalian flag"
+    "somalian_flag"
   ],
   "🇸🇷": [
     "banner",
@@ -18974,7 +18948,7 @@
     "sd",
     "south",
     "south_sudan",
-    "sudanese flag"
+    "sudanese_flag"
   ],
   "🇸🇹": [
     "banner",
@@ -19121,7 +19095,7 @@
     "flag_timor_leste",
     "flag_timor-leste",
     "leste",
-    "leste flag",
+    "leste_flag",
     "nation",
     "timor",
     "timor_leste",
@@ -19154,7 +19128,7 @@
     "nation",
     "to",
     "tonga",
-    "tongan flag"
+    "tongan_flag"
   ],
   "🇹🇷": [
     "banner",
@@ -19166,7 +19140,7 @@
     "nation",
     "tr",
     "turkey",
-    "turkish flag",
+    "turkish_flag",
     "türkiye"
   ],
   "🇹🇹": [
@@ -19229,7 +19203,7 @@
     "nation",
     "ug",
     "uganda",
-    "ugandan flag"
+    "ugandan_flag"
   ],
   "🇺🇲": [
     "flag_u_s_outlying_islands",
@@ -19372,7 +19346,7 @@
     "nation",
     "ni",
     "vanuatu",
-    "vanuatu flag",
+    "vanuatu_flag",
     "vu"
   ],
   "🇼🇫": [
@@ -19393,7 +19367,7 @@
     "flag_samoa",
     "nation",
     "samoa",
-    "samoan flag",
+    "samoan_flag",
     "ws"
   ],
   "🇽🇰": [
@@ -19414,7 +19388,7 @@
     "nation",
     "ye",
     "yemen",
-    "yemeni flag"
+    "yemeni_flag"
   ],
   "🇾🇹": [
     "banner",
@@ -19427,7 +19401,7 @@
   ],
   "🇿🇦": [
     "africa",
-    "african flag",
+    "african_flag",
     "banner",
     "country",
     "flag",
@@ -19454,7 +19428,7 @@
     "nation",
     "zim",
     "zimbabwe",
-    "zimbabwean flag",
+    "zimbabwean_flag",
     "zw"
   ],
   "🏴󠁧󠁢󠁥󠁮󠁧󠁿": [
