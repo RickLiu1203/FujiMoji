@@ -38,7 +38,7 @@ struct LandingView: View {
                 }
                 HStack(alignment: .top, spacing: 12) {
                     Text("⚙️").padding(.top, 1).font(.system(size: 16))
-                    Text("Add custom text, media, and emoji aliases in the menu bar app")
+                    Text("Your **favorites** and **most used tags** will appear at the beginning of the suggestions list. Add custom text, media, and emoji aliases in the menu bar app")
                         .font(.system(size: 14))
                         .foregroundColor(.primary)
                         .lineLimit(nil)

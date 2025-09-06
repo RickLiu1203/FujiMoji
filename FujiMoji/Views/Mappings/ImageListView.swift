@@ -111,7 +111,7 @@ struct ImageTagListView: View {
             ScrollView {
                 if (showOnlyFavorites && vm.items.filter { vm.favoriteImageTags.contains($0.tag) }.isEmpty) {
                     VStack(spacing: 8) {
-                        Text("No Favourite Media Yet!")
+                        Text("No Favorite Media Yet!")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(.secondary)
                             .padding(.top, 64)

@@ -87,7 +87,7 @@ struct SideBarView: View {
                     .tag(MappingSidebarItem.imageTags)
                     .font(.system(size: 14, weight: .medium))
             }
-            Section("Favourites") {
+            Section("Favorites") {
                 Label("Emojis", systemImage: "star.circle")
                     .tag(MappingSidebarItem.favorites)
                     .font(.system(size: 14, weight: .medium))

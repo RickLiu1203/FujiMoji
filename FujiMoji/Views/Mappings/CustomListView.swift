@@ -128,7 +128,7 @@ struct CustomListView: View {
             ScrollView {
                 if (showOnlyFavorites && vm.items.filter { vm.favoriteTags.contains($0.tag.lowercased()) }.isEmpty) {
                     VStack(spacing: 8) {
-                        Text("No Favourite Custom Texts Yet!")
+                        Text("No Favorite Custom Texts Yet!")
                             .font(.system(size: 14, weight: .medium))
                             .foregroundStyle(.secondary)
                             .padding(.bottom, 16)
