@@ -111,7 +111,6 @@ class PopupViewModel: ObservableObject {
             imageTagsLower = []
         }
 
-        // Combine favorites from both custom text and image tags so popup sorts/stars them identically
         favoriteCustomTags = customTagsLower.union(imageTagsLower)
     }
     
@@ -146,8 +145,6 @@ class PopupViewModel: ObservableObject {
             return
         }
         let fetchPrefix = prefix
-        // Per-prefix soft cache to speed up narrowing (e.g., "jo" -> "joy").
-        // We will NOT use the cache if the prefix is unchanged to allow MRU resorting.
         struct Cache {
             static var lastPrefix: String = ""
             static var lastPairs: [(tag: String, emoji: String)] = []
@@ -159,8 +156,6 @@ class PopupViewModel: ObservableObject {
             let baseLimit = 200
             var emojiPairs: [(tag: String, emoji: String)]
 
-            // Always refetch for a new/narrowed prefix to ensure correct alias-first
-            // initial ordering, then MRU may override.
             emojiPairs = EmojiStorage.shared.collectPairs(withPrefix: fetchPrefix, limit: baseLimit)
             
             let sortedCustom = customTags.sorted { tag1, tag2 in
@@ -182,7 +177,6 @@ class PopupViewModel: ObservableObject {
                 if match.tag.lowercased() == fetchPrefix.lowercased() {
                     exact.append(match)
                 } else if self.isFavorite(emoji: match.emoji) {
-                    // Keep MRU order among favorites by appending in input order
                     favs.append(match)
                 } else {
                     nonFavs.append(match)
@@ -212,7 +206,6 @@ class PopupViewModel: ObservableObject {
     }
 
     func performEmojiSelection(tag: String, emoji: String) {
-        // Record usage for the current typed prefix to prioritize in future
         let currentPrefix = KeyDetection.shared.currentString.lowercased()
         if !currentPrefix.isEmpty {
             EmojiStorage.shared.recordKeywordUsage(prefix: currentPrefix, emoji: emoji)

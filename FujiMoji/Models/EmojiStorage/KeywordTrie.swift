@@ -10,7 +10,6 @@ final class KeywordTrieNode {
     var children: [Character: KeywordTrieNode] = [:]
     var isEndOfKeyword: Bool = false
     var keywordEmojis: [String] = []
-    // Most-recently-used emojis for this prefix; most recent first
     var recentEmojis: [String] = []
 }
 
@@ -31,7 +30,6 @@ final class KeywordTrie {
         }
 
         current.isEndOfKeyword = true
-        // Avoid duplicates while preserving insertion order
         if !current.keywordEmojis.contains(emoji) {
             current.keywordEmojis.append(emoji)
         }
@@ -48,13 +46,11 @@ final class KeywordTrie {
         var results: [(String, String)] = []
         var seen = Set<String>()
         var buffer = Array(normalized)
-        // 1) Seed with MRU for this prefix
         if !current.recentEmojis.isEmpty {
             for emoji in current.recentEmojis {
                 if results.count >= limit { break }
                 if !seen.contains(emoji) {
                     seen.insert(emoji)
-                    // Tag here uses the typed prefix; caller typically maps to default tag for display
                     results.append((String(buffer), emoji))
                 }
             }

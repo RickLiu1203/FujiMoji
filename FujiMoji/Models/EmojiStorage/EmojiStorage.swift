@@ -14,7 +14,7 @@ class EmojiStorage {
     private let searchTrie = EmojiTrie()
     private let keywordTrie = KeywordTrie()
     private var canonicalDefaultMap: [String: String] = [:]
-    private var prefixRecents: [String: [String]] = [:] // lowercased prefix -> MRU emojis
+    private var prefixRecents: [String: [String]] = [:]
     private let prefixRecentCapacity: Int = 12
     
     private var documentsDirectory: URL {
@@ -164,7 +164,6 @@ class EmojiStorage {
         let aliasAndDefault = searchTrie.collectPairs(withPrefix: normalizedPrefix, limit: limit)
         let keywordPairs = keywordTrie.collectPairs(withPrefix: normalizedPrefix, limit: limit)
 
-        // Build lookup maps for quick access
         var aliasByCanon: [String: (tag: String, emoji: String)] = [:]
         for pair in aliasAndDefault { aliasByCanon[canonicalEmoji(pair.emoji)] = pair }
         var keywordByCanon: [String: (tag: String, emoji: String)] = [:]
@@ -173,7 +172,6 @@ class EmojiStorage {
         var results: [(tag: String, emoji: String)] = []
         var usedCanon = Set<String>()
 
-        // Combine recents from both storages to be safe
         let recentA = prefixRecents[normalizedPrefix] ?? []
         let recentB = keywordTrie.recentEmojis(forPrefix: normalizedPrefix)
         var recentCombined: [String] = []
@@ -181,7 +179,6 @@ class EmojiStorage {
             if !recentCombined.contains(e) { recentCombined.append(e) }
         }
 
-        // 1) Place MRU first, preferring alias/default pairing if available
         for emoji in recentCombined {
             let canon = canonicalEmoji(emoji)
             if usedCanon.contains(canon) { continue }
@@ -195,14 +192,12 @@ class EmojiStorage {
                 usedCanon.insert(canon)
                 continue
             }
-            // Fallback: synthesize a pair using default tag or prefix
             results.append((tag: getDefaultTagCanonical(forEmoji: emoji) ?? normalizedPrefix, emoji: emoji))
             usedCanon.insert(canon)
         }
 
         if results.count >= limit { return Array(results.prefix(limit)) }
 
-        // 2) Fill remaining with alias entries first (stable), then defaults, skipping ones already used
         let aliasItems = aliasAndDefault.filter { pair in
             let def = getDefaultTag(forEmoji: pair.emoji)?.lowercased()
             return def == nil || def != pair.tag.lowercased()
@@ -221,7 +216,6 @@ class EmojiStorage {
 
         if results.count >= limit { return Array(results.prefix(limit)) }
 
-        // 3) Fill remaining with keyword results, normalized tag for display
         for pair in keywordPairs {
             if results.count >= limit { break }
             let canon = canonicalEmoji(pair.emoji)
@@ -234,11 +228,9 @@ class EmojiStorage {
         return Array(results.prefix(limit))
     }
 
-    // Record a keyword selection to boost it next time for the same prefix
     func recordKeywordUsage(prefix: String, emoji: String) {
         let normalized = prefix.lowercased()
         keywordTrie.recordUsage(prefix: normalized, emoji: emoji)
-        // Track MRU for alias/default ordering as well
         var list = prefixRecents[normalized] ?? []
         if let idx = list.firstIndex(of: emoji) {
             list.remove(at: idx)
