@@ -159,14 +159,9 @@ class PopupViewModel: ObservableObject {
             let baseLimit = 200
             var emojiPairs: [(tag: String, emoji: String)]
 
-            if !Cache.lastPrefix.isEmpty && fetchPrefix.hasPrefix(Cache.lastPrefix) && fetchPrefix != Cache.lastPrefix {
-                emojiPairs = Cache.lastPairs.filter { $0.tag.hasPrefix(fetchPrefix) }
-                if emojiPairs.count < 25 {
-                    emojiPairs = EmojiStorage.shared.collectPairs(withPrefix: fetchPrefix, limit: baseLimit)
-                }
-            } else {
-                emojiPairs = EmojiStorage.shared.collectPairs(withPrefix: fetchPrefix, limit: baseLimit)
-            }
+            // Always refetch for a new/narrowed prefix to ensure correct alias-first
+            // initial ordering, then MRU may override.
+            emojiPairs = EmojiStorage.shared.collectPairs(withPrefix: fetchPrefix, limit: baseLimit)
             
             let sortedCustom = customTags.sorted { tag1, tag2 in
                 let exact1 = tag1.lowercased() == fetchPrefix

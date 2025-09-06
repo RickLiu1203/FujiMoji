@@ -202,8 +202,16 @@ class EmojiStorage {
 
         if results.count >= limit { return Array(results.prefix(limit)) }
 
-        // 2) Fill remaining with alias/default (stable order), skipping ones already used
-        for pair in aliasAndDefault {
+        // 2) Fill remaining with alias entries first (stable), then defaults, skipping ones already used
+        let aliasItems = aliasAndDefault.filter { pair in
+            let def = getDefaultTag(forEmoji: pair.emoji)?.lowercased()
+            return def == nil || def != pair.tag.lowercased()
+        }
+        let defaultItems = aliasAndDefault.filter { pair in
+            let def = getDefaultTag(forEmoji: pair.emoji)?.lowercased()
+            return def == pair.tag.lowercased()
+        }
+        for pair in aliasItems + defaultItems {
             if results.count >= limit { break }
             let canon = canonicalEmoji(pair.emoji)
             if usedCanon.contains(canon) { continue }
