@@ -1,4 +1,4 @@
-## 🍎 FujiMoji for macOS
+## FujiMoji for macOS 🍎
 
 Type any emoji, text snippet, or media by name from anywhere on your Mac. FujiMoji is a lightweight menu bar app that listens for your trigger key, shows fast suggestions, and pastes the selected result directly into the active text field.
 
