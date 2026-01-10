@@ -6,54 +6,68 @@
 //
 
 import SwiftUI
+import ServiceManagement
 
 struct MenuSixthSectionView: View {
-    @Environment(\.openURL) private var openURL
-
+    @State private var launchAtLogin: Bool = false
+    @State private var isUpdatingFromSystem: Bool = false
+    
+    private let popoverShowPublisher = NotificationCenter.default.publisher(
+        for: .popoverDidShow
+    )
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Button(action: {
-                LandingWindowController.shared.toggle()
-            }){
+        VStack(alignment: .leading, spacing: 8) {
+            Toggle(isOn: $launchAtLogin) {
                 HStack {
-                    Text("Show Landing Page")
-                        .padding(.vertical, 4)
-
+                    Text("Launch at Login")
                     Spacer()
-
-                    Text("⌘L")
-                        .foregroundColor(.secondary)
                 }
-                .padding(.horizontal, 16)
                 .frame(maxWidth: .infinity)
                 .contentShape(Rectangle())
             }
-            .keyboardShortcut("l")
-            .buttonStyle(MenuHoverButtonStyle())
+            .toggleStyle(FrostedToggleStyle())
             .frame(maxWidth: .infinity)
-
-            Button(action: {
-                guard let url = URL(string: "https://github.com/RickLiu1203/FujiMoji") else { return }
-                openURL(url)
-            }){
-                HStack {
-                    Text("GitHub  ↗")
-                        .padding(.vertical, 4)
-
-                    Spacer()
-
-                    Text("⌘G")
-                        .foregroundColor(.secondary)
-                }
-                .padding(.horizontal, 16)
-                .frame(maxWidth: .infinity)
-                .contentShape(Rectangle())
+            .onChange(of: launchAtLogin) { _, newValue in
+                guard !isUpdatingFromSystem else { return }
+                setLaunchAtLogin(enabled: newValue)
             }
-            .keyboardShortcut("G")
-            .buttonStyle(MenuHoverButtonStyle())
-            .frame(maxWidth: .infinity)
         }
-        .background(.clear)
+        .padding(.horizontal, 16)
         .font(.system(size: 13, weight: .medium))
+        .onAppear {
+            refreshStatus()
+        }
+        .onReceive(popoverShowPublisher) { _ in
+            refreshStatus()
+        }
+    }
+    
+    private func refreshStatus() {
+        let currentStatus = getLaunchAtLoginStatus()
+        if launchAtLogin != currentStatus {
+            isUpdatingFromSystem = true
+            launchAtLogin = currentStatus
+            DispatchQueue.main.async {
+                isUpdatingFromSystem = false
+            }
+        }
+    }
+    
+    private func getLaunchAtLoginStatus() -> Bool {
+        return SMAppService.mainApp.status == .enabled
+    }
+    
+    private func setLaunchAtLogin(enabled: Bool) {
+        do {
+            if enabled {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+        } catch {
+            // Revert toggle if operation failed
+            refreshStatus()
+        }
     }
 }

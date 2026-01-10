@@ -8,6 +8,10 @@
 import SwiftUI
 import AppKit
 
+extension Notification.Name {
+    static let popoverDidShow = Notification.Name("popoverDidShow")
+}
+
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusItem: NSStatusItem?
     private var popover: NSPopover?
@@ -37,7 +41,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 200, height: 400)
+        popover.contentSize = NSSize(width: 200, height: 450)
         popover.behavior = .transient
         popover.animates = true
         
@@ -92,6 +96,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
             // Ensure the popover window becomes key for interaction
             popover.contentViewController?.view.window?.makeKey()
+            // Notify views that popover is now visible
+            NotificationCenter.default.post(name: .popoverDidShow, object: nil)
         }
     }
     
