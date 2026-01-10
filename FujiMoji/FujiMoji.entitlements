@@ -8,9 +8,5 @@
 	<true/>
 	<key>com.apple.security.automation.apple-events</key>
 	<true/>
-	<key>com.apple.security.device.input-monitoring</key>
-	<true/>
-	<key>com.apple.security.personal-information.system-events</key>
-	<true/>
 </dict>
 </plist>

@@ -9,40 +9,62 @@ import SwiftUI
 import AppKit
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
+    private var statusItem: NSStatusItem?
+    private var popover: NSPopover?
+    private var eventMonitor: Any?
+    
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
         _ = DetectedTextWindowController.shared
         _ = PredictionResultsWindowController.shared
+        
+        setupStatusItem()
+        
         let hasShown = UserDefaults.standard.bool(forKey: "hasShownLanding")
         if !hasShown {
             LandingWindowController.shared.showFloating()
             UserDefaults.standard.set(true, forKey: "hasShownLanding")
         }
     }
-}
-
-@main
-struct FujiMojiApp: App {
-    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
-    @StateObject private var fujiMojiState = FujiMojiState.shared
     
-    var body: some Scene {
-        MenuBarExtra {
-            MenuView(fujiMojiState: fujiMojiState)
+    private func setupStatusItem() {
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        
+        if let button = statusItem?.button {
+            button.image = createMenuBarIcon()
+            button.action = #selector(togglePopover(_:))
+            button.target = self
+        }
+        
+        let popover = NSPopover()
+        popover.contentSize = NSSize(width: 200, height: 400)
+        popover.behavior = .transient
+        popover.animates = true
+        
+        let fujiMojiState = FujiMojiState.shared
+        let menuView = MenuView(fujiMojiState: fujiMojiState)
             .background(.ultraThinMaterial)
             .onAppear {
                 fujiMojiState.checkInputMonitoringAuthorization()
             }
-        } label: {
-            let size = NSStatusBar.system.thickness - 4
-            menuBarIcon(size: size)
+        
+        popover.contentViewController = NSHostingController(rootView: menuView)
+        self.popover = popover
+        
+        // Monitor for clicks outside popover to close it
+        eventMonitor = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .rightMouseDown]) { [weak self] _ in
+            if let popover = self?.popover, popover.isShown {
+                popover.performClose(nil)
+            }
         }
-        .menuBarExtraStyle(.window)
     }
     
-    private func menuBarIcon(size: CGFloat) -> Image {
+    private func createMenuBarIcon() -> NSImage {
+        let size = NSStatusBar.system.thickness - 4
         guard let base = NSImage(named: "MenuIcon") else {
-            return Image(systemName: "circle.fill")
+            let fallback = NSImage(systemSymbolName: "circle.fill", accessibilityDescription: "FujiMoji")
+            fallback?.isTemplate = true
+            return fallback ?? NSImage()
         }
         let targetSize = NSSize(width: size, height: size)
         let resized = NSImage(size: targetSize)
@@ -58,6 +80,36 @@ struct FujiMojiApp: App {
                   hints: [.interpolation: NSImageInterpolation.high])
         resized.unlockFocus()
         resized.isTemplate = true
-        return Image(nsImage: resized)
+        return resized
+    }
+    
+    @objc private func togglePopover(_ sender: AnyObject?) {
+        guard let button = statusItem?.button, let popover = popover else { return }
+        
+        if popover.isShown {
+            popover.performClose(sender)
+        } else {
+            popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+            // Ensure the popover window becomes key for interaction
+            popover.contentViewController?.view.window?.makeKey()
+        }
+    }
+    
+    func applicationWillTerminate(_ notification: Notification) {
+        if let eventMonitor = eventMonitor {
+            NSEvent.removeMonitor(eventMonitor)
+        }
+    }
+}
+
+@main
+struct FujiMojiApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+    
+    var body: some Scene {
+        // Empty Settings scene required for menu bar only apps
+        Settings {
+            EmptyView()
+        }
     }
 }
