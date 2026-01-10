@@ -105,6 +105,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if let eventMonitor = eventMonitor {
             NSEvent.removeMonitor(eventMonitor)
         }
+        // Save recency cache before quitting
+        EmojiStorage.shared.saveRecencyCacheNow()
     }
 }
 

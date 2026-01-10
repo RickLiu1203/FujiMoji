@@ -118,6 +118,48 @@ final class KeywordTrie {
         }
         return current.recentEmojis
     }
+    
+    // MARK: - Recency Persistence
+    
+    func exportRecencyData() -> [String: [String]] {
+        var result: [String: [String]] = [:]
+        var buffer: [Character] = []
+        collectRecency(from: root, buffer: &buffer, result: &result)
+        return result
+    }
+    
+    private func collectRecency(from node: KeywordTrieNode,
+                                buffer: inout [Character],
+                                result: inout [String: [String]]) {
+        if !node.recentEmojis.isEmpty {
+            let prefix = String(buffer)
+            result[prefix] = node.recentEmojis
+        }
+        for (ch, child) in node.children {
+            buffer.append(ch)
+            collectRecency(from: child, buffer: &buffer, result: &result)
+            buffer.removeLast()
+        }
+    }
+    
+    func importRecencyData(_ data: [String: [String]]) {
+        for (prefix, emojis) in data {
+            let normalized = prefix.lowercased()
+            guard !normalized.isEmpty else { continue }
+            
+            // Navigate to the node, creating path if needed
+            var current = root
+            for ch in normalized {
+                if current.children[ch] == nil {
+                    current.children[ch] = KeywordTrieNode()
+                }
+                current = current.children[ch]!
+            }
+            
+            // Restore recency data (capped to capacity)
+            current.recentEmojis = Array(emojis.prefix(recentCapacity))
+        }
+    }
 }
 
 

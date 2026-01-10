@@ -6,6 +6,11 @@
 
 import Foundation
 
+private struct RecencyCache: Codable {
+    var prefixRecents: [String: [String]]
+    var keywordRecents: [String: [String]]
+}
+
 class EmojiStorage {
     static let shared = EmojiStorage()
     
@@ -17,12 +22,19 @@ class EmojiStorage {
     private var prefixRecents: [String: [String]] = [:]
     private let prefixRecentCapacity: Int = 12
     
+    private var saveWorkItem: DispatchWorkItem?
+    private let saveQueue = DispatchQueue(label: "com.fujimoji.recency.save", qos: .utility)
+    
     private var documentsDirectory: URL {
         fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     }
     
     private var userMappingsURL: URL {
         documentsDirectory.appendingPathComponent("user_emoji_mappings.json")
+    }
+    
+    private var recencyCacheURL: URL {
+        documentsDirectory.appendingPathComponent("recency_cache.json")
     }
     
     private init() {
@@ -40,6 +52,7 @@ class EmojiStorage {
         rebuildTrie()
         buildKeywordTrie()
         rebuildCanonicalMap()
+        loadRecencyCache()
     }
     
     private func rebuildTrie() {
@@ -240,5 +253,49 @@ class EmojiStorage {
             list.removeLast(list.count - prefixRecentCapacity)
         }
         prefixRecents[normalized] = list
+        scheduleSaveRecencyCache()
+    }
+    
+    // MARK: - Recency Cache Persistence
+    
+    private func loadRecencyCache() {
+        guard fileManager.fileExists(atPath: recencyCacheURL.path) else { return }
+        do {
+            let data = try Data(contentsOf: recencyCacheURL)
+            let cache = try JSONDecoder().decode(RecencyCache.self, from: data)
+            prefixRecents = cache.prefixRecents
+            keywordTrie.importRecencyData(cache.keywordRecents)
+        } catch {
+            print("Error loading recency cache: \(error)")
+        }
+    }
+    
+    private func scheduleSaveRecencyCache() {
+        saveWorkItem?.cancel()
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.saveRecencyCache()
+        }
+        saveWorkItem = workItem
+        saveQueue.asyncAfter(deadline: .now() + 2.0, execute: workItem)
+    }
+    
+    private func saveRecencyCache() {
+        let cache = RecencyCache(
+            prefixRecents: prefixRecents,
+            keywordRecents: keywordTrie.exportRecencyData()
+        )
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let data = try encoder.encode(cache)
+            try data.write(to: recencyCacheURL, options: .atomic)
+        } catch {
+            print("Error saving recency cache: \(error)")
+        }
+    }
+    
+    func saveRecencyCacheNow() {
+        saveWorkItem?.cancel()
+        saveRecencyCache()
     }
 } 
