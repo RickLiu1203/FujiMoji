@@ -6,138 +6,128 @@
 //
 
 import SwiftUI
+import Carbon.HIToolbox
+
+struct KeyCaptureView: NSViewRepresentable {
+    @Binding var keyCombo: KeyCombo
+    @Binding var isCapturing: Bool
+    var onCapture: () -> Void
+    
+    func makeNSView(context: Context) -> KeyCaptureNSView {
+        let view = KeyCaptureNSView()
+        view.onKeyCombo = { combo in
+            DispatchQueue.main.async {
+                self.keyCombo = combo
+                self.isCapturing = false
+                self.onCapture()
+            }
+        }
+        return view
+    }
+    
+    func updateNSView(_ nsView: KeyCaptureNSView, context: Context) {
+        if isCapturing {
+            DispatchQueue.main.async {
+                nsView.window?.makeFirstResponder(nsView)
+            }
+        }
+    }
+}
+
+class KeyCaptureNSView: NSView {
+    var onKeyCombo: ((KeyCombo) -> Void)?
+    
+    override var acceptsFirstResponder: Bool { true }
+    
+    override func keyDown(with event: NSEvent) {
+        guard let chars = event.charactersIgnoringModifiers, !chars.isEmpty else { return }
+        
+        let flags = event.modifierFlags
+        let combo = KeyCombo(
+            key: chars,
+            command: flags.contains(.command),
+            option: flags.contains(.option),
+            control: flags.contains(.control),
+            shift: flags.contains(.shift)
+        )
+        onKeyCombo?(combo)
+    }
+}
 
 struct MenuFourthSectionView: View {
     @ObservedObject var fujiMojiState: FujiMojiState
-    @State private var tempStartKey: String = ""
-    @State private var tempEndKey: String = ""
-    @FocusState private var isEditingStart: Bool
-    @FocusState private var isEditingEnd: Bool
+    @State private var isCapturingKey: Bool = false
+    @State private var tempCombo: KeyCombo = KeyCombo()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            // Trigger Key
             HStack {
-                Text("Start Capture Key")
+                Text("Trigger Key(s)")
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                TextField("", text: $tempStartKey)
-                    .textFieldStyle(.plain)
-                    .frame(width: 12)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .fill(isEditingStart ? Color.black.opacity(0.15) : Color.white.opacity(0.06))
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .stroke(Color.white.opacity(0.12), lineWidth: 1)
-                    )
-                    .onChange(of: tempStartKey) {
-                        tempStartKey = filterAndLimitInput(tempStartKey)
-                    }
-                    .onSubmit {
-                        submitStartKey()
-                    }
-                    .focused($isEditingStart)
-                    .onTapGesture {
-                        isEditingStart = true
-                    }
-            }
-            
-            HStack {
-                Text("End Capture Key")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                TextField("", text: $tempEndKey)
-                    .textFieldStyle(.plain)
-                    .frame(width: 12)
-                    .padding(.horizontal, 6)
-                    .padding(.vertical, 2)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .fill(isEditingEnd ? Color.black.opacity(0.15) : Color.white.opacity(0.06))
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 4, style: .continuous)
-                            .stroke(Color.white.opacity(0.12), lineWidth: 1)
-                    )
-                    .onChange(of: tempEndKey) {
-                        if tempEndKey.lowercased() != "space" {
-                            tempEndKey = filterAndLimitInput(tempEndKey)
+                Button(action: {
+                    tempCombo = fujiMojiState.triggerCombo
+                    isCapturingKey = true
+                }) {
+                    Text(isCapturingKey ? "Press Key(s)" : fujiMojiState.triggerCombo.displayString)
+                        .frame(minWidth: 44)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 3)
+                }
+                .buttonStyle(.plain)
+                .background(
+                    RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .fill(isCapturingKey ? Color.blue.opacity(0.3) : Color.white.opacity(0.06))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 4, style: .continuous)
+                        .stroke(isCapturingKey ? Color.blue.opacity(0.5) : Color.white.opacity(0.12), lineWidth: 1)
+                )
+                .overlay(
+                    Group {
+                        if isCapturingKey {
+                            KeyCaptureView(keyCombo: $tempCombo, isCapturing: $isCapturingKey) {
+                                fujiMojiState.setTriggerCombo(tempCombo)
+                            }
+                            .frame(width: 1, height: 1)
+                            .opacity(0)
                         }
                     }
-                    .onSubmit {
-                        submitEndKey()
-                    }
-                    .focused($isEditingEnd)
-                    .onTapGesture {
-                        isEditingEnd = true
-                    }
+                )
+            }
+            
+            // Enter ends capture toggle
+            Toggle(isOn: $fujiMojiState.enterEndsCapture) {
+                HStack(spacing: 6) {
+                    Text("Enter to Submit")
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+            }
+            .toggleStyle(FrostedToggleStyle())
+            .frame(maxWidth: .infinity)
+            .onChange(of: fujiMojiState.enterEndsCapture) {
+                fujiMojiState.updateEnterEndsCapture()
+            }
+            
+            // Tab ends capture toggle
+            Toggle(isOn: $fujiMojiState.tabEndsCapture) {
+                HStack(spacing: 6) {
+                    Text("Tab to Submit")
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+            }
+            .toggleStyle(FrostedToggleStyle())
+            .frame(maxWidth: .infinity)
+            .onChange(of: fujiMojiState.tabEndsCapture) {
+                fujiMojiState.updateTabEndsCapture()
             }
         }
         .padding(.horizontal, 16)
         .font(.system(size: 13, weight: .medium))
-        .onAppear {
-            tempStartKey = fujiMojiState.startCaptureKey
-            tempEndKey = displayEndKey(fujiMojiState.endCaptureKey)
-        }
-    }
-    
-    private func displayEndKey(_ key: String) -> String {
-        return key == " " ? "␣" : key
-    }
-    
-    private func filterAndLimitInput(_ input: String) -> String {
-        if input.lowercased().hasPrefix("space") && input.count <= 5 {
-            return input
-        }
-        
-        let filtered = input.filter { char in
-            let ascii = char.asciiValue ?? 0
-            return ascii >= 32 && ascii <= 126
-        }
-        
-        if filtered.lowercased() != "space" && filtered.count > 1 {
-            return String(filtered.prefix(1))
-        }
-        
-        return filtered
-    }
-    
-    private func submitStartKey() {
-        let trimmed = tempStartKey.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty || !isValidCaptureKey(trimmed) {
-            tempStartKey = fujiMojiState.startCaptureKey
-        } else {
-            fujiMojiState.startCaptureKey = trimmed
-            fujiMojiState.updateCaptureKeys()
-        }
-        isEditingStart = false
-    }
-    
-    private func submitEndKey() {
-        let trimmed = tempEndKey.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty {
-            tempEndKey = displayEndKey(fujiMojiState.endCaptureKey)
-        } else {
-            let actualKey = trimmed.lowercased() == "space" ? " " : trimmed
-            if isValidCaptureKey(actualKey) {
-                fujiMojiState.endCaptureKey = actualKey
-                fujiMojiState.updateCaptureKeys()
-            } else {
-                tempEndKey = displayEndKey(fujiMojiState.endCaptureKey)
-            }
-        }
-        isEditingEnd = false
-    }
-    
-    private func isValidCaptureKey(_ key: String) -> Bool {
-        guard key.count == 1 else { return false }
-        
-        let char = key.first!
-        let ascii = char.asciiValue ?? 0
-        
-        return ascii >= 32 && ascii <= 126
     }
 }

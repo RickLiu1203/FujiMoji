@@ -27,8 +27,7 @@ class KeyDetection: ObservableObject {
     @Published var currentString = ""
     @Published var isCapturing = false
     
-    private var startDelimiter = "/"
-    private var endDelimiter = "/"
+    private(set) var triggerCombo = KeyCombo()
     private var captureStarted = false 
     
     private var preDelimiterDigits = ""
@@ -40,17 +39,18 @@ class KeyDetection: ObservableObject {
 
     
     private init() {
-        startDelimiter = UserDefaults.standard.string(forKey: "startCaptureKey") ?? "/"
-        endDelimiter = UserDefaults.standard.string(forKey: "endCaptureKey") ?? "/"
+        if let data = UserDefaults.standard.data(forKey: "triggerCombo"),
+           let combo = try? JSONDecoder().decode(KeyCombo.self, from: data) {
+            triggerCombo = combo
+        }
     }
     
-    func updateDelimiters(start: String, end: String) {
-        startDelimiter = start
-        endDelimiter = end
+    func updateTriggerCombo(_ combo: KeyCombo) {
+        triggerCombo = combo
     }
     
-    var currentEndDelimiter: String {
-        return endDelimiter
+    var triggerKeyString: String {
+        return triggerCombo.key
     }
     
     private let callback: CGEventTapCallBack = { _, type, event, _ in
@@ -58,6 +58,7 @@ class KeyDetection: ObservableObject {
         
         if let nsEvent = NSEvent(cgEvent: event) {
             let keyCode = nsEvent.keyCode
+            let combo = KeyDetection.shared.triggerCombo
             
             if KeyDetection.shared.captureStarted {
                 if keyCode == 123 { // Left arrow
@@ -83,10 +84,44 @@ class KeyDetection: ObservableObject {
                 }
             }
             
+            // Check if this is the trigger combo
+            let isTriggerCombo = combo.matches(event: nsEvent)
+            
+            // If trigger has modifiers, only process trigger combo events for start/end
+            // Otherwise, let regular typing through but block modifier combos
             let flags = nsEvent.modifierFlags
-            if flags.contains(.command) || flags.contains(.control) || flags.contains(.function) {
+            let hasAnyModifier = flags.contains(.command) || flags.contains(.control) || flags.contains(.option)
+            
+            if isTriggerCombo {
+                // Handle trigger combo for start/end capture
+                if KeyDetection.shared.captureStarted {
+                    // End capture
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
+                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                        if KeyDetection.shared.captureStarted {
+                            KeyDetection.shared.finishCapture(triggerKeyConsumed: true)
+                        }
+                    }
+                    return nil
+                } else {
+                    // Start capture
+                    KeyDetection.shared.handleTriggerKeyPressed()
+                    return combo.hasModifiers ? nil : Unmanaged.passUnretained(event)
+                }
+            }
+            
+            // If capturing, don't let modifier combos through (except trigger)
+            if KeyDetection.shared.captureStarted && hasAnyModifier {
                 return Unmanaged.passUnretained(event)
             }
+            
+            // If not capturing and has modifiers (but not trigger), pass through
+            if !KeyDetection.shared.captureStarted && hasAnyModifier {
+                return Unmanaged.passUnretained(event)
+            }
+            
             if let characters = nsEvent.charactersIgnoringModifiers {
                 
                 if keyCode == 51 {
@@ -100,7 +135,7 @@ class KeyDetection: ObservableObject {
                         KeyDetection.shared.handleCharacter(" ")
                     }
                 } else if keyCode == 48 { // Tab key
-                    if KeyDetection.shared.captureStarted {
+                    if KeyDetection.shared.captureStarted && FujiMojiState.shared.tabEndsCapture {
                         DispatchQueue.main.async {
                             NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
                         }
@@ -117,7 +152,7 @@ class KeyDetection: ObservableObject {
                         return Unmanaged.passUnretained(event)
                     }
                 } else if keyCode == 36 { // Enter key
-                    if KeyDetection.shared.captureStarted {
+                    if KeyDetection.shared.captureStarted && FujiMojiState.shared.enterEndsCapture {
                         DispatchQueue.main.async {
                             NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
                         }
@@ -144,16 +179,8 @@ class KeyDetection: ObservableObject {
                         return Unmanaged.passUnretained(event)
                     }
                 } else {
-                    if KeyDetection.shared.captureStarted && characters == KeyDetection.shared.currentEndDelimiter && characters != " " {
-                        DispatchQueue.main.async {
-                            NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
-                        }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                            if KeyDetection.shared.captureStarted {
-                                KeyDetection.shared.finishCapture(triggerKeyConsumed: true)
-                            }
-                        }
-                        return nil
+                    if KeyDetection.shared.captureStarted {
+                        KeyDetection.shared.handleCharacter(characters)
                     } else {
                         KeyDetection.shared.handleCharacter(characters)
                     }
@@ -271,42 +298,32 @@ class KeyDetection: ObservableObject {
         }
     }
     
+    private func handleTriggerKeyPressed() {
+        guard lastNonCaptureCharWasDigitOrSpace else {
+            preDelimiterDigits = ""
+            lastDigitTypedAt = nil
+            return
+        }
+        let withinWindow: Bool
+        if let last = lastDigitTypedAt {
+            withinWindow = Date().timeIntervalSince(last) <= digitValidityWindow
+        } else {
+            withinWindow = false
+        }
+        if withinWindow, let parsed = Int(preDelimiterDigits), parsed > 0 {
+            multiplier = parsed
+            digitsCountBeforeStart = preDelimiterDigits.count
+        } else {
+            multiplier = 1
+            digitsCountBeforeStart = 0
+        }
+        preDelimiterDigits = ""
+        lastDigitTypedAt = nil
+        startCapture()
+    }
+    
     private func handleCharacter(_ character: String) {
-        if character == endDelimiter && captureStarted {
-            if endDelimiter != " " { 
-                DispatchQueue.main.async {
-                    NotificationCenter.default.post(name: .selectHighlightedSuggestion, object: nil)
-                }
-            }
-        } else if character == startDelimiter {
-            if captureStarted {
-                DispatchQueue.main.async {
-                    self.currentString += character
-                }
-            } else {
-                guard lastNonCaptureCharWasDigitOrSpace else {
-                    preDelimiterDigits = ""
-                    lastDigitTypedAt = nil
-                    return
-                }
-                let withinWindow: Bool
-                if let last = lastDigitTypedAt {
-                    withinWindow = Date().timeIntervalSince(last) <= digitValidityWindow
-                } else {
-                    withinWindow = false
-                }
-                if withinWindow, let parsed = Int(preDelimiterDigits), parsed > 0 {
-                    multiplier = parsed
-                    digitsCountBeforeStart = preDelimiterDigits.count
-                } else {
-                    multiplier = 1
-                    digitsCountBeforeStart = 0
-                }
-                preDelimiterDigits = ""
-                lastDigitTypedAt = nil
-                startCapture()
-            }
-        } else if captureStarted {
+        if captureStarted {
             DispatchQueue.main.async {
                 self.currentString += character
             }
@@ -362,7 +379,7 @@ class KeyDetection: ObservableObject {
                 
                 let replacementSuccess = TextReplacement.shared.replaceWithEmoji(
                     capturedString,
-                    startDelimiter: self.startDelimiter,
+                    startDelimiter: self.triggerCombo.key,
                     multiplier: self.multiplier,
                     digitsCountBeforeStart: self.digitsCountBeforeStart,
                     triggerKeyConsumed: triggerKeyConsumed
@@ -386,7 +403,7 @@ class KeyDetection: ObservableObject {
                 let replacementSuccess = TextReplacement.shared.replaceWithUnit(
                     replacementUnit,
                     forCapturedText: capturedString,
-                    startDelimiter: self.startDelimiter,
+                    startDelimiter: self.triggerCombo.key,
                     multiplier: self.multiplier,
                     digitsCountBeforeStart: self.digitsCountBeforeStart,
                     triggerKeyConsumed: true 
@@ -409,7 +426,7 @@ class KeyDetection: ObservableObject {
                 _ = TextReplacement.shared.replaceWithImageTag(
                     tag,
                     forCapturedText: capturedString,
-                    startDelimiter: self.startDelimiter,
+                    startDelimiter: self.triggerCombo.key,
                     multiplier: self.multiplier,
                     digitsCountBeforeStart: self.digitsCountBeforeStart,
                     triggerKeyConsumed: true

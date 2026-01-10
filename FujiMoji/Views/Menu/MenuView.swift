@@ -60,7 +60,7 @@ struct MenuView: View {
 
         }
         .padding(.vertical, 16)
-        .frame(width: 200)
+        .frame(width: 230)
         .background(.ultraThinMaterial)
         .onChange(of: fujiMojiState.isEnabled) {
             fujiMojiState.updateKeyDetection()

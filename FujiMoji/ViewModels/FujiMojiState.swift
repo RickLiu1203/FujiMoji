@@ -8,6 +8,47 @@
 import SwiftUI
 import AppKit
 
+// MARK: - Key Combo
+struct KeyCombo: Codable, Equatable {
+    var key: String
+    var command: Bool
+    var option: Bool
+    var control: Bool
+    var shift: Bool
+    
+    init(key: String = "/", command: Bool = false, option: Bool = false, control: Bool = false, shift: Bool = false) {
+        self.key = key
+        self.command = command
+        self.option = option
+        self.control = control
+        self.shift = shift
+    }
+    
+    var hasModifiers: Bool {
+        command || option || control || shift
+    }
+    
+    var displayString: String {
+        var parts: [String] = []
+        if control { parts.append("⌃") }
+        if option { parts.append("⌥") }
+        if shift { parts.append("⇧") }
+        if command { parts.append("⌘") }
+        parts.append(key.uppercased())
+        return parts.joined()
+    }
+    
+    func matches(event: NSEvent) -> Bool {
+        let flags = event.modifierFlags
+        let commandMatch = command == flags.contains(.command)
+        let optionMatch = option == flags.contains(.option)
+        let controlMatch = control == flags.contains(.control)
+        let shiftMatch = shift == flags.contains(.shift)
+        let keyMatch = event.charactersIgnoringModifiers?.lowercased() == key.lowercased()
+        return commandMatch && optionMatch && controlMatch && shiftMatch && keyMatch
+    }
+}
+
 enum SkinTone: String, CaseIterable, Codable, Hashable {
     case yellow
     case light
@@ -46,8 +87,9 @@ class FujiMojiState: ObservableObject {
     @Published var isCool: Bool = true
     @Published var showSuggestionPopup: Bool = true
     @Published var needsInputMonitoring: Bool = false
-    @Published var startCaptureKey: String = "/"
-    @Published var endCaptureKey: String = "/"
+    @Published var triggerCombo: KeyCombo = KeyCombo()
+    @Published var enterEndsCapture: Bool = true
+    @Published var tabEndsCapture: Bool = true
     @Published var selectedSkinTone: SkinTone = .yellow
     @Published var skinToneModifier: String = ""
     private var variantEmojiKeys: Set<String> = []
@@ -57,12 +99,12 @@ class FujiMojiState: ObservableObject {
     private let keyDetection = KeyDetection.shared
 
     private init() {
-        loadCaptureKeys()
+        loadCaptureSettings()
         loadSkinTone()
         loadVariantEmojiKeys()
         ensureCacheForCurrentTone()
         updateKeyDetection()
-        keyDetection.updateDelimiters(start: startCaptureKey, end: endCaptureKey)
+        keyDetection.updateTriggerCombo(triggerCombo)
     }
     
     // MARK: - Input Monitoring
@@ -102,15 +144,45 @@ class FujiMojiState: ObservableObject {
         NSApp.terminate(nil)
     }
     
-    private func loadCaptureKeys() {
-        startCaptureKey = UserDefaults.standard.string(forKey: "startCaptureKey") ?? "/"
-        endCaptureKey = UserDefaults.standard.string(forKey: "endCaptureKey") ?? "/"
+    private func loadCaptureSettings() {
+        // Migrate from old string-based keys if present
+        if let oldStart = UserDefaults.standard.string(forKey: "startCaptureKey") {
+            triggerCombo = KeyCombo(key: oldStart)
+            UserDefaults.standard.removeObject(forKey: "startCaptureKey")
+            UserDefaults.standard.removeObject(forKey: "endCaptureKey")
+            UserDefaults.standard.removeObject(forKey: "triggerKey")
+            saveTriggerCombo()
+        } else if let oldTrigger = UserDefaults.standard.string(forKey: "triggerKey") {
+            triggerCombo = KeyCombo(key: oldTrigger)
+            UserDefaults.standard.removeObject(forKey: "triggerKey")
+            saveTriggerCombo()
+        } else if let data = UserDefaults.standard.data(forKey: "triggerCombo"),
+                  let combo = try? JSONDecoder().decode(KeyCombo.self, from: data) {
+            triggerCombo = combo
+        } else {
+            triggerCombo = KeyCombo()
+        }
+        enterEndsCapture = UserDefaults.standard.object(forKey: "enterEndsCapture") as? Bool ?? true
+        tabEndsCapture = UserDefaults.standard.object(forKey: "tabEndsCapture") as? Bool ?? true
     }
     
-    func updateCaptureKeys() {
-        UserDefaults.standard.set(startCaptureKey, forKey: "startCaptureKey")
-        UserDefaults.standard.set(endCaptureKey, forKey: "endCaptureKey")
-        keyDetection.updateDelimiters(start: startCaptureKey, end: endCaptureKey)
+    private func saveTriggerCombo() {
+        if let data = try? JSONEncoder().encode(triggerCombo) {
+            UserDefaults.standard.set(data, forKey: "triggerCombo")
+        }
+    }
+    
+    func updateTriggerCombo() {
+        saveTriggerCombo()
+        keyDetection.updateTriggerCombo(triggerCombo)
+    }
+    
+    func updateEnterEndsCapture() {
+        UserDefaults.standard.set(enterEndsCapture, forKey: "enterEndsCapture")
+    }
+    
+    func updateTabEndsCapture() {
+        UserDefaults.standard.set(tabEndsCapture, forKey: "tabEndsCapture")
     }
     
     func updateKeyDetection() {
@@ -121,18 +193,9 @@ class FujiMojiState: ObservableObject {
         }
     }
     
-    func validateAndSetCaptureKeys(start: String, end: String) -> Bool {
-        let trimmedStart = start.trimmingCharacters(in: .whitespacesAndNewlines)
-        let trimmedEnd = end.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        guard !trimmedStart.isEmpty && !trimmedEnd.isEmpty else {
-            return false
-        }
-        
-        startCaptureKey = trimmedStart
-        endCaptureKey = trimmedEnd
-        updateCaptureKeys()
-        return true
+    func setTriggerCombo(_ combo: KeyCombo) {
+        triggerCombo = combo
+        updateTriggerCombo()
     }
 
     // MARK: - Skin tone persistence
