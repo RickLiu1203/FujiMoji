@@ -5,7 +5,7 @@ Type any emoji, text snippet, or media by name from anywhere on your Mac. FujiMo
 ![FujiMoji demo](FujiMoji/Assets.xcassets/fujimoji-demo.gif)
 
 ### 📱 Download
-- [Website](https://fujimoji.app)
+- [Website](https://fujimoji.xyz)
 - [Direct Download](https://github.com/RickLiu1203/FujiMoji/releases/download/v1.0/FujiMoji.dmg)
 
 ### ✨ Features
